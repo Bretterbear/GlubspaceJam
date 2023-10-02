@@ -16,5 +16,5 @@ mono_crash.*.json
 
 # Visual Studio specific add-ins
 .vs/
-Glubspace Jam.sln
-Glubspace Jam.csproj
+#Glubspace Jam.sln
+#Glubspace Jam.csproj

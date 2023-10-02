@@ -1,19 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1pe0g10vuddg"]
+[gd_scene load_steps=5 format=3 uid="uid://d1pe0g10vuddg"]
 
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
+[ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_deleq"]
-size = Vector2(336, 252)
+size = Vector2(334, 248)
 
 [node name="Player" type="CharacterBody2D"]
+position = Vector2(-23, -25)
 collision_mask = 256
 script = ExtResource("1_v77jq")
 
+[node name="Sprite_Character" type="Sprite2D" parent="."]
+texture = ExtResource("1_74kga")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(8, -128)
+position = Vector2(18, 33)
 shape = SubResource("RectangleShape2D_deleq")
 
-[node name="Sprite_Character" type="Sprite2D" parent="."]
-position = Vector2(-8, -160)
-texture = ExtResource("1_74kga")
+[node name="GlubHook" type="Node2D" parent="."]
+position = Vector2(23, 25)
+script = ExtResource("3_jp5wg")
+
+[node name="Targetter_01" type="RayCast2D" parent="GlubHook"]
+target_position = Vector2(500, 0)
