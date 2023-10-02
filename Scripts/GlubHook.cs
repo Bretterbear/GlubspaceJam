@@ -53,7 +53,7 @@ public partial class GlubHook : Node2D
         var query = PhysicsRayQueryParameters2D.Create(this.GlobalPosition, targetPosition, _player.CollisionMask, new Godot.Collections.Array<Rid> { _player.GetRid() });
 		var result = spaceState.IntersectRay(query);
 
-		spaceState.IntersectRay
+		//spaceState.IntersectRay
 
 		if (result != null)
 		{

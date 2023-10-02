@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5f8939f-8f99-4fd0-9afe-d024f9c18416" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/GlubHook.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GlubHook.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,12 +69,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1696105209715</updated>
-      <workItem from="1696105226104" duration="1276000" />
+      <workItem from="1696105226104" duration="3840000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
