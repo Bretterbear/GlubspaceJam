@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckp8iyrshxj67"]
+[gd_scene load_steps=7 format=3 uid="uid://ckp8iyrshxj67"]
 
 [ext_resource type="Script" path="res://Scripts/CameraFollowControl.cs" id="1_ot20t"]
 [ext_resource type="Texture2D" uid="uid://h7pxo2e7kayg" path="res://Assets/Art/Env_Placeholder-LandMid.png" id="1_y8ngx"]
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="2_xrpua"]
+[ext_resource type="PackedScene" uid="uid://c3hk0kk0orak2" path="res://Scenes/Actors/BabyGlub.tscn" id="4_16i2j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hgtwn"]
 texture = ExtResource("1_y8ngx")
@@ -174,10 +175,11 @@ physics_layer_0/collision_layer = 256
 physics_layer_0/collision_mask = 0
 sources/2 = SubResource("TileSetAtlasSource_hgtwn")
 
-[node name="LevelTest" type="Node2D"]
+[node name="LevelTest" type="Node2D" groups=["glubs"]]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(992, -424)
+position = Vector2(1049, -760)
+zoom = Vector2(0.5, 0.5)
 script = ExtResource("1_ot20t")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -189,3 +191,9 @@ layer_0/tile_data = PackedInt32Array(-458772, 131074, 5, -393236, 131074, 6, -32
 
 [node name="Player" parent="." instance=ExtResource("2_xrpua")]
 position = Vector2(1008, -576)
+
+[node name="BabyGlub" parent="." instance=ExtResource("4_16i2j")]
+position = Vector2(1240, -664)
+
+[node name="BabyGlub2" parent="." instance=ExtResource("4_16i2j")]
+position = Vector2(1408, -688)

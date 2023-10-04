@@ -1,4 +1,5 @@
 using Godot;
+using System.Diagnostics;
 
 public partial class Player : CharacterBody2D
 {
@@ -77,6 +78,7 @@ public partial class Player : CharacterBody2D
             if (glubHook.FireHook(GetLocalMousePosition()))
             {
                 // Replace this w/ success SFX/VFX caLL
+                GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState",true);
             }
             else
             {
@@ -92,12 +94,15 @@ public partial class Player : CharacterBody2D
                     // Replace this w/ a call to an ienumerator that makes a smooth motion as opposed to a hop + add input disabling mid smoothmove
                     this.Position = glubHook.GetHookPoint().Snapped(_stepSize);
                     glubHook.DisengageHook();
+                    //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
                     // Need to add a ground check for autodisengage if you're on the ground, made somewhat stickier by "snapped" grid positioning
                 }
                 else if (_dPadInput.Y > 0)
                 {
                     glubHook.DisengageHook();
+                    //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
                 }
+
             }
         }
     }
@@ -150,5 +155,15 @@ public partial class Player : CharacterBody2D
     private void SnagDPadInput()
     {
         _dPadInput = Input.GetVector("move_left", "move_right", "move_up", "move_down" + "");
+    }
+
+
+    /// <summary>
+    /// Experimenting w/ Signals, listens to the child followTimer's timeout, then should reset
+    /// </summary>
+    private void _BoidUpdateReceiver()
+    {
+        //GD.Print("We ball!");
+        GetTree().CallGroup("glubs", "_OnUpdateGlubBoidTarget", GlobalPosition);
     }
 }

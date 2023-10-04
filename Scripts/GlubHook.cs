@@ -122,8 +122,9 @@ public partial class GlubHook : Node2D
 	{
 		_inActiveGrapple = false;			// Reset grapple state
 		_grappleHookPoint = Vector2.Zero;   // Reset grapple hook point
-		_grappleLine.ClearPoints();			// Resets the grapple line to be non-existant again
-	}
+		_grappleLine.ClearPoints();         // Resets the grapple line to be non-existant again
+        GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
+    }
 
 	/// <summary>
 	/// Getter for glubHook's understanding of whether we're in a grapple right now
