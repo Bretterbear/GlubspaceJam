@@ -1925,6 +1925,8 @@ script = ExtResource("2_vh3k4")
 position = Vector2(968, -472)
 
 [node name="Gluboid" type="CharacterBody2D" parent="PlayerManager"]
+position = Vector2(-462, -299)
+collision_mask = 256
 script = ExtResource("4_r65cn")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerManager/Gluboid"]
