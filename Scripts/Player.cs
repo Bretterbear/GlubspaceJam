@@ -119,16 +119,16 @@ public partial class Player : CharacterBody2D
         switch (glubHook.GetGrappleSide())
         {
             case Side.Left:
-                repOffset = new Vector2(-32f, -32f);
+                repOffset = Vector2.Left * _stepSize * 2;
                 break;
             case Side.Right:
-                repOffset = new Vector2(32f, -32f);
+                repOffset = Vector2.Left * _stepSize;
                 break;
             case Side.Top:
-                repOffset = new Vector2(32f, -32f);
+                repOffset = (Vector2.Up + Vector2.Left) * _stepSize;
                 break;
             case Side.Bottom:
-                repOffset = new Vector2(-32f, 32f);
+                repOffset = Vector2.Left * _stepSize;
                 break;
         }
 

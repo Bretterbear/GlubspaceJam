@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
-size = Vector2(64, 64)
+size = Vector2(62, 62)
 
 [sub_resource type="LabelSettings" id="LabelSettings_j3kas"]
 line_spacing = 0.0
@@ -17,11 +17,12 @@ collision_mask = 256
 script = ExtResource("1_v77jq")
 
 [node name="Sprite_Character" type="Sprite2D" parent="."]
-position = Vector2(-3.5, -8)
+position = Vector2(28, -40)
 scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(32, -31)
 shape = SubResource("RectangleShape2D_72xbv")
 
 [node name="Label" type="Label" parent="."]

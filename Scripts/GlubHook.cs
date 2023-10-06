@@ -22,6 +22,8 @@ public partial class GlubHook : Node2D
     private Vector2 _grappleHookPoint;  // Stores hook location - set to zero vector unless we're currently grappling
     private Side _grappleSide;	// Stores hook placement orientation left - top - right - bottp,
 
+    private Vector2 _offsetGrappleVis = new Vector2(32, -31);
+
     /// <summary>
 	/// Links Glubhook to the other nodes it needs to poke
 	/// </summary>
@@ -56,9 +58,31 @@ public partial class GlubHook : Node2D
             GD.Print(_grappleHookPoint);
 
             //SetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
-            TryResetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
-            _grappleLine.AddPoint(Vector2.Zero);
-            _grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+            //TryResetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
+            SuperSetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
+            _grappleLine.AddPoint(_offsetGrappleVis);
+
+            switch (_grappleSide)
+            {
+                case Side.Left:
+                    //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right*32);
+                    break;
+                case Side.Right:
+                    //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right * 32);
+                    break;
+                case Side.Top:
+                    //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32);
+                    break;
+                case Side.Bottom:
+                    //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32);
+                    break;
+            }
+
+            //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
             _inActiveGrapple = true;
             return true;
         }
@@ -68,6 +92,92 @@ public partial class GlubHook : Node2D
             return false;
         }
     }
+
+    private void SuperSetHook(TileMap grappledObject, Vector2 collisionPt, Vector2 targetPt)
+    {
+        var tilePosition = grappledObject.LocalToMap(ToLocal(collisionPt));	//stores the map local tile position
+        var tileCenter = ToGlobal(grappledObject.MapToLocal(tilePosition));     //stores the "center" of the tile (weird as hell)
+        var tileObj = grappledObject.GetCellTileData(0, tilePosition);          //stores the tile we're touching
+        Vector2[] ptsArr = tileObj.GetCollisionPolygonPoints(0, 0);             //stores the square poly points of the tile
+
+        bool sentX = false; //sentinel because I'm an idiot; 0 = x parity, 1 = y parity, 2 = double parity (shouldn't be poss)
+        bool sentY = false;
+
+        for (int i = 0; i < ptsArr.Length; i++)
+        {
+            GD.Print(i + 1 + " tilePt - " + (tileCenter - ptsArr[i]));
+            GD.Print(i + 1 + " collPt - " + collisionPt);
+            GD.Print("-----------------");
+
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).X), collisionPt.X, 1))
+            {
+                GD.Print("x match");
+                sentX = true;
+            }
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).Y), collisionPt.Y, 1))
+            {
+                GD.Print("y match");
+                sentY = true;
+            }
+        }
+
+        float newX = sentX ? collisionPt.X : tileCenter.X;
+        float newY = sentY ? collisionPt.Y : tileCenter.Y;
+
+        if (sentX)
+        {
+            if (targetPt.X > 0)
+            {
+                _grappleSide = Side.Left;
+            }
+            else
+            {
+                _grappleSide = Side.Right;
+            }
+        }
+        else if (sentY)
+        {
+            if (targetPt.Y < 0)
+            {
+                _grappleSide = Side.Bottom;
+            }
+            else
+            {
+                _grappleSide = Side.Top;
+            }
+        }
+        else
+        {
+            GD.Print("BROKEN ON THE GLUBHOOK SETHOOK; HIT A PERFECT CORNER");
+        }
+
+        Vector2 offsetarooski;
+        switch (_grappleSide)
+        {
+            case Side.Left:
+                // tileCenter is dead center inside of
+                break;
+            case Side.Right:
+                // tile center is to the right of
+                break;
+            case Side.Top:
+                // tileCenter is dead center inside of
+                break;
+            case Side.Bottom:
+                // tileCenter is centered in the tile underneath
+                break;
+        }
+
+
+
+        GD.Print(_grappleSide);
+        //_grappleHookPoint = new Vector2(newX, newY);
+        _grappleHookPoint = tileCenter;
+        GD.Print(" tilePt - " + (tileCenter));
+        GD.Print(" collPt - " + collisionPt);
+
+    }
+
 
     private void TryResetHook(TileMap grappledObject, Vector2 collisionPt, Vector2 targetPt)
     {
@@ -92,12 +202,12 @@ public partial class GlubHook : Node2D
             GD.Print(i + 1 + " collPt - " + collisionPt);
             GD.Print("-----------------");
 
-            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).X), collisionPt.X))
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).X), collisionPt.X, 1))
             {
                 GD.Print("x match");
                 sentX = true;
             }
-            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).Y), collisionPt.Y))
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).Y), collisionPt.Y, 1))
             {
                 GD.Print("y match");
                 sentY = true;
@@ -229,9 +339,9 @@ public partial class GlubHook : Node2D
         {
             for (int i = 0; i < 2; i++)
             {
-                _lineAimCurrent.AddPoint(Vector2.Zero);
-                _lineAimCurrent.AddPoint(Vector2.Zero); // Line is only duplicated b/c I'm using 4pts for the current aim line
-                _lineAimMax.AddPoint(Vector2.Zero);
+                _lineAimCurrent.AddPoint(_offsetGrappleVis);
+                _lineAimCurrent.AddPoint(_offsetGrappleVis); // Line is only duplicated b/c I'm using 4pts for the current aim line
+                _lineAimMax.AddPoint(_offsetGrappleVis);
             }
         }
         else                                            // Break down aim lines & disengage hook just in case
@@ -253,7 +363,7 @@ public partial class GlubHook : Node2D
         bool debugDisplay = true;   // TMP; whether to display aim info on screen, if you get rid of this, kill the label on the player prefab
 
         // Set max aimline end point to furthest distance along vurrent point direciton
-        _lineAimMax.SetPointPosition(1, targetPoint.Normalized() * _hookLength);
+        _lineAimMax.SetPointPosition(1, (targetPoint).Normalized() * _hookLength);
 
         // Current aim length cannot exceed maximum reach
         if (targetPoint.Length() > _hookLength)
