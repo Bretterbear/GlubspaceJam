@@ -4,30 +4,44 @@ using System;
 public partial class BabyGlub : CharacterBody2D
 {
     // ---------- Editor Variable Declarations ---------- //
-    [Export] private const float _glubHopTime = 0.75f;
-    [Export] private const float _glubHopVariability = .25f;
-    [Export] private const float _glubHopVelocity = -300f;
-    [Export] private const float _glubWobbleDistance = 5f;
-    [Export] private const float _glubWobbleSpeed = 10f;
-    [Export] private const float _glubSpeed = 300.0f;
+    [Export] private const float        _glubHopTime =   0.75f;     // Center of glub hop time distribution
+    [Export] private const float _glubHopVariability =   0.25f;     // Percentage variation in glub hop time
+    [Export] private const float    _glubHopVelocity = -300.0f;     // How powerfully the glub jumps
+    [Export] private const float _glubWobbleDistance =    5.0f;     // How far to jiggle in grapple mode
+    [Export] private const float    _glubWobbleSpeed =   10.0f;     // Speed of jiggling in grapple mode
+    [Export] private const float          _glubSpeed =  300.0f;     // Glub movement speed
 
-	// -------- Non-Editor Variable Declarations -------- //
-	private Vector2 _wiggleCore;								// stores self position for jiggling purposes in grapple line mode
-    private Vector2 _targetPosition;							// becomes non-zero after player gets tweaked by
-	private bool _inGrappleMode = false;						// Probably replace htis w/ a nice enum
-	private bool _needsToJump = false;							// Stores whether this glub feels the need to jump 
-	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-    private Timer _timer;
-    private float jiggleTime = 0;
+    // -------- Reference Variable Declarations  -------- //
+    private Timer _refGlubHopTimer;                                 // Reference storage for our pseudorandom hop trigger timer
 
+    // ---------- State Variable Declarations  ---------- //
+    private Vector2 _targetPosition;	                            // Points towards player / controller glub (when glub is in flock
+    private Vector2     _wiggleCore;                                // Stores self position for jiggling purposes in grapple line mode
+    private float        jiggleTime;                                // Stores time in jiggle mode for random jiggling behavior in grapple line
+    private bool       _needsToJump = false;                        // Stores whether this glub feels the need to jump 
+    private bool     _inGrappleMode = false;                        // Probably replace htis w/ a nice enum
+
+
+    // ------------- Constants Declarations ------------- //
+    public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+
+    /// <summary>
+    /// Baby glub setup
+    /// </summary>
     public override void _Ready()
     {
+        // Add this glub into the signals group for broadcast purposes
 		AddToGroup("glubs");
-		_timer = GetNode<Timer>("Timer_GlubHop");
-		_timer.Timeout += glubbyHopper;
-		_timer.Start();
+
+        // Set up glub hop timer inside prefab
+		_refGlubHopTimer = GetNode<Timer>("Timer_GlubHop");
+		_refGlubHopTimer.Timeout += glubHopReset;
+		_refGlubHopTimer.Start();
     }
 
+    /// <summary>
+    /// Core call loop
+    /// </summary>
     public override void _PhysicsProcess(double delta)
 	{
 		if (_inGrappleMode)
@@ -40,6 +54,9 @@ public partial class BabyGlub : CharacterBody2D
 		}
     }
 
+    /// <summary>
+    /// This will be a call to join the glub line to a target, but for now they just freeze and jiggle
+    /// </summary>
     private void JiggleCluster(double delta)
     {
         jiggleTime += (float) delta;
@@ -51,12 +68,16 @@ public partial class BabyGlub : CharacterBody2D
         GlobalPosition = _wiggleCore + new Vector2(xOffset, yOffset);
     }
 
+    /// <summary>
+    /// Normal glub motion mode, will need to add some boid logic here to make it functional and fun looking
+    /// </summary>
     private void ClusterNormally(double delta)
 	{
+        // Set our direction & grab a velocity variable to manipulate
         Vector2 direction = (_targetPosition - GlobalPosition).Normalized();
         Vector2 velocity = Velocity;
 
-        // Add the gravity.d
+        // Add gravity for non-grounded glubs & jumps if need be
         if (!IsOnFloor())
         {
             velocity.Y += gravity * (float)delta;
@@ -67,6 +88,7 @@ public partial class BabyGlub : CharacterBody2D
             _needsToJump = false;
         }
 
+        // Set directionality of the glub
         if (direction != Vector2.Zero)
         {
             velocity.X = direction.X * _glubSpeed;
@@ -76,41 +98,52 @@ public partial class BabyGlub : CharacterBody2D
             velocity.X = Mathf.MoveToward(Velocity.X, 0, _glubSpeed);
         }
 
+        // Toss those changes into the CharacterBody2D velocity and call the move function
         Velocity = velocity;
         MoveAndSlide();
     }
 
-    private void glubbyHopper()
+    /// <summary>
+    /// Signal linked function to reset glub hop timer + have this glub jump in the next physics frame
+    /// </summary>
+    private void glubHopReset()
     {
+        // Set the bool to trigger a jump in the next physics frame
         _needsToJump = true;
-        _timer.WaitTime = GD.RandRange(_glubHopTime * (1 - _glubHopVariability), _glubHopTime * (1 + _glubHopVariability));
-        _timer.Start();
+        
+        // Randomize and restart the hop timer
+        _refGlubHopTimer.WaitTime = GD.RandRange(_glubHopTime * (1 - _glubHopVariability), _glubHopTime * (1 + _glubHopVariability));
+        _refGlubHopTimer.Start();
     }
 
     /// <summary>
-    /// 
+    /// Signal linked function to reset player position reference for the glub (for homing purposes)
     /// </summary>
     private void _OnUpdateGlubBoidTarget(Vector2 playerPosition)
 	{
 		_targetPosition = playerPosition;
 	}
 
+    /// <summary>
+    /// Signal linked function to toggle glub grapple state
+    /// </summary>
 	private void _OnUpdateGlubGrappleState(bool playerIsGrappling)
 	{
 		_inGrappleMode = playerIsGrappling;
 
 		if (_inGrappleMode)
 		{
-			//GD.Print("We grapple glubs meow");
+            // Set state variables for non-coordinated jiggling behavior
             _wiggleCore = GlobalPosition;
             jiggleTime = GD.RandRange(0, 10);
 
-			_timer.Stop();
+            // Stop the hop timer (since they can't hop during a jiggle
+			_refGlubHopTimer.Stop();
 		}
 		else
 		{
-			//GD.Print("We ain't no grapple glubs");
-			_timer.Start();
+            // Restart the hop timer now that they're done jiggling
+			_refGlubHopTimer.Start();
 		}
 	}
 }
