@@ -92,8 +92,7 @@ public partial class Player : CharacterBody2D
                 if (_dPadInput.Y < 0)
                 {
                     // Replace this w/ a call to an ienumerator that makes a smooth motion as opposed to a hop + add input disabling mid smoothmove
-                    this.Position = glubHook.GetHookPoint().Snapped(_stepSize);
-                    glubHook.DisengageHook();
+                    JumpToGrappleDestation();
                     //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
                     // Need to add a ground check for autodisengage if you're on the ground, made somewhat stickier by "snapped" grid positioning
                 }
@@ -105,6 +104,42 @@ public partial class Player : CharacterBody2D
 
             }
         }
+    }
+
+    private void JumpToGrappleDestation() 
+    {
+        this.Position = glubHook.GetHookPoint().Snapped(_stepSize);
+        this.Position = this.Position.Snapped(_stepSize);
+        glubHook.DisengageHook();
+
+        Vector2 repOffset = Vector2.Zero;
+
+        /*
+        switch (glubHook.GetGrappleSide())
+        {
+            case Side.Left:
+                repOffset = new Vector2(32f, 32f);
+                break;
+            case Side.Right:
+                repOffset = new Vector2(40f, -32f);
+                break;
+            case Side.Top:
+                repOffset = new Vector2(32f, 32f);
+                break;
+            case Side.Bottom:
+                repOffset = new Vector2(32f, 32f);
+                break;
+        }
+        */
+
+        //this.Position += repOffset;
+
+        //Insert logic here to mcglub the glubadoo
+        //and grab that godotobject from the glubhook to get destination
+        //then work backwards to validate the square / point you ought to be glubbing in
+        //Vector2I.coord will be helpful here
+        //GodotObject hitTile = glubHook._grappledObject;
+        //hitTile
     }
 
     /// <summary>

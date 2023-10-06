@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_deleq"]
-size = Vector2(80.75, 61.125)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
+size = Vector2(64, 64)
 
 [sub_resource type="LabelSettings" id="LabelSettings_j3kas"]
 line_spacing = 0.0
@@ -17,14 +17,12 @@ collision_mask = 256
 script = ExtResource("1_v77jq")
 
 [node name="Sprite_Character" type="Sprite2D" parent="."]
-position = Vector2(-9, -15)
-scale = Vector2(0.24, 0.24)
+position = Vector2(-3.5, -8)
+scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
-offset = Vector2(186, 159)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(40.625, 30.4375)
-shape = SubResource("RectangleShape2D_deleq")
+shape = SubResource("RectangleShape2D_72xbv")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 51.0
@@ -34,12 +32,11 @@ offset_bottom = 12.0
 label_settings = SubResource("LabelSettings_j3kas")
 
 [node name="GlubHook" type="Node2D" parent="."]
-position = Vector2(41, 30)
 script = ExtResource("3_jp5wg")
 
 [node name="Targetter_01" type="RayCast2D" parent="GlubHook"]
 target_position = Vector2(500, 0)
-collision_mask = 256
+collision_mask = 512
 
 [node name="GrappleLine_Tmp" type="Line2D" parent="GlubHook"]
 width = 6.0
