@@ -74,20 +74,32 @@ public partial class GlubHook : Node2D
         var tilePosition = grappledObject.LocalToMap(ToLocal(collisionPt));	//stores the map local tile position
         var tileCenter = ToGlobal(grappledObject.MapToLocal(tilePosition));     //stores the "center" of the tile (weird as hell)
 
+        GD.Print(" tilePt - " + (tileCenter));
+        GD.Print(" collPt - " + collisionPt);
+
         var tileObj = grappledObject.GetCellTileData(0, tilePosition);          //stores the tile we're touching
+
+        tileObj.Modulate = new Color(1, 0, 0, 1);
+
         Vector2[] ptsArr = tileObj.GetCollisionPolygonPoints(0, 0);             //stores the square poly points of the tile
 
         bool sentX = false; //sentinel because I'm an idiot; 0 = x parity, 1 = y parity, 2 = double parity (shouldn't be poss)
         bool sentY = false;
 
-        for (int i = 0; i < ptsArr.Length - 1; i++)
+        for (int i = 0; i < ptsArr.Length; i++)
         {
-            if ((tileCenter - ptsArr[i]).X == collisionPt.X)
+            GD.Print(i + 1 + " tilePt - " + (tileCenter - ptsArr[i]));
+            GD.Print(i + 1 + " collPt - " + collisionPt);
+            GD.Print("-----------------");
+
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).X), collisionPt.X))
             {
+                GD.Print("x match");
                 sentX = true;
             }
-            if ((tileCenter - ptsArr[i]).Y == collisionPt.Y)
+            if (Mathf.IsEqualApprox(((tileCenter - ptsArr[i]).Y), collisionPt.Y))
             {
+                GD.Print("y match");
                 sentY = true;
             }
         }
@@ -103,7 +115,7 @@ public partial class GlubHook : Node2D
             }
             else
             {
-                _grappleSide = Side.Right;
+                _grappleSide = Side.Right;   
             }
         }
         else if (sentY)
@@ -122,17 +134,35 @@ public partial class GlubHook : Node2D
             GD.Print("BROKEN ON THE GLUBHOOK SETHOOK; HIT A PERFECT CORNER");
         }
 
+        //tileObj
+
+        switch (_grappleSide)
+        {
+            case Side.Left:
+                break; 
+            case Side.Right:
+                break;
+            case Side.Top:
+                break;
+            case Side.Bottom:
+                break;
+        }
+
+
+
         GD.Print(_grappleSide);
         _grappleHookPoint = new Vector2(newX, newY);
-
+        //_grappleHookPoint = tileCenter;
+        GD.Print(" tilePt - " + (tileCenter));
+        GD.Print(" collPt - " + collisionPt);
         //_grappleHookPoint = new Vector2(tileCenter.X, tileCenter.Y);
     }
 
-
+    /*
     // Iteration 1, probably need to do nearest neighbor validation
     private void SetHook(TileMap grappledObject, Vector2 collisionPoint, Vector2 pointVector)
     {
-        var tilePosition = grappledObject.LocalToMap(ToLocal((collisionPoint * (float ) 1.0001)));	//stores the map local tile position
+        var tilePosition = grappledObject.LocalToMap(ToLocal((collisionPoint));	//stores the map local tile position
         var tileCenter = ToGlobal(grappledObject.MapToLocal(tilePosition));		//stores the "center" of the tile (weird as hell)
 
         var tileObj = grappledObject.GetCellTileData(0, tilePosition);          //stores the tile we're touching
@@ -186,7 +216,7 @@ public partial class GlubHook : Node2D
         GD.Print(_grappleSide);
         _grappleHookPoint = new Vector2(newX, newY);
         //_grappleHookPoint = tileCenter;
-    }
+    }*/
 
     /// <summary>
     /// Toggles aim mode for the glub hook + aim visualizer

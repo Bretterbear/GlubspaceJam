@@ -65,6 +65,7 @@ public partial class Player : CharacterBody2D
         {
             glubHook.VisualizeAim(GetLocalMousePosition());
         }
+        MoveAndSlide();
     }
 
     /// <summary>
@@ -108,31 +109,36 @@ public partial class Player : CharacterBody2D
 
     private void JumpToGrappleDestation() 
     {
-        this.Position = glubHook.GetHookPoint().Snapped(_stepSize);
-        this.Position = this.Position.Snapped(_stepSize);
-        glubHook.DisengageHook();
+        //1this.Position = glubHook.GetHookPoint();//.Snapped(_stepSize);
+        //this.Position = this.Position.Snapped(_stepSize);
+        //glubHook.DisengageHook();
 
         Vector2 repOffset = Vector2.Zero;
 
-        /*
+        ///*
         switch (glubHook.GetGrappleSide())
         {
             case Side.Left:
-                repOffset = new Vector2(32f, 32f);
+                repOffset = new Vector2(-32f, -32f);
                 break;
             case Side.Right:
-                repOffset = new Vector2(40f, -32f);
+                repOffset = new Vector2(32f, -32f);
                 break;
             case Side.Top:
-                repOffset = new Vector2(32f, 32f);
+                repOffset = new Vector2(32f, -32f);
                 break;
             case Side.Bottom:
-                repOffset = new Vector2(32f, 32f);
+                repOffset = new Vector2(-32f, 32f);
                 break;
         }
-        */
 
         //this.Position += repOffset;
+
+        this.Position = glubHook.GetHookPoint() + repOffset;
+
+        this.Position = this.Position.Snapped(_stepSize);
+        glubHook.DisengageHook();
+        //*/
 
         //Insert logic here to mcglub the glubadoo
         //and grab that godotobject from the glubhook to get destination
