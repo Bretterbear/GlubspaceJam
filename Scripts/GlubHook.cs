@@ -60,25 +60,25 @@ public partial class GlubHook : Node2D
             //SetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
             //TryResetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
             SuperSetHook(_grappledObject, _grappleHookPoint, targetPoint.Normalized());
-            _grappleLine.AddPoint(_offsetGrappleVis);
+            _grappleLine.AddPoint(Vector2.Zero);
 
             switch (_grappleSide)
             {
                 case Side.Left:
                     //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
-                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right*32);
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right*32- _offsetGrappleVis);
                     break;
                 case Side.Right:
                     //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
-                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right * 32);
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) - Vector2.Right * 32 - _offsetGrappleVis);
                     break;
                 case Side.Top:
                     //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
-                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32);
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32 - _offsetGrappleVis);
                     break;
                 case Side.Bottom:
-                    //_grappleLine.AddPoint(ToLocal(_grappleHookPoint));
-                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32);
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint));
+                    _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + Vector2.Up * 32 - _offsetGrappleVis);
                     break;
             }
 
@@ -339,9 +339,9 @@ public partial class GlubHook : Node2D
         {
             for (int i = 0; i < 2; i++)
             {
-                _lineAimCurrent.AddPoint(_offsetGrappleVis);
-                _lineAimCurrent.AddPoint(_offsetGrappleVis); // Line is only duplicated b/c I'm using 4pts for the current aim line
-                _lineAimMax.AddPoint(_offsetGrappleVis);
+                _lineAimCurrent.AddPoint(Vector2.Zero);
+                _lineAimCurrent.AddPoint(Vector2.Zero); // Line is only duplicated b/c I'm using 4pts for the current aim line
+                _lineAimMax.AddPoint(Vector2.Zero);
             }
         }
         else                                            // Break down aim lines & disengage hook just in case

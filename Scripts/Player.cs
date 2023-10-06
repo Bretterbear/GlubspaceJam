@@ -63,7 +63,7 @@ public partial class Player : CharacterBody2D
 
         if (_inAimMode)
         {
-            glubHook.VisualizeAim(GetLocalMousePosition());
+            glubHook.VisualizeAim(GetLocalMousePosition() - new Vector2(32,-31));
         }
         MoveAndSlide();
     }
@@ -76,7 +76,7 @@ public partial class Player : CharacterBody2D
     {
         if (Input.IsActionJustPressed("action_fire"))
         {
-            if (glubHook.FireHook(GetLocalMousePosition()))
+            if (glubHook.FireHook(GetLocalMousePosition() - new Vector2(32, -31)))
             {
                 // Replace this w/ success SFX/VFX caLL
                 GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState",true);
