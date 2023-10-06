@@ -1,27 +1,73 @@
-[gd_scene load_steps=5 format=3 uid="uid://d1pe0g10vuddg"]
+[gd_scene load_steps=6 format=3 uid="uid://d1pe0g10vuddg"]
 
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_deleq"]
-size = Vector2(334, 248)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
+size = Vector2(62, 62)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j3kas"]
+line_spacing = 0.0
+font_size = 12
+font_color = Color(0.85098, 0.803922, 1, 1)
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(-23, -25)
 collision_mask = 256
 script = ExtResource("1_v77jq")
 
 [node name="Sprite_Character" type="Sprite2D" parent="."]
+position = Vector2(28, -40)
+scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(18, 33)
-shape = SubResource("RectangleShape2D_deleq")
+position = Vector2(32, -31)
+shape = SubResource("RectangleShape2D_72xbv")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 51.0
+offset_top = -40.0
+offset_right = 130.0
+offset_bottom = 12.0
+label_settings = SubResource("LabelSettings_j3kas")
 
 [node name="GlubHook" type="Node2D" parent="."]
-position = Vector2(23, 25)
 script = ExtResource("3_jp5wg")
 
 [node name="Targetter_01" type="RayCast2D" parent="GlubHook"]
+position = Vector2(32, -31)
 target_position = Vector2(500, 0)
+collision_mask = 512
+
+[node name="GrappleLine_Tmp" type="Line2D" parent="GlubHook"]
+position = Vector2(32, -31)
+width = 6.0
+default_color = Color(0.396078, 0.356863, 1, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+sharp_limit = 0.0
+
+[node name="Line2D_AimCurr" type="Line2D" parent="GlubHook"]
+position = Vector2(32, -31)
+width = 3.0
+default_color = Color(0.579022, 0.389484, 0.788425, 0.811765)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+sharp_limit = 0.0
+
+[node name="Line2D_GhostAim" type="Line2D" parent="GlubHook"]
+position = Vector2(32, -31)
+width = 4.0
+default_color = Color(0.32549, 0.415686, 0.470588, 0.501961)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+sharp_limit = 0.0
+
+[node name="FollowTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="FollowTimer" to="." method="_BoidUpdateReceiver"]

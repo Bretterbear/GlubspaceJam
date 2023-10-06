@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3hk0kk0orak2"]
+
+[ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_nosbg"]
+[ext_resource type="Script" path="res://Scripts/BabyGlub.cs" id="1_uwfa6"]
+[ext_resource type="Script" path="res://Scripts/BabyGlubSprite.cs" id="2_ehnwd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1y31"]
+size = Vector2(150.088, 128.815)
+
+[node name="BabyGlub" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 259
+script = ExtResource("1_uwfa6")
+
+[node name="Sprite_Character" type="Sprite2D" parent="."]
+modulate = Color(0.576471, 0.721569, 0.47451, 1)
+position = Vector2(-8, -16)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("1_nosbg")
+offset = Vector2(186, 159)
+script = ExtResource("2_ehnwd")
+_overrideColor = Color(0, 0, 0, 1)
+_colorBank = PackedColorArray(1, 0, 0.203922, 1, 0.886275, 0.329412, 0, 1, 0.835294, 0.584314, 0, 1, 0, 0.741176, 0, 1, 0, 1, 1, 1, 0, 0.345098, 1, 1, 0.478431, 0.435294, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(40, 32)
+scale = Vector2(0.510422, 0.496835)
+shape = SubResource("RectangleShape2D_d1y31")
+
+[node name="Timer_GlubHop" type="Timer" parent="."]
+one_shot = true
