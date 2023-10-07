@@ -17,19 +17,20 @@ public partial class PlayerManager : Node2D
 	{
 		_player = GetChild<Player>(0, false);
 		_gluboid = GetChild<Gluboid>(1, false);
+		GD.Randomize(); //Move to a more global place
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		Debug.WriteLine("Player Location: (" + GetPlayerPosition().X + "," + GetPlayerPosition().Y + ")");
-		Debug.WriteLine("Gluboid Location: (" + GetGlubiodPosition(_gluboid).X + "," + GetGlubiodPosition(_gluboid).Y + ")");
+		//Debug.WriteLine("Player Location: (" + GetPlayerPosition().X + "," + GetPlayerPosition().Y + ")");
+		//Debug.WriteLine("Gluboid Location: (" + GetGlubiodPosition(_gluboid).X + "," + GetGlubiodPosition(_gluboid).Y + ")");
 		
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		_gluboid.SetPlayerPosition(_player.GlobalPosition);
+		_gluboid.SetPlayerPosition(GetPlayerPosition());
 	}
 
 	private Vector2 GetPlayerPosition()
