@@ -5,14 +5,14 @@ using System.Globalization;
 
 public partial class PlayerManager : Node2D
 {
-	public float MaxDistanceFromPlayer = 200f;
-	public float MinHopDistance = 40f;
-	public float MaxHopDistance = 300f;
 	private Player _player;
 	private Gluboid _gluboid;
 
 	private PlayerState _playerState;
-	// Called when the node enters the scene tree for the first time.
+	///<summary>
+	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
+	/// Also does first time randomizer setup.
+	/// </summary>
 	public override void _Ready()
 	{
 		_player = GetChild<Player>(0, false);
@@ -20,14 +20,10 @@ public partial class PlayerManager : Node2D
 		GD.Randomize(); //Move to a more global place
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		//Debug.WriteLine("Player Location: (" + GetPlayerPosition().X + "," + GetPlayerPosition().Y + ")");
-		//Debug.WriteLine("Gluboid Location: (" + GetGlubiodPosition(_gluboid).X + "," + GetGlubiodPosition(_gluboid).Y + ")");
-		
-	}
-
+	/// <summary>
+	/// Currently only passing Player position to the Gluboid, in future will add gluboid array management functions into here.
+	/// </summary>
+	/// <param name="delta"></param>
 	public override void _PhysicsProcess(double delta)
 	{
 		_gluboid.SetPlayerPosition(GetPlayerPosition());
@@ -36,10 +32,5 @@ public partial class PlayerManager : Node2D
 	private Vector2 GetPlayerPosition()
 	{
 		return _player.GlobalPosition;
-	}
-
-	private Vector2 GetGlubiodPosition(Gluboid gluboid)
-	{
-		return gluboid.GlobalPosition;
 	}
 }
