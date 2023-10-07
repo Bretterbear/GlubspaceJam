@@ -137,7 +137,22 @@ public partial class Player : CharacterBody2D
     {
         // Local storage to find offset from grapple store position to correct display position
         Vector2 repOffset = Vector2.Zero;
-
+        switch (glubHook.GetGrappleSide())
+        {
+            case Side.Left:
+                repOffset = (Vector2.Left) * _stepSize;
+                break;
+            case Side.Top:
+                repOffset = (Vector2.Up) * _stepSize;
+                break;
+            case Side.Right:
+                repOffset = (Vector2.Right) * _stepSize;
+                break;
+            case Side.Bottom:
+                repOffset = (Vector2.Down) * _stepSize;
+                break;
+        }
+        /*
         // Use glubHook's orientation state to set our offset appropriately
         switch (glubHook.GetGrappleSide())
         {
@@ -154,6 +169,7 @@ public partial class Player : CharacterBody2D
                 repOffset =              (Vector2.Left) * _stepSize;
                 break;
         }
+        */
 
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         this.Position = glubHook.GetHookPoint() + repOffset;

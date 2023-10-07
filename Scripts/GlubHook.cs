@@ -16,7 +16,7 @@ public partial class GlubHook : Node2D
     private RayCast2D        _rayCast;          // Reference storage for our scanning raycast
 
     // ---------- State Variable Declarations  ---------- //
-    public TileMap    _grappledObject;	        // Stores currently hooked grapple Target
+    //public TileMap    _grappledObject;	        // Stores currently hooked grapple Target
     private Vector2 _grappleHookPoint;          // Stores hook location - set to zero vector unless we're currently grappling
     private Side         _grappleSide;          // Stores hook placement orientation left - top - right - bottp,
     private bool     _inActiveGrapple;          // Stores hook state - hooked to a target or not
@@ -47,7 +47,117 @@ public partial class GlubHook : Node2D
     {
         // Extra call to make sure the hook is neutral as we start this process
         DisengageHook();
-        
+
+        //targetPoint = GetGlobalMousePosition()
+
+        // Make our initial raycast, forcing an update after target setting. Might change this for efficiency
+        _rayCast.TargetPosition = targetPoint.Normalized() * _hookLength;
+        _rayCast.ForceRaycastUpdate();
+
+        // On collision, run checks & set the hook on validity
+        if (_rayCast.IsColliding() && (_rayCast.GetCollider().GetType() == typeof(TileMap)))
+        {
+            // Grab inputs for the SetHook function
+            TileMap _grappledObject   = (TileMap)_rayCast.GetCollider();    // This grabs a reference to the entire TileMap
+            _grappleHookPoint = _rayCast.GetCollisionPoint();       // Use hookpoint as tmp storage for our collision point
+
+            Vector2 rayCastCollisionPoint = _rayCast.GetCollisionPoint();
+            Vector2 rayCastNormalVector = _rayCast.GetCollisionNormal();
+
+            ResetHook(_grappledObject, rayCastCollisionPoint, rayCastNormalVector);
+
+            /*
+            Vector2 tileInteriorPoint = _grappleHookPoint - _rayCast.GetCollisionNormal() * 15f;
+
+            var tilePosition = _grappledObject.LocalToMap(tileInteriorPoint);
+            GD.Print(tilePosition);
+
+            var tileObj = _grappledObject.GetCellTileData(0, tilePosition);
+            tileObj.Modulate = new Color(0, 0, 1, 1);
+
+            Vector2 tileCenter = (_grappledObject.MapToLocal(tilePosition));
+            GD.Print("tile core "  +  tileCenter);
+
+            GD.Print("normal " + _rayCast.GetCollisionNormal());
+
+            _inActiveGrapple = true;
+
+            switch (_rayCast.GetCollisionNormal())
+            {
+                case (-1, 0):
+                    _grappleSide = Side.Left;
+                    break;
+                case (0, -1):
+                    _grappleSide = Side.Top;
+                    break;
+                case (1,0):
+                    _grappleSide = Side.Right;
+                    break;
+                case (0, 1):
+                    _grappleSide = Side.Bottom;
+                    break;
+            }
+
+            _grappleLine.AddPoint(Vector2.Zero);
+            _grappleLine.AddPoint(ToLocal(tileCenter) + new Vector2(-32, 32) + _rayCast.GetCollisionNormal() * new Vector2(32f, 32f));
+            //*/
+            return true;
+        }
+
+        else
+        {
+            // Add some sort of vfx/sfx feedback for a failed shot
+            return false;
+        }
+    }
+
+    public void ResetHook(TileMap tileMap, Vector2 collisionPoint, Vector2 collisionNormal)
+    {
+        // First we get an arbitrary point partway inside our object
+        // Then we convert into the map coordinate system for calls
+        Vector2 tileInterior = collisionPoint - collisionNormal * 15f;
+        Vector2I tileMapCoordinates = tileMap.LocalToMap(tileInterior);
+
+        // Use tilemap functions to get a bead on the center of the tile
+        // Note this will always be in the top right corner of the visual tile
+        Vector2 tileLocalCoordinates = tileMap.MapToLocal(tileMapCoordinates);
+
+        // Set our hook orientation based on our collision normal vector
+        switch (collisionNormal)
+        {
+            case (-1, 0):
+                _grappleSide = Side.Left;
+                break;
+            case (0, -1):
+                _grappleSide = Side.Top;
+                break;
+            case (1, 0):
+                _grappleSide = Side.Right;
+                break;
+            case (0, 1):
+                _grappleSide = Side.Bottom;
+                break;
+        }
+
+        // Set our true hook vector to the center of the tile for tracking
+        _grappleHookPoint = tileLocalCoordinates + new Vector2(-32, 32);
+
+        // Add our grapple display lines
+        _grappleLine.AddPoint(Vector2.Zero);
+        _grappleLine.AddPoint(ToLocal(_grappleHookPoint) + collisionNormal * new Vector2(32f, 32f));
+
+        // Finally set our grapple status to active
+        _inActiveGrapple = true;
+    }
+
+    /*
+    public bool FireHook(Vector2 targetPoint)
+    {
+        // Extra call to make sure the hook is neutral as we start this process
+        DisengageHook();
+
+        //targetPoint = GetGlobalMousePosition()
+
         // Make our initial raycast, forcing an update after target setting. Might change this for efficiency
         _rayCast.TargetPosition = targetPoint.Normalized() * _hookLength;
         _rayCast.ForceRaycastUpdate();
@@ -57,6 +167,7 @@ public partial class GlubHook : Node2D
         {
             // Grab inputs for the SetHook function
             _grappledObject   = (TileMap)_rayCast.GetCollider();    // This grabs a reference to the entire TileMap
+            //_grappledObject.GetTile
             _grappleHookPoint = _rayCast.GetCollisionPoint();       // Use hookpoint as tmp storage for our collision point
 
             // Sets hook & WILL validate the process was successful.
@@ -68,7 +179,9 @@ public partial class GlubHook : Node2D
             return false;
         }
     }
+    */
 
+    ///////////////////////////////////////////////////////////////////GOOBYDOOBIN
     /// <summary>
     /// Sets the glub hook position to the center of hook adjacent tile
     /// Also sets the grapplSide variable, giving the hook information on orientation of attachment
