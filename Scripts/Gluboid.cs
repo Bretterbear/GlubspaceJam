@@ -10,72 +10,96 @@ public partial class Gluboid : CharacterBody2D
 	private float _maxHopPower = 75f;
 	private float _hopPower;
 	private float _hopHeight = 500f;
+	private float _snapDistance = 2000f;
 	private GluboidState _state;
-	private float _distanceFromPlayer;
+	private float _distanceFromPlayerX;
+
+	public bool _isPlayer = false;
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
+	public void setup(Vector2 playerPosition)
+	{
+		GlobalPosition = playerPosition;
+	}
 	public override void _Ready()
 	{
+		AddToGroup("Gluboids");
 		_state = GluboidState.Idle;
 		_playerManager = GetParent<PlayerManager>();
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		var velocity = Velocity;
-		SetDistanceFromPlayer(_playerPosition.X);
-		
-		//This branch handles the Four states for a normal gluboid while not being affected by player inputs
+		//This branch handles the Five states for a normal gluboid while not being affected by player inputs
 		//Idle indicates the gluboid is on the ground and within the maximum distance allowed from the player.
 		//Falling indicates the Gluboid is above the ground and not moving in the horizontal direction.
 		//Hopping indicates the Gluboid is moving towards the player through the air.
 		//PreHopping accounts for getting the gluboid out into the air to start a Hop
-		if (!IsOnFloor()) //Falling, PreHopping, or Hopping
+		//IsPlayer represents that the Gluboid is the current visual representation of the Player.
+		Debug.WriteLine(_state);
+		if (_state != GluboidState.IsPlayer)
 		{
-			velocity.Y += _gravity * (float)delta;
-			if (_state == GluboidState.PreHopping)
+			Debug.WriteLine(_distanceFromPlayerX);
+			
+			if (Math.Abs(_distanceFromPlayerX) > _snapDistance)
 			{
-				_state = GluboidState.Hopping;
+				GlobalPosition = _playerPosition;
 			}
 			
-			if (_state == GluboidState.Hopping)
+			var velocity = Velocity;
+
+
+			if (!IsOnFloor()) //Falling, PreHopping, or Hopping
+			{
+				velocity.Y += _gravity * (float)delta;
+				if (_state == GluboidState.PreHopping)
+				{
+					_state = GluboidState.Hopping;
+				}
+
+				if (_state == GluboidState.Hopping)
+				{
+					velocity.X = _hopPower;
+				}
+				else
+				{
+					_state = GluboidState.Falling;
+				}
+
+				Velocity = velocity;
+			}
+			else if (_state == GluboidState.PreHopping) //PreHopping and still on the ground
 			{
 				velocity.X = _hopPower;
-			}
-			else
-			{
-				_state = GluboidState.Falling;
-			}
-			
-			Velocity = velocity;
-		}
-		else if (_state == GluboidState.PreHopping) //PreHopping and still on the ground
-		{
-			velocity.X = _hopPower;
-			Velocity = velocity;
-		}
-		else //Hopping and on the ground or Idle
-		{
-			//End of a Hop
-			if (_state == GluboidState.Hopping) 
-			{
-				velocity.X = 0;
-				_state = GluboidState.Idle;
 				Velocity = velocity;
-				Debug.WriteLine("Reset to Idle");
-				Debug.WriteLine(_state);
+			}
+			else //Hopping and on the ground or Idle
+			{
+				//End of a Hop
+				if (_state == GluboidState.Hopping)
+				{
+					velocity.X = 0;
+					_state = GluboidState.Idle;
+					Velocity = velocity;
+					Debug.WriteLine("Reset to Idle");
+					Debug.WriteLine(_state);
+				}
+
+				//Checking to see if Gluboid needs to Hop
+				var playerDistance = Math.Abs(_distanceFromPlayerX);
+				if (playerDistance > _maxDistanceFromPlayer && _state != GluboidState.PreHopping)
+				{
+					Debug.WriteLine("Start Hop");
+					Hop();
+				}
 			}
 
-			//Checking to see if Gluboid needs to Hop
-			var playerDistance = Math.Abs(_distanceFromPlayer);
-			if (playerDistance > _maxDistanceFromPlayer && _state != GluboidState.PreHopping)
-			{
-				Debug.WriteLine("Start Hop");
-				Hop();
-			}
+			MoveAndSlide();
 		}
-		
-		MoveAndSlide();
+		else
+		{
+			GlobalPosition = _playerPosition;
+		}
 	}
 
 	/// <summary>
@@ -84,16 +108,10 @@ public partial class Gluboid : CharacterBody2D
 	/// <param name="playerPosition"></param>
 	public void SetPlayerPosition(Vector2 playerPosition)
 	{
+		Debug.WriteLine("Distance invoked");
 		_playerPosition = playerPosition;
-	}
-	
-	/// <summary>
-	///Calculates the Distance between the global position fo the playe rand this gluboid.
-	/// </summary>
-	/// <param name="playerX"></param>
-	public void SetDistanceFromPlayer(float playerX)
-	{
-		_distanceFromPlayer = GlobalPosition.X - playerX;
+		_distanceFromPlayerX = GlobalPosition.X - _playerPosition.X;
+		
 	}
 
 	/// <summary>
@@ -105,10 +123,10 @@ public partial class Gluboid : CharacterBody2D
 		velocity.Y = -1 * _hopHeight;
 		
 		//Need to convert distance here to absolute value for calculation
-		var playerDistance = Math.Abs(_distanceFromPlayer);
+		var playerDistance = Math.Abs(_distanceFromPlayerX);
 		_hopPower = (float)GD.RandRange(playerDistance*(3f/4f), playerDistance+_maxHopPower);
 		
-		if (_distanceFromPlayer > 0) //Hop to the Right
+		if (_distanceFromPlayerX > 0) //Hop to the Right
 		{
 			_hopPower = -1 * _hopPower;
 		}
@@ -120,5 +138,17 @@ public partial class Gluboid : CharacterBody2D
 		_state = GluboidState.PreHopping;
 		velocity.X = _hopPower;
 		Velocity = velocity;
+	}
+
+	public void MakePlayer()
+	{
+		_state = GluboidState.IsPlayer;
+		_isPlayer = true;
+	}
+
+	public void MakeNotPlayer()
+	{
+		_state = GluboidState.Idle;
+		_isPlayer = false;
 	}
 }
