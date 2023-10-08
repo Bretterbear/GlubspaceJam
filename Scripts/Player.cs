@@ -14,9 +14,9 @@ public partial class Player : CharacterBody2D
     private bool    _inAimMode;                                 // BH - Likely replace this w/ a playerstate enum later
 
     // ------------- Constants Declarations ------------- //
-    private Vector2 _offsetGrappleVis = new Vector2(32, -31);   // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
-    private Vector2         _stepSize =  new Vector2(64, 64);   // Stores our grid step size
-    private float gravity             = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
+    private Vector2         _stepSize = new Vector2(64, 64);    // Stores our grid step size
+    private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     /// <summary>
     /// As of now all we're doing is setting our glubHook reference here
@@ -124,7 +124,6 @@ public partial class Player : CharacterBody2D
                     glubHook.DisengageHook();
                     //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
                 }
-
             }
         }
     }
@@ -137,21 +136,19 @@ public partial class Player : CharacterBody2D
     {
         // Local storage to find offset from grapple store position to correct display position
         Vector2 repOffset = Vector2.Zero;
-
-        // Use glubHook's orientation state to set our offset appropriately
         switch (glubHook.GetGrappleSide())
         {
             case Side.Left:
-                repOffset =          (Vector2.Left) * 2 * _stepSize;
-                break;
-            case Side.Right:
-                repOffset =              (Vector2.Left) * _stepSize;
+                repOffset = (Vector2.Left) * _stepSize;
                 break;
             case Side.Top:
-                repOffset = (Vector2.Up + Vector2.Left) * _stepSize;
+                repOffset = (Vector2.Up) * _stepSize;
+                break;
+            case Side.Right:
+                repOffset = (Vector2.Right) * _stepSize;
                 break;
             case Side.Bottom:
-                repOffset =              (Vector2.Left) * _stepSize;
+                repOffset = (Vector2.Down) * _stepSize;
                 break;
         }
 
@@ -213,7 +210,6 @@ public partial class Player : CharacterBody2D
     {
         _dPadInput = Input.GetVector("move_left", "move_right", "move_up", "move_down" + "");
     }
-
 
     /// <summary>
     /// Experimenting w/ Signals, listens to the child followTimer's timeout, then should reset
