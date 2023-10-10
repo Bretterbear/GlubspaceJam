@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://Scripts/CameraFollowControl.cs" id="1_ot20t"]
 [ext_resource type="TileSet" uid="uid://bf8743d3femaq" path="res://Assets/TileStorage/Functional.tres" id="2_lmrv5"]
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="2_xrpua"]
-[ext_resource type="PackedScene" uid="uid://b6fvc4t7hnkkr" path="res://player_manager.tscn" id="4_i2gqd"]
-[ext_resource type="PackedScene" uid="uid://bvjd2gf2aalqv" path="res://gluboid.tscn" id="6_7703a"]
+[ext_resource type="PackedScene" uid="uid://b6fvc4t7hnkkr" path="res://Scenes/Actors/player_manager.tscn" id="4_i2gqd"]
+[ext_resource type="PackedScene" uid="uid://bvjd2gf2aalqv" path="res://Scenes/Actors/gluboid.tscn" id="6_7703a"]
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="7_wulub"]
 
 [node name="LevelTest" type="Node2D" groups=["glubs"]]
