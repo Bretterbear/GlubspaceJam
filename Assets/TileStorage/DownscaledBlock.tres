@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1bwej8omcf4b"]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dhr4snum2e3fw"]
 
-[ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="1_jf2sw"]
-[ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_t62ef"]
-[ext_resource type="Texture2D" uid="uid://bfhrmdbsjb6e0" path="res://Assets/Art/Env_Placeholder_TileAssetDownScale.png" id="2_ydx3e"]
-[ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="4_mpota"]
+[ext_resource type="Texture2D" uid="uid://bfhrmdbsjb6e0" path="res://Assets/Art/Env_Placeholder_TileAssetDownScale.png" id="1_ub2s7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pb3x8"]
-texture = ExtResource("2_ydx3e")
+texture = ExtResource("1_ub2s7")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -51,25 +48,8 @@ texture_region_size = Vector2i(64, 64)
 2:2/0/physics_layer_0/angular_velocity = 0.0
 2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 0, -32, -32, 0, -32, 0, 0)
 
-[sub_resource type="TileSet" id="TileSet_exjht"]
+[resource]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 768
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_pb3x8")
-
-[node name="EnviroScratchTest" type="Node2D"]
-script = ExtResource("1_t62ef")
-
-[node name="Player" parent="." instance=ExtResource("1_jf2sw")]
-floor_max_angle = 1.41895
-floor_snap_length = 33.0
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_exjht")
-format = 2
-layer_0/tile_data = PackedInt32Array(262141, 1, 0, 262142, 65537, 0, 262143, 131073, 0, 196608, 1, 0, 196609, 65537, 0, 196610, 131073, 0, 196611, 1, 0, 196612, 65537, 0, 196613, 131073, 0, 196614, 1, 0, 196615, 65537, 0, 196616, 131073, 0, 196607, 131073, 65537, 131069, 131073, 65537, 65531, 131073, 65537, 196603, 65537, 1, 196605, 65537, 1, 196606, 1, 1, 131068, 1, 1, 196604, 65537, 1, 262140, 65537, 1, 262139, 65537, 1, 131067, 65537, 1, -65534, 131073, 65537, -65533, 131073, 65537, -65532, 131073, 65537, -65531, 131073, 65537, -65530, 131073, 65537, -65529, 131073, 65537)
-
-[node name="Level_MenuPause" parent="." instance=ExtResource("4_mpota")]

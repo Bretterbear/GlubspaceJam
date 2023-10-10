@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://k48vocrwx31f"]
+
+[ext_resource type="Script" path="res://Scripts/PauseMenu.cs" id="1_y13pf"]
+
+[node name="Level_MenuPause" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y13pf")
+
+[node name="VBox_Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -33.0
+offset_right = 65.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="Button_Resume" type="Button" parent="VBox_Menu"]
+layout_mode = 2
+text = "-Resume Game-"
+
+[node name="Button_MainMenu" type="Button" parent="VBox_Menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "-Main Menu-"
+
+[connection signal="pressed" from="VBox_Menu/Button_Resume" to="." method="_OnButtonResumePressed"]
+[connection signal="pressed" from="VBox_Menu/Button_MainMenu" to="." method="_OnButtonMainMenuPressed"]
