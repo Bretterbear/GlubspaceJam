@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6mhdhey8vddw"]
+
+[ext_resource type="Script" path="res://Scripts/MainMenu.cs" id="1_7d6cr"]
+
+[node name="MainMenu" type="Control"]
+modulate = Color(1, 0.321569, 0.592157, 1)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.982864, 0.994036)
+script = ExtResource("1_7d6cr")
+
+[node name="VBox_Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox_Start" type="HBoxContainer" parent="VBox_Menu"]
+layout_mode = 2
+
+[node name="Button_Options" type="OptionButton" parent="VBox_Menu/HBox_Start"]
+layout_mode = 2
+
+[node name="Button_Start" type="Button" parent="VBox_Menu/HBox_Start"]
+layout_mode = 2
+text = "Load Scene"
+
+[node name="Button_Quit" type="Button" parent="VBox_Menu"]
+layout_mode = 2
+text = "Quit
+"
+
+[connection signal="pressed" from="VBox_Menu/HBox_Start/Button_Start" to="." method="_OnButtonStartPressed"]
+[connection signal="pressed" from="VBox_Menu/Button_Quit" to="." method="_OnButtonQuitPressed"]
