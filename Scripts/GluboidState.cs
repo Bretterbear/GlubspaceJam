@@ -4,4 +4,7 @@ public enum GluboidState
     PreHopping,
     Hopping,
     Falling,
+    IsPlayer,
+    Grouping,
+    Extending
 }
