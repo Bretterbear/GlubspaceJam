@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/MainMenu.cs" id="1_7d6cr"]
 
 [node name="MainMenu" type="Control"]
+process_mode = 3
 modulate = Color(1, 0.321569, 0.592157, 1)
 layout_mode = 3
 anchors_preset = 15

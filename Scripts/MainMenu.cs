@@ -1,27 +1,25 @@
 using Godot;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO.Enumeration;
-using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Runs basic main menu w/ a dropdown menu to select scene \n
-/// Please note currently allows reloading of main menu scene \n
 /// Please note we might move our scene loading to a packedScene system for preloading?
 /// </summary>
 public partial class MainMenu : Control
 {
     // -------- Reference Variable Declarations  -------- //
-    private OptionButton sceneSelect;						// Reference to the scene select dropdown
+    private OptionButton sceneSelect;											// Reference to the scene select dropdown
 
     // ------------- Constants Declarations ------------- //
-    private string levelFolderPath = "res://Scenes/Levels";	// Path to the folder containing all levels
+    private string	 pathLevelFolder = "res://Scenes/Levels";					// Path to the folder containing all levels
+	private string pathOptionsButton = "VBox_Menu/HBox_Start/Button_Options";	// Path to button for level select dropdown
 
-    // Called when the node enters the scene tree for the first time.
+    /// <summary>
+	/// All we're doing here is filling our scenelist for menu options
+	/// </summary>
     public override void _Ready()
 	{
-		//Call our method to fill out scene paths from the scenes folder
-		PopulateSceneList(levelFolderPath);
+		// Calls our method to fill out scene paths from the scenes folder
+		PopulateSceneList(pathLevelFolder);
 	}
 
 	/// <summary>
@@ -30,12 +28,12 @@ public partial class MainMenu : Control
 	private void _OnButtonStartPressed()
 	{
 		// pull together a full filepath to the selected scene
-		string selectedScene = levelFolderPath + "/" + sceneSelect.GetItemText(sceneSelect.GetSelectedId());
+		string selectedScene = pathLevelFolder + "/" + sceneSelect.GetItemText(sceneSelect.GetSelectedId());
 
 		// Try initiating a scene load - catch the return message (should be 'Error.Ok')
 		Error loadStatus = GetTree().ChangeSceneToFile(selectedScene);
 		
-		// Toss a message if we're not set up to load nicely
+		// Check our scene change return code - toss a message if we're not set up to load nicely
 		switch (loadStatus)
 		{
 			case Error.Ok:
@@ -67,15 +65,14 @@ public partial class MainMenu : Control
     private void PopulateSceneList(string absFolderPath)
 	{
 		// Try to grab a reference to the scene select dropdown and error check that path
-        sceneSelect = GetNode<OptionButton>("VBox_Menu/HBox_Start/Button_Options");
+        sceneSelect = GetNode<OptionButton>(pathOptionsButton);
         if (sceneSelect == null)
 		{
             GD.Print("Error(MainMenu) | invalid dropdown menu filepath");
             return;
 		}
 
-		//Theoretically shouldn't ever do anything - but never hurts to check
-		sceneSelect.Clear();
+		sceneSelect.Clear();					// Shouldn't do anything - but can't hurt to check
 
         // Try to open the folder specified in Ready to make a usable directory ref
         DirAccess dir = DirAccess.Open(absFolderPath);
@@ -83,26 +80,23 @@ public partial class MainMenu : Control
 		// DirAccess defaults to null if the file path fails, so there's our error handling
 		if (dir != null)
 		{
-			// Start up a stream for the directory folder
-			dir.ListDirBegin();
+			dir.ListDirBegin();					// Start up a stream for the directory folder
+			string fileName = dir.GetNext();	// Initialize filename w/ the first file in the folder
 
-			// Initialize filename w/ the first file in the folder
-			string fileName = dir.GetNext();
-
-			// Move through the files in the absFolderPath Directory, add as appropriate
-			while (fileName != "")
+            // Move through the files in the absFolderPath Directory, add as appropriate
+            while (fileName != "")
 			{
 				// Only add the file to the dropdown if it's a tscn file
 				if (fileName.GetExtension() == "tscn")
 				{
                     sceneSelect.AddItem(fileName);
                 }
-				fileName = dir.GetNext();
+
+				fileName = dir.GetNext();		// func will iterate & end on empty string
             }
 
-			// Technically this might be unnecessary - I'm uncertain if the DirAccess stream autocloses on empty
-			dir.ListDirEnd();
-		}
+			dir.ListDirEnd();					// Might be unnecessary - unknown if DirAccess stream autocloses on end
+        }
 		else
 		{
 			// Print an error if we can't access the directory at absFolderPath

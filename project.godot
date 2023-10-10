@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Glubspace Jam"
-run/main_scene="res://Scenes/Levels/MainMenu.tscn"
+run/main_scene="res://Scenes/Levels_NonIndexable/Level_Menu-Main.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
