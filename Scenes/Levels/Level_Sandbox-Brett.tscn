@@ -21,4 +21,4 @@ layer_0/tile_data = PackedInt32Array(-458772, 131074, 5, -393236, 131074, 6, -32
 [node name="PlayerManager" parent="." instance=ExtResource("4_i2gqd")]
 
 [node name="Player" parent="PlayerManager" instance=ExtResource("2_xrpua")]
-position = Vector2(1024, -576)
+position = Vector2(1049, -576)

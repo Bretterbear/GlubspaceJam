@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using GlubspaceJam.Scripts;
 
 public partial class Gluboid : CharacterBody2D
 {
@@ -13,15 +14,21 @@ public partial class Gluboid : CharacterBody2D
 	private float _snapDistance = 2000f;
 	private GluboidState _state;
 	private float _distanceFromPlayerX;
+	private Vector2 _extendPosition;
+	private float _extendDistance = 64;
+	private float _extendSpeed = 50;
+	private int _index;
 
 	public bool _isPlayer = false;
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-	public void setup(Vector2 playerPosition)
+	public void setup(Vector2 playerPosition, int index)
 	{
 		GlobalPosition = playerPosition;
+		_index = index;
 	}
+
 	public override void _Ready()
 	{
 		AddToGroup("Gluboids");
@@ -36,8 +43,19 @@ public partial class Gluboid : CharacterBody2D
 		//Hopping indicates the Gluboid is moving towards the player through the air.
 		//PreHopping accounts for getting the gluboid out into the air to start a Hop
 		//IsPlayer represents that the Gluboid is the current visual representation of the Player.
+		//Grouping is the state before extending.
 		Debug.WriteLine(_state);
-		if (_state != GluboidState.IsPlayer)
+		if (_state == GluboidState.Extending)
+		{
+			if (GlobalPosition != _extendPosition)
+			{
+				var direction = GlobalPosition.DirectionTo(_extendPosition);
+
+				Velocity = direction * _extendSpeed * _index;
+				MoveAndSlide();
+			}
+		}
+		else if (_state != GluboidState.IsPlayer && _state != GluboidState.Grouping)
 		{
 			Debug.WriteLine(_distanceFromPlayerX);
 			
@@ -150,5 +168,66 @@ public partial class Gluboid : CharacterBody2D
 	{
 		_state = GluboidState.Idle;
 		_isPlayer = false;
+	}
+	
+	public void Extend(Direction direction, int blocks)
+	{
+		switch (direction)
+		{
+			case (Direction.North):
+				_extendPosition.X = 0;
+				_extendPosition.Y = -1;
+				break;
+			case (Direction.NorthEast):
+				_extendPosition.X = 1;
+				_extendPosition.Y = -1;
+				break;
+			case (Direction.East):
+				_extendPosition.X = 1;
+				_extendPosition.Y = 0;
+				break;
+			case (Direction.SouthEast):
+				_extendPosition.X = 1;
+				_extendPosition.Y = 1;
+				break;
+			case (Direction.South):
+				_extendPosition.X = 0;
+				_extendPosition.Y = 1;
+				break;
+			case(Direction.SouthWest):
+				_extendPosition.X = -1;
+				_extendPosition.Y = 1;
+				break;
+			case(Direction.West):
+				_extendPosition.X = -1;
+				_extendPosition.Y = 0;
+				break;
+			case(Direction.NorthWest):
+				_extendPosition.X = -1;
+				_extendPosition.Y = -1;
+				break;
+		}
+
+		_extendPosition.X = _playerPosition.X + (_extendPosition.X * _extendDistance * blocks);
+		_extendPosition.Y = _playerPosition.Y + (_extendPosition.Y * _extendDistance * blocks);
+
+		_state = GluboidState.Extending;
+	}
+
+	public void UpdateIndex(int index)
+	{
+		_index = index;
+	}
+
+	public void ReturnToIdle()
+	{
+		if(_state != GluboidState.IsPlayer)
+			_state = GluboidState.Idle;
+	}
+
+	public void GroupToPlayer()
+	{
+		if(_state != GluboidState.IsPlayer)
+			_state = GluboidState.Grouping;
 	}
 }

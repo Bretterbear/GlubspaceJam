@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using GlubspaceJam.Scripts;
 using Range = System.Range;
 
 public partial class PlayerManager : Node2D
@@ -10,14 +11,12 @@ public partial class PlayerManager : Node2D
 	private Player _player;
 
 	public int _numberOfGlubs;
-
-	//private Gluboid _gluboid;
+	
 	private string _gluboidSceneLocation = "res://Scenes/Actors/gluboid.tscn";
 	private PackedScene _gluboidScene;
 	private List<Gluboid> _gluboidPack;
 
 	private PlayerState _playerState;
-	private Gluboid _playerGlub;
 
 	///<summary>
 	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
@@ -25,14 +24,13 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	public override void _Ready()
 	{
+		GD.Randomize();
 		_gluboidScene = (PackedScene)ResourceLoader.Load(_gluboidSceneLocation);
 		_gluboidPack = new List<Gluboid>();
 		_player = GetChild<Player>(0, false);
 		PickUpGluboid();
 		PickUpGluboid();
-		PickPlayerGlub();
-		//_gluboid = GetChild<Gluboid>(1, false);
-		GD.Randomize(); //Move to a more global place
+		ShuffleGlubs();
 	}
 
 	/// <summary>
@@ -49,12 +47,13 @@ public partial class PlayerManager : Node2D
 		return _player.GlobalPosition;
 	}
 
+	
 	public void PickUpGluboid()
 	{
 		Gluboid gluboid = (Gluboid)_gluboidScene.Instantiate();
-		gluboid.setup(GetPlayerPosition());
-		AddChild(gluboid);
 		_gluboidPack.Add(gluboid);
+		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid));
+		AddChild(gluboid);
 		_numberOfGlubs++;
 	}
 
@@ -66,11 +65,87 @@ public partial class PlayerManager : Node2D
 		_numberOfGlubs--;
 	}
 
-	public void PickPlayerGlub()
+	/// <summary>
+	/// Sets specific glub as the player glub, not ready for use yet.
+	/// </summary>
+	/// <param name="glub"></param>
+	public void PickPlayerGlub(Gluboid glub)
 	{
-		int glubIndex = (int)GD.Randi() % _gluboidPack.Count;
-		_playerGlub = _gluboidPack[glubIndex];
-		_playerGlub .MakePlayer();
+		if (_gluboidPack.Contains(glub))
+		{
+			_gluboidPack[0].MakeNotPlayer();
+			(_gluboidPack[_gluboidPack.IndexOf(glub)], _gluboidPack[0]) =
+				(_gluboidPack[0], _gluboidPack[_gluboidPack.IndexOf(glub)]);
+			_gluboidPack[0].MakePlayer();
+			
+			foreach(Gluboid g in _gluboidPack)
+			{
+				g.UpdateIndex(_gluboidPack.IndexOf(g));
+			}
+		}
 	}
+
+	/// <summary>
+	/// Logic for setting the glubs in the correct position for chain extension.
+	/// </summary>
+	/// <param name="blockDistance"></param>
+	/// <param name="direction"></param>
+	public void ExtendGlubChain(int blockDistance, Direction direction)
+	{
+		ShuffleGlubs();
+		int goal;
+		if (blockDistance < _numberOfGlubs - 1)
+		{
+			goal = blockDistance;
+		}
+		else
+		{
+			goal = _numberOfGlubs-1;
+		}
+
+		for (int i = 1; i < goal; i++)
+		{
+			_gluboidPack[i].Extend(direction, i);
+		}
+	}
+	private void ShuffleGlubs()
+	{
+		
+		_gluboidPack[0].MakeNotPlayer();
+		
+		var n = _gluboidPack.Count;  
+		while (n > 1) {  
+			n--;  
+			var k = (int)GD.Randi() % (n+1);  
+			(_gluboidPack[k], _gluboidPack[n]) = (_gluboidPack[n], _gluboidPack[k]);
+		}
+
+		foreach(Gluboid glub in _gluboidPack)
+		{
+			glub.UpdateIndex(_gluboidPack.IndexOf(glub));
+		}
+		
+		
+		_gluboidPack[0].MakePlayer();
+	}
+
+	/// <summary>
+	/// Releases the glubs from either grouping or extended
+	/// </summary>
+	public void ReleaseChain()
+	{
+		foreach (Gluboid glub in _gluboidPack)
+		{
+			glub.ReturnToIdle();
+		}
+	}
+
+	public void GroupGlubs(){
+		foreach (Gluboid glub in _gluboidPack)
+		{
+			glub.GroupToPlayer();
+		}
+	}
+
 }
 	
