@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 
 public partial class GlubHook : Node2D
 {
@@ -22,8 +23,8 @@ public partial class GlubHook : Node2D
     private bool           _inAimMode;          // Stores whether we are in "aim mode"
 
     // ------------- Constants Declarations ------------- //
-    private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // Used for grapple offset position from prefab origin
-    private Vector2 _stepSize         = new Vector2(64, 64);    // Denotes tilemap step-size     
+    private Vector2 _offsetGrappleVis = new(32,-31);    // Used for grapple offset position from prefab origin
+    private Vector2 _stepSize         = new(64, 64);    // Denotes tilemap step-size     
 
     /// <summary>
 	/// Links Glubhook to the other nodes it needs to poke
@@ -48,8 +49,6 @@ public partial class GlubHook : Node2D
         // Extra call to make sure the hook is neutral as we start this process
         DisengageHook();
 
-        //targetPoint = GetGlobalMousePosition()
-
         // Make our initial raycast, forcing an update after target setting. Might change this for efficiency
         _rayCast.TargetPosition = targetPoint.Normalized() * _hookLength;
         _rayCast.ForceRaycastUpdate();
@@ -58,14 +57,44 @@ public partial class GlubHook : Node2D
         if (_rayCast.IsColliding() && (_rayCast.GetCollider().GetType() == typeof(TileMap)))
         {
             // Grab inputs for the SetHook function
-            TileMap _grappledObject = (TileMap)_rayCast.GetCollider();  // This grabs a reference to the entire TileMap
-            _grappleHookPoint = _rayCast.GetCollisionPoint();           // Use hookpoint as tmp storage for our collision point
+            TileMap touchedTilemap = (TileMap)_rayCast.GetCollider();       // This refs the whole tilemap
+            Vector2 rayCastCollisionPoint =  _rayCast.GetCollisionPoint();  // Exterior point of collision
+            Vector2 rayCastNormalVector   = _rayCast.GetCollisionNormal();  // Collision face
 
-            Vector2 rayCastCollisionPoint =  _rayCast.GetCollisionPoint();
-            Vector2 rayCastNormalVector   = _rayCast.GetCollisionNormal();
+            // Grab the data for this individual tile instance (yes, the process is weird)
+            Vector2 tileInterior        = rayCastCollisionPoint - rayCastNormalVector * 10f;
+            Vector2I tileMapCoordinates = touchedTilemap.LocalToMap(tileInterior);
+            TileData tileData           = touchedTilemap.GetCellTileData(0, tileMapCoordinates);
 
-            SetHook(_grappledObject, rayCastCollisionPoint, rayCastNormalVector);
-            return true;
+            // Grab custom layer data for terrain handling purposes
+            int tileDataTerrain     = (int)tileData.GetCustomDataByLayerId(0);
+            int tileDataOrientation = (int)tileData.GetCustomDataByLayerId(1);
+
+            // Handle the hook functionality based on terrain types
+            switch (tileDataTerrain)
+            {
+                case -1:    // Case (-1 kill)     | Kill a Glub on the point (currently fall through to non-stick)
+                case  0:    // Case (+0 nonstick) | don't stick at all, but end the push
+                    return false;
+                case  1:    // Case (+1 fullglub) | std stickiness  
+                    SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+                    return true;
+                case  2:    // Case (+2 halfglub) | orientable stickiness
+                    if (tileDataOrientation == ((int)TranslateCollisionNormal(rayCastNormalVector)) + 1)
+                    {
+                        SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case  3:    // Case (+3 barrior) | complex collision stickery
+                    // do recursion here, turn off the collide & bool firehook, reset collider, return bool
+                default:
+                    GD.Print("Error(MapHandling) - currently unhandled terraintype: " + tileDataTerrain);
+                    return false;
+            }
         }
         else
         {
@@ -78,18 +107,17 @@ public partial class GlubHook : Node2D
     {
         // First we get an arbitrary point partway inside our object
         // Then we convert into the map coordinate system for calls
-        Vector2 tileInterior = collisionPoint - collisionNormal * 15f;
+        Vector2 tileInterior        = collisionPoint - collisionNormal * 10f;
         Vector2I tileMapCoordinates = tileMap.LocalToMap(tileInterior);
-
-        // Currently unused, will likely need to cache this later for level interaction purposes
-        // Can use this tiledata to cache adtl data fields in tilemap editor for complex interactions
-        //TileData tileObj = tileMap.GetCellTileData(0, tileMapCoordinates);
 
         // Use tilemap functions to get a bead on the center of the tile
         // Note this will always be in the top right corner of the visual tile
         Vector2 tileLocalCoordinates = tileMap.MapToLocal(tileMapCoordinates);
 
         // Set our hook orientation based on our collision normal vector
+        _grappleSide = TranslateCollisionNormal(collisionNormal);
+
+        /*
         switch (collisionNormal)
         {
             case (-1, 0):
@@ -105,6 +133,7 @@ public partial class GlubHook : Node2D
                 _grappleSide = Side.Bottom;
                 break;
         }
+        */
 
         // Set our true hook vector to the center of the tile for tracking
         _grappleHookPoint = tileLocalCoordinates + new Vector2(-32, 32);
@@ -115,6 +144,24 @@ public partial class GlubHook : Node2D
 
         // Finally set our grapple status to active
         _inActiveGrapple = true;
+    }
+
+    private static Side TranslateCollisionNormal(Vector2 collisionNorm)
+    {
+        switch (collisionNorm)
+        {
+            case (-1, 0):
+                return Side.Left;
+            case (0, -1):
+                return Side.Top;
+            case (1, 0):
+                return Side.Right;
+            case (0, 1):
+                return Side.Bottom;
+        }
+
+        GD.Print("Errror(GlubHook): translateCollisionNormal() - Vector " + collisionNorm + " is not cardinal");
+        return Side.Left;
     }
 
     /// <summary>
