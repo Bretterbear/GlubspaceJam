@@ -49,8 +49,6 @@ public partial class GlubHook : Node2D
         // Extra call to make sure the hook is neutral as we start this process
         DisengageHook();
 
-        //targetPoint = GetGlobalMousePosition()
-
         // Make our initial raycast, forcing an update after target setting. Might change this for efficiency
         _rayCast.TargetPosition = targetPoint.Normalized() * _hookLength;
         _rayCast.ForceRaycastUpdate();
@@ -67,7 +65,7 @@ public partial class GlubHook : Node2D
             Vector2 tileInterior        = rayCastCollisionPoint - rayCastNormalVector * 10f;
             Vector2I tileMapCoordinates = touchedTilemap.LocalToMap(tileInterior);
             TileData tileData           = touchedTilemap.GetCellTileData(0, tileMapCoordinates);
-            
+
             // Grab custom layer data for terrain handling purposes
             int tileDataTerrain     = (int)tileData.GetCustomDataByLayerId(0);
             int tileDataOrientation = (int)tileData.GetCustomDataByLayerId(1);

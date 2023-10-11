@@ -64,6 +64,7 @@ action_fire={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Glub"
 2d_physics/layer_9="Environment"
+2d_physics/layer_10="RayCast"
 
 [rendering]
 
