@@ -92,6 +92,7 @@ public partial class PlayerManager : Node2D
 	/// <param name="direction"></param>
 	public void ExtendGlubChain(int blockDistance, Direction direction)
 	{
+		//turn off collision for gluboids during extension
 		ShuffleGlubs();
 		int goal;
 		if (blockDistance < _numberOfGlubs - 1)

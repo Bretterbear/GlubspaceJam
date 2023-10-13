@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b5f8939f-8f99-4fd0-9afe-d024f9c18416" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Gluboid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Gluboid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/GluboidState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GluboidState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/PlayerManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +74,8 @@
       <workItem from="1696713702791" duration="2105000" />
       <workItem from="1696793459454" duration="5157000" />
       <workItem from="1696807284506" duration="3500000" />
-      <workItem from="1696877594687" duration="3079000" />
+      <workItem from="1696877594687" duration="3546000" />
+      <workItem from="1697077388149" duration="1024000" />
     </task>
     <servers />
   </component>
