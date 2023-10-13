@@ -14,7 +14,6 @@ public partial class GlubHook : Node2D
     private Line2D       _grappleLine;          // Reference storage for our line for the glub grappler
     private Line2D    _lineAimCurrent;	        // Reference storage for our current aim line for visualizer
     private Line2D        _lineAimMax;	        // Reference storage for our maximum range line for visualizer
-    private RayCast2D        _rayCast;          // Reference storage for our scanning raycast
 
     // ---------- State Variable Declarations  ---------- //
     private Vector2 _grappleHookPoint;          // Stores hook location - set to zero vector unless we're currently grappling
@@ -35,42 +34,65 @@ public partial class GlubHook : Node2D
         _grappleLine    = GetNode<Line2D>("GrappleLine_Tmp");
         _lineAimCurrent =  GetNode<Line2D>("Line2D_AimCurr");
         _lineAimMax     = GetNode<Line2D>("Line2D_GhostAim");
-        _rayCast        = GetNode<RayCast2D>("Targetter_01");
     }
 
     /// <summary>
-    /// Tries to fire a grappling hook from player to mouse click position
-	/// <para> NEED CHANGE - modify the IsColliding() to give a proper snap to correct positions </para>
+    /// Initiator function to start the firing + hooksetting process
     /// </summary>
-    /// <param name="targetPoint"> local mouse position -> player base and glub base MUST have same position</param>
-    /// <returns> bool - whether a grapple has successfully found a target or not</returns>
-    public bool FireHook(Vector2 targetPoint)
+    /// <param name="localClickPoint">local mouse position relative to glub centerpoint</param>
+    public bool FireHook(Vector2 localClickPoint)
     {
-        // Extra call to make sure the hook is neutral as we start this process
+        // Ensure we aren't currently hooked into a target
         DisengageHook();
 
-        // Make our initial raycast, forcing an update after target setting. Might change this for efficiency
-        _rayCast.TargetPosition = targetPoint.Normalized() * _hookLength;
-        _rayCast.ForceRaycastUpdate();
+        // Get our initial start point (glub center) and endpoint (grapple max) vectors
+        Vector2 startPoint  = GlobalPosition + _offsetGrappleVis;
+        Vector2 targetPoint = ToGlobal(localClickPoint.Normalized() * _hookLength + _offsetGrappleVis);
 
-        // On collision, run checks & set the hook on validity
-        if (_rayCast.IsColliding() && (_rayCast.GetCollider().GetType() == typeof(TileMap)))
+        // Call our raycast function which will return a bool denoting success/failure of attachment
+        return MakeGrappleRaycast(startPoint, targetPoint);
+    }
+
+    /// <summary>
+    /// Recursively callable function to raycast out to objects + hook them where appropriate
+    /// </summary>
+    private bool MakeGrappleRaycast(Vector2 startPoint, Vector2 targetPoint, Rid prevCollisionRid = new Rid())
+    {
+        // Make our raycast in space
+        var spaceState = GetWorld2D().DirectSpaceState;
+        var query      = PhysicsRayQueryParameters2D.Create(startPoint, targetPoint);
+
+        // Add specificity for collision mask & the RID of currentl collider if called recursively for barriers
+        query.CollisionMask = 512;
+        query.Exclude       = new Godot.Collections.Array<Rid> { prevCollisionRid };
+
+        // Result is a dictionary denoting the qualities of the raycast collision
+        var result = spaceState.IntersectRay(query);
+
+        // If no raycast collision is in range, return a failure
+        if (result.Count == 0)
         {
-            // Grab inputs for the SetHook function
-            TileMap touchedTilemap = (TileMap)_rayCast.GetCollider();       // This refs the whole tilemap
-            Vector2 rayCastCollisionPoint =  _rayCast.GetCollisionPoint();  // Exterior point of collision
-            Vector2 rayCastNormalVector   = _rayCast.GetCollisionNormal();  // Collision face
+            //GD.Print("GH Status - no hookable object in reach");
+            return false;
+        }
 
-            // Grab the data for this individual tile instance (yes, the process is weird)
-            Vector2 tileInterior        = rayCastCollisionPoint - rayCastNormalVector * 10f;
-            Vector2I tileMapCoordinates = touchedTilemap.LocalToMap(tileInterior);
-            TileData tileData           = touchedTilemap.GetCellTileData(0, tileMapCoordinates);
+        if (result["collider"].AsGodotObject().GetType() == typeof(TileMap))
+        {
+            // Grab basic collision data
+            Vector2 collisionPoint   = (Vector2)result["position"];
+            Vector2 collisionNormal  = (Vector2)result["normal"];
+            TileMap collisionTileMap = (TileMap)result["collider"];
+
+            // Use basic collision data to translate into tile information
+            Vector2 tileInterior   = collisionPoint - collisionNormal * 10f;
+            Vector2I tileMapCoords = collisionTileMap.LocalToMap(tileInterior);
+            TileData tileData      = collisionTileMap.GetCellTileData(0, tileMapCoords);
 
             // Hotfix for dealing w/ bad tilemaps that don't have data layers
-            if (touchedTilemap.TileSet.GetCustomDataLayersCount() < 2)
+            if (collisionTileMap.TileSet.GetCustomDataLayersCount() < 2)
             {
                 GD.Print("We're bypassing terain type handling in GlubHook.FireHook()");
-                SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+                SetHook(collisionTileMap, collisionPoint, collisionNormal);
                 return true;
             }
 
@@ -82,23 +104,56 @@ public partial class GlubHook : Node2D
             switch (tileDataTerrain)
             {
                 case -1:    // Case (-1 kill)     | Kill a Glub on the point (currently fall through to non-stick)
-                case  0:    // Case (+0 nonstick) | don't stick at all, but end the push
+                    GD.Print("GH Status - Case -1, hit a kill object, no handling yet");
                     return false;
-                case  1:    // Case (+1 fullglub) | std stickiness  
-                    SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+
+                case 0:    // Case (+0 nonstick) | don't stick at all, but end the push
+                    GD.Print("GH Status - Case 0, hit a non-stick block");
+                    return false;
+
+                case 1:    // Case (+1 fullglub) | std stickiness
+                    GD.Print("GH Status - Case 1, seting hook to full block");
+                    SetHook(collisionTileMap, collisionPoint, collisionNormal);
                     return true;
-                case  2:    // Case (+2 halfglub) | orientable stickiness
-                    if (tileDataOrientation == ((int)TranslateCollisionNormal(rayCastNormalVector)) + 1)
+
+                case 2:    // Case (+2 halfglub) | orientable stickiness
+                    if (tileDataOrientation == ((int)TranslateCollisionNormal(collisionNormal)) + 1)
                     {
-                        SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+                        //GD.Print("GH Status - Case 2 - Successfully stuck to an orientable halfblock");
+                        SetHook(collisionTileMap, collisionPoint, collisionNormal);
                         return true;
                     }
                     else
                     {
+                        //GD.Print("GH Status - Case 2 - failure, hit wrong face of half block");
                         return false;
                     }
-                case  3:    // Case (+3 barrior) | complex collision stickery
-                    // do recursion here, turn off the collide & bool firehook, reset collider, return bool
+
+                case 3:    // Case (+3 barrior) | recursive barrier handling
+                    // First get our collision orientation
+                    int collisionOrientation = ((int)TranslateCollisionNormal(collisionNormal)) + 1;
+
+                    // If the collided face is orientated proximally to us, we can hook to it
+                    if (tileDataOrientation == collisionOrientation)
+                    {
+                        //GD.Print("Correct orient branch of barrier case");
+                        SetHook(collisionTileMap, collisionPoint, collisionNormal);
+                        return true;
+                    }
+                    // If the collided face is oriented distally to us we can pass through it
+                    else if (tileDataOrientation == (collisionOrientation + 2) % 4)
+                    {
+                        //GD.Print("Inverse orient branch of barrier case");
+                        // A recursive call to restart a raycast at our collision point ignoring the current barrier block
+                        return MakeGrappleRaycast(collisionPoint, targetPoint, (Rid) result["rid"]);
+                    }
+                    // Otherwise we're hitting it edge on, which is a non-grappleable orientation per the rules
+                    else
+                    {
+                       //GD.Print("Fail branch of barrier case");
+                        return false;
+                    }
+
                 default:
                     GD.Print("Error(MapHandling) - currently unhandled terraintype: " + tileDataTerrain);
                     return false;
@@ -106,7 +161,7 @@ public partial class GlubHook : Node2D
         }
         else
         {
-            // Add some sort of vfx/sfx feedback for a failed shot
+            GD.Print("GH Status - intersected w/ invalid object");
             return false;
         }
     }
