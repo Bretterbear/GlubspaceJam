@@ -35,11 +35,6 @@ label_settings = SubResource("LabelSettings_j3kas")
 [node name="GlubHook" type="Node2D" parent="."]
 script = ExtResource("3_jp5wg")
 
-[node name="Targetter_01" type="RayCast2D" parent="GlubHook"]
-position = Vector2(32, -31)
-target_position = Vector2(500, 0)
-collision_mask = 512
-
 [node name="GrappleLine_Tmp" type="Line2D" parent="GlubHook"]
 position = Vector2(32, -31)
 width = 6.0
