@@ -66,6 +66,14 @@ public partial class GlubHook : Node2D
             Vector2I tileMapCoordinates = touchedTilemap.LocalToMap(tileInterior);
             TileData tileData           = touchedTilemap.GetCellTileData(0, tileMapCoordinates);
 
+            // Hotfix for dealing w/ bad tilemaps that don't have data layers
+            if (touchedTilemap.TileSet.GetCustomDataLayersCount() < 2)
+            {
+                GD.Print("We're bypassing terain type handling in GlubHook.FireHook()");
+                SetHook(touchedTilemap, rayCastCollisionPoint, rayCastNormalVector);
+                return true;
+            }
+
             // Grab custom layer data for terrain handling purposes
             int tileDataTerrain     = (int)tileData.GetCustomDataByLayerId(0);
             int tileDataOrientation = (int)tileData.GetCustomDataByLayerId(1);
@@ -116,24 +124,6 @@ public partial class GlubHook : Node2D
 
         // Set our hook orientation based on our collision normal vector
         _grappleSide = TranslateCollisionNormal(collisionNormal);
-
-        /*
-        switch (collisionNormal)
-        {
-            case (-1, 0):
-                _grappleSide = Side.Left;
-                break;
-            case (0, -1):
-                _grappleSide = Side.Top;
-                break;
-            case (1, 0):
-                _grappleSide = Side.Right;
-                break;
-            case (0, 1):
-                _grappleSide = Side.Bottom;
-                break;
-        }
-        */
 
         // Set our true hook vector to the center of the tile for tracking
         _grappleHookPoint = tileLocalCoordinates + new Vector2(-32, 32);
