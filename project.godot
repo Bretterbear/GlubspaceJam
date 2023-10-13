@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Glubspace Jam"
-run/main_scene="res://Scenes/Levels/Level_Sandbox-Brett.tscn"
+run/main_scene="res://Scenes/Levels_NonIndexable/Level_Menu-Main.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -64,6 +64,7 @@ action_fire={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Glub"
 2d_physics/layer_9="Environment"
+2d_physics/layer_10="RayCast"
 
 [rendering]
 

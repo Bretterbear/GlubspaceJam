@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1pe0g10vuddg"]
+[gd_scene load_steps=7 format=3 uid="uid://d1pe0g10vuddg"]
 
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_p440v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
 size = Vector2(62, 62)
@@ -17,10 +19,14 @@ collision_mask = 256
 script = ExtResource("1_v77jq")
 
 [node name="Sprite_Character" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(28, -40)
 scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Sprite_Character"]
+stream = SubResource("AudioStreamRandomizer_p440v")
+attenuation = 2.14355
+bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(32, -31)
@@ -35,11 +41,6 @@ label_settings = SubResource("LabelSettings_j3kas")
 
 [node name="GlubHook" type="Node2D" parent="."]
 script = ExtResource("3_jp5wg")
-
-[node name="Targetter_01" type="RayCast2D" parent="GlubHook"]
-position = Vector2(32, -31)
-target_position = Vector2(500, 0)
-collision_mask = 512
 
 [node name="GrappleLine_Tmp" type="Line2D" parent="GlubHook"]
 position = Vector2(32, -31)
