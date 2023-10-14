@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections;
+using System.Diagnostics;
 
 public partial class GlubHook : Node2D
 {
@@ -196,7 +197,9 @@ public partial class GlubHook : Node2D
         if (result["collider"].AsGodotObject().GetType() == typeof(TileMap))
         {
             // Grab key info to translate collision dict into tile information
+            Debug.WriteLine("Collision Coordinates: " + ((Vector2)result["position"]).X + " " + ((Vector2)result["position"]).Y);
             Vector2 tileInterior = ((Vector2)result["position"]) - ((Vector2)result["normal"]) * 10f;
+            Debug.WriteLine("tileInterior Coordinates: " + tileInterior.X + " " + tileInterior.Y);
             Vector2I tileMapCoords = ((TileMap)result["collider"]).LocalToMap(tileInterior);
             TileData tileData = ((TileMap)result["collider"]).GetCellTileData(0, tileMapCoords);
 
