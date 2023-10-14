@@ -1,16 +1,17 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using GlubspaceJam.Scripts;
 
 public partial class Gluboid : CharacterBody2D
 {
 	private PlayerManager _playerManager;
 	private Vector2 _playerPosition;
-	private float _maxDistanceFromPlayer = 100f;
-	private float _maxHopPower = 75f;
+	private float _maxDistanceFromPlayer = 50f;
+	private float _maxHopPower = 150f;
 	private float _hopPower;
-	private float _hopHeight = 500f;
+	private float _hopHeight = 100f;
 	private float _snapDistance = 2000f;
 	private GluboidState _state;
 	private float _distanceFromPlayerX;
@@ -18,6 +19,8 @@ public partial class Gluboid : CharacterBody2D
 	private float _extendDistance = 64;
 	private float _extendSpeed = 50;
 	private int _index;
+	private float _groupSpeed = 50;
+	private const float _hopRatio = 5f / 6f;
 
 	public bool _isPlayer = false;
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -45,14 +48,56 @@ public partial class Gluboid : CharacterBody2D
 		//IsPlayer represents that the Gluboid is the current visual representation of the Player.
 		//Grouping is the state before extending.
 		Debug.WriteLine(_state);
-		if (_state == GluboidState.Extending)
+		Debug.WriteLine("Player X:" + _playerPosition.X + " Player Y:" + _playerPosition.Y);
+		Debug.WriteLine("Glub X:" + GlobalPosition.X + " Glub Y:" + GlobalPosition.Y);
+		
+		if (_state == GluboidState.IsPlayer)
+		{
+			var velocity = Velocity;
+			var position = GlobalPosition;
+			position.X = _playerPosition.X;
+			if (position.Y < _playerPosition.Y)
+			{
+				velocity.Y += _gravity * (float)delta;
+			}
+			else if(position.Y == _playerPosition.Y)
+			{
+				velocity.Y -= _hopHeight;
+			}
+			else
+			{
+				position.Y = _playerPosition.Y;
+				velocity.Y = 0;
+			}
+
+			Velocity = velocity;
+			GlobalPosition = position;
+			//Velocity = new Vector2(0, 0);
+			//GlobalPosition = _playerPosition;
+			MoveAndSlide();
+		}
+		else if (_state == GluboidState.Extending)
 		{
 			if (GlobalPosition != _extendPosition)
 			{
 				var direction = GlobalPosition.DirectionTo(_extendPosition);
 
-				Velocity = direction * _extendSpeed * _index;
+				Velocity = direction * _extendSpeed;
 				MoveAndSlide();
+			}
+		}
+		else if (_state == GluboidState.Retracting)
+		{
+			if (GlobalPosition != _playerPosition)
+			{
+				var direction = GlobalPosition.DirectionTo(_playerPosition);
+
+				Velocity = direction * _extendSpeed;
+				MoveAndSlide();
+			}
+			else
+			{
+				_state = GluboidState.Grouping;
 			}
 		}
 		else if (_state != GluboidState.IsPlayer && _state != GluboidState.Grouping)
@@ -116,7 +161,16 @@ public partial class Gluboid : CharacterBody2D
 		}
 		else
 		{
-			GlobalPosition = _playerPosition;
+			if (GlobalPosition != _playerPosition)
+			{
+				var direction = GlobalPosition.DirectionTo(_playerPosition);
+				Velocity = direction * _groupSpeed;
+				MoveAndSlide();
+			}
+			else
+			{
+				Visible = false;
+			}
 		}
 	}
 
@@ -142,7 +196,7 @@ public partial class Gluboid : CharacterBody2D
 		
 		//Need to convert distance here to absolute value for calculation
 		var playerDistance = Math.Abs(_distanceFromPlayerX);
-		_hopPower = (float)GD.RandRange(playerDistance*(3f/4f), playerDistance+_maxHopPower);
+		_hopPower = (float)GD.RandRange(playerDistance*(_hopRatio), playerDistance+_maxHopPower);
 		
 		if (_distanceFromPlayerX > 0) //Hop to the Right
 		{
@@ -160,8 +214,10 @@ public partial class Gluboid : CharacterBody2D
 
 	public void MakePlayer()
 	{
+		SetCollisionMaskValue(9,true);
 		_state = GluboidState.IsPlayer;
 		_isPlayer = true;
+		Debug.WriteLine("Player Called");
 	}
 
 	public void MakeNotPlayer()
@@ -170,8 +226,10 @@ public partial class Gluboid : CharacterBody2D
 		_isPlayer = false;
 	}
 	
-	public void Extend(Direction direction, int blocks)
+	public void Extend(Direction direction, int blocks, float time)
 	{
+		SetCollisionMaskValue(9,false);
+		
 		switch (direction)
 		{
 			case (Direction.North):
@@ -211,9 +269,22 @@ public partial class Gluboid : CharacterBody2D
 		_extendPosition.X = _playerPosition.X + (_extendPosition.X * _extendDistance * blocks);
 		_extendPosition.Y = _playerPosition.Y + (_extendPosition.Y * _extendDistance * blocks);
 
+		_extendSpeed = GlobalPosition.DistanceTo(_extendPosition) / time;
+
 		_state = GluboidState.Extending;
 	}
 
+	public void Retract(float time)
+	{
+		
+		SetCollisionMaskValue(9,false);
+		
+		if (_state != GluboidState.IsPlayer)
+		{
+			_extendSpeed = GlobalPosition.DistanceTo(_playerPosition) / time;
+			_state = GluboidState.Retracting;
+		}
+	}
 	public void UpdateIndex(int index)
 	{
 		_index = index;
@@ -221,12 +292,18 @@ public partial class Gluboid : CharacterBody2D
 
 	public void ReturnToIdle()
 	{
-		if(_state != GluboidState.IsPlayer)
+		SetCollisionMaskValue(9,true);
+		
+		if (_state != GluboidState.IsPlayer)
+		{
 			_state = GluboidState.Idle;
+			Visible = true;
+		}
 	}
 
 	public void GroupToPlayer()
 	{
+		SetCollisionMaskValue(9,false);
 		if(_state != GluboidState.IsPlayer)
 			_state = GluboidState.Grouping;
 	}

@@ -7,11 +7,12 @@
 size = Vector2(65, 60)
 
 [node name="Gluboid" type="CharacterBody2D"]
+collision_layer = 2
 collision_mask = 256
 script = ExtResource("1_roek2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(28, -42)
+position = Vector2(28, -40)
 scale = Vector2(0.191, 0.252)
 texture = ExtResource("2_47qfc")
 

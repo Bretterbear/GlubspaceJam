@@ -3,20 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Threading.Tasks;
 using GlubspaceJam.Scripts;
 using Range = System.Range;
 
 public partial class PlayerManager : Node2D
 {
 	private Player _player;
-
+	
 	public int _numberOfGlubs;
 	
 	private string _gluboidSceneLocation = "res://Scenes/Actors/gluboid.tscn";
 	private PackedScene _gluboidScene;
 	private List<Gluboid> _gluboidPack;
-
+	private Gluboid _endOfChain;
 	private PlayerState _playerState;
+	private RandomNumberGenerator _rand;
 
 	///<summary>
 	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
@@ -24,11 +26,12 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	public override void _Ready()
 	{
-		GD.Randomize();
+		_rand = new RandomNumberGenerator();
+		_rand.Randomize();
 		_gluboidScene = (PackedScene)ResourceLoader.Load(_gluboidSceneLocation);
 		_gluboidPack = new List<Gluboid>();
 		_player = GetChild<Player>(0, false);
-		PickUpGluboid();
+		PickUpGluboid(); 
 		PickUpGluboid();
 		ShuffleGlubs();
 	}
@@ -39,12 +42,16 @@ public partial class PlayerManager : Node2D
 	/// <param name="delta"></param>
 	public override void _PhysicsProcess(double delta)
 	{
-		GetTree().CallGroup("Gluboids", "SetPlayerPosition", GetPlayerPosition());
+		UpdatePlayerPosition();
 	}
 
+	private void UpdatePlayerPosition()
+	{
+		GetTree().CallGroup("Gluboids", "SetPlayerPosition", GetPlayerPosition());
+	}
 	private Vector2 GetPlayerPosition()
 	{
-		return _player.GlobalPosition;
+		return new Vector2(_player.GlobalPosition.X,_player.GlobalPosition.Y);
 	}
 
 	
@@ -52,9 +59,11 @@ public partial class PlayerManager : Node2D
 	{
 		Gluboid gluboid = (Gluboid)_gluboidScene.Instantiate();
 		_gluboidPack.Add(gluboid);
+		Debug.WriteLine(_gluboidPack.Count);
 		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid));
 		AddChild(gluboid);
 		_numberOfGlubs++;
+		
 	}
 
 	public void DropGluboid(Gluboid glub)
@@ -90,7 +99,7 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	/// <param name="blockDistance"></param>
 	/// <param name="direction"></param>
-	public void ExtendGlubChain(int blockDistance, Direction direction)
+	public void ExtendGlubChain(int blockDistance, Direction direction, float timeToComplete)
 	{
 		//turn off collision for gluboids during extension
 		ShuffleGlubs();
@@ -104,30 +113,34 @@ public partial class PlayerManager : Node2D
 			goal = _numberOfGlubs-1;
 		}
 
-		for (int i = 1; i < goal; i++)
+		for (int i = 0; i < goal; i++)
 		{
-			_gluboidPack[i].Extend(direction, i);
+			_gluboidPack[i].Visible = true;
+			_gluboidPack[i].Extend(direction, i, timeToComplete);
 		}
+
+		_endOfChain = _gluboidPack[blockDistance - 1];
 	}
 	private void ShuffleGlubs()
 	{
-		
 		_gluboidPack[0].MakeNotPlayer();
 		
 		var n = _gluboidPack.Count;  
 		while (n > 1) {  
-			n--;  
-			var k = (int)GD.Randi() % (n+1);  
+			n--;
+			var k = (int)_rand.RandiRange(0,n);
+			Debug.WriteLine(k);
+			Debug.WriteLine(n);
 			(_gluboidPack[k], _gluboidPack[n]) = (_gluboidPack[n], _gluboidPack[k]);
 		}
 
-		foreach(Gluboid glub in _gluboidPack)
+		for (int i = 0; i < _numberOfGlubs; i++)
 		{
-			glub.UpdateIndex(_gluboidPack.IndexOf(glub));
+			_gluboidPack[i].UpdateIndex(i);
+			_gluboidPack[i].ZIndex = _numberOfGlubs - i;
 		}
-		
-		
 		_gluboidPack[0].MakePlayer();
+		_gluboidPack[0].Visible = true;
 	}
 
 	/// <summary>
@@ -138,13 +151,29 @@ public partial class PlayerManager : Node2D
 		foreach (Gluboid glub in _gluboidPack)
 		{
 			glub.ReturnToIdle();
+			glub.Visible = true;
 		}
 	}
 
 	public void GroupGlubs(){
+		UpdatePlayerPosition();
 		foreach (Gluboid glub in _gluboidPack)
 		{
 			glub.GroupToPlayer();
+		}
+	}
+
+	public void RetractChain(float timeToComplete, bool toGoal)
+	{
+		if (toGoal)
+		{
+			(_gluboidPack[0], _gluboidPack[_gluboidPack.IndexOf(_endOfChain)]) = (_gluboidPack[_gluboidPack.IndexOf(_endOfChain)], _gluboidPack[0]);
+			_gluboidPack[0].MakePlayer();
+		}
+		
+		foreach (var glub in _gluboidPack)
+		{
+			glub.Retract(timeToComplete);
 		}
 	}
 

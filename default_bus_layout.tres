@@ -4,7 +4,6 @@
 resource_name = "Limiter"
 
 [resource]
-bus/0/send = &"Foley"
 bus/1/name = &"Submaster"
 bus/1/solo = false
 bus/1/mute = false
