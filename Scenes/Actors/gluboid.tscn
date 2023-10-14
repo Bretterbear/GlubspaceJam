@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvjd2gf2aalqv"]
+[gd_scene load_steps=3 format=3 uid="uid://bvjd2gf2aalqv"]
 
 [ext_resource type="Script" path="res://Scripts/Gluboid.cs" id="1_roek2"]
-[ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="2_47qfc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ukqmt"]
 size = Vector2(65, 60)
@@ -11,10 +10,9 @@ collision_layer = 2
 collision_mask = 256
 script = ExtResource("1_roek2")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="GlubSprite" type="Sprite2D" parent="."]
 position = Vector2(28, -40)
 scale = Vector2(0.191, 0.252)
-texture = ExtResource("2_47qfc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(32, -31)

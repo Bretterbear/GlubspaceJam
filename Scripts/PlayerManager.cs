@@ -1,11 +1,7 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Threading.Tasks;
 using GlubspaceJam.Scripts;
-using Range = System.Range;
 
 public partial class PlayerManager : Node2D
 {
@@ -18,7 +14,8 @@ public partial class PlayerManager : Node2D
 	private List<Gluboid> _gluboidPack;
 	private Gluboid _endOfChain;
 	private PlayerState _playerState;
-	private RandomNumberGenerator _rand;
+	private GluboidSkinController _skinController;
+	
 
 	///<summary>
 	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
@@ -26,13 +23,12 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	public override void _Ready()
 	{
-		_rand = new RandomNumberGenerator();
-		_rand.Randomize();
+		_skinController = GluboidSkinController.GetInstance();
 		_gluboidScene = (PackedScene)ResourceLoader.Load(_gluboidSceneLocation);
 		_gluboidPack = new List<Gluboid>();
-		_player = GetChild<Player>(0, false);
-		PickUpGluboid(); 
-		PickUpGluboid();
+		_player = GetChild<Player>(0);
+		PickUpGluboid(_player.GlobalPosition, GluboidSkin.Princept); 
+		PickUpGluboid(_player.GlobalPosition, GluboidSkin.Princept);
 		ShuffleGlubs();
 	}
 
@@ -55,12 +51,12 @@ public partial class PlayerManager : Node2D
 	}
 
 	
-	public void PickUpGluboid()
+	public void PickUpGluboid(Vector2 position, GluboidSkin skin)
 	{
 		Gluboid gluboid = (Gluboid)_gluboidScene.Instantiate();
 		_gluboidPack.Add(gluboid);
 		Debug.WriteLine(_gluboidPack.Count);
-		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid));
+		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), _skinController.GetTexture(skin));
 		AddChild(gluboid);
 		_numberOfGlubs++;
 		
@@ -99,6 +95,7 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	/// <param name="blockDistance"></param>
 	/// <param name="direction"></param>
+	/// <param name="timeToComplete"></param>
 	public void ExtendGlubChain(int blockDistance, Direction direction, float timeToComplete)
 	{
 		//turn off collision for gluboids during extension
@@ -128,7 +125,7 @@ public partial class PlayerManager : Node2D
 		var n = _gluboidPack.Count;  
 		while (n > 1) {  
 			n--;
-			var k = (int)_rand.RandiRange(0,n);
+			var k = Rand.GetInstance().RandiRange(0,n);
 			Debug.WriteLine(k);
 			Debug.WriteLine(n);
 			(_gluboidPack[k], _gluboidPack[n]) = (_gluboidPack[n], _gluboidPack[k]);

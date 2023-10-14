@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3qbmq2yswelg"]
+
+[ext_resource type="Script" path="res://Scripts/LostGlub.cs" id="1_nn8p7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32qnv"]
+
+[node name="LostGlub" type="CharacterBody2D"]
+script = ExtResource("1_nn8p7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_32qnv")
+
+[node name="GlubSprite" type="Sprite2D" parent="."]

@@ -26,10 +26,12 @@ public partial class Gluboid : CharacterBody2D
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-	public void setup(Vector2 playerPosition, int index)
+	public void setup(Vector2 position, int index, Texture2D skin)
 	{
-		GlobalPosition = playerPosition;
+		GlobalPosition = position;
 		_index = index;
+		var sprite = (Sprite2D)GetNode("GlubSprite");
+		sprite.Texture = skin;
 	}
 
 	public override void _Ready()
