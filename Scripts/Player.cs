@@ -1,17 +1,28 @@
 using Godot;
 using System.Diagnostics;
 
+// Movement WASD / Arrows
+// Aim Mode Toggle
+// Action_Fire
+
 public partial class Player : CharacterBody2D
 {
+    // ---------- Enum States Declaration ---------- //
+    enum States { WALKING, AIMING, GRAPPLED, IN_TRANSIT }
+    
     // ---------- Editor Variable Declarations ---------- //
     [Export] private const float _Speed = 500.0f;               // Will need to fine tune, but controls player horizontal speed
+    [Export] private bool _mouseMode = true;                    // Used to determine input type - move to options menu
 
     // -------- Reference Variable Declarations  -------- //
     private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
 
     // ---------- State Variable Declarations  ---------- //
-    private Vector2 _dPadInput;                                 // Stores current dPadInput
-    private bool    _inAimMode;                                 // BH - Likely replace this w/ a playerstate enum later
+    private States           _playerState;          // Maintains branch control over what input processing is done
+    private Vector2   _inputDirUnitVector;          // Stores current frame movement directional input 
+    private Vector2   _inputAimUnitVector;          // Modal - in WASD  mirrors dir, in mouse local vector
+    private bool               _inputFire = false;  // Stores current frame "Just hit fire key" state
+    private bool          _inputToggleAim = false;  // Stores current frame "Just hit aimToggle key" state
 
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
@@ -19,120 +30,167 @@ public partial class Player : CharacterBody2D
     private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     /// <summary>
-    /// As of now all we're doing is setting our glubHook reference here
+    /// Initial plaer setup - sets state + grabs glubHook reference
     /// </summary>
     public override void _Ready()
     {
+        _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook   = GetNode<GlubHook>("GlubHook");
-        _inAimMode = false;
     }
 
     /// <summary>
-    /// We're going to tweak this to basically be an enum switch func call to the various player motion states / types
+    /// Grabs input + uses player state to carry out behaviors
     /// </summary>
     public override void _PhysicsProcess(double delta)
     {
-        // Run a check to see if we are / should be in aim mode or not
-        AimModeCheckAndUpdate();
+        // Gather all inputs for frame at once
+        GatherInput();
 
-        // Grab d-pad input - for now it's just for movement, but will likely be for aim purposes
-        SnagDPadInput();
-
-        // Call free move / aim mode update
-        if (_inAimMode)
+        // Make for differential handling in physics process based on player state
+        switch (_playerState)
         {
-            HandleAimMode(delta);
-        }
-        else
-        {
-            HandleFreeMode(delta);
+            case States.WALKING:
+                HandleWalking(delta);
+                break;
+            case States.AIMING:
+                HandleAiming();
+                break;
+            case States.GRAPPLED:
+                HandleGrappling();
+                break;
+            case States.IN_TRANSIT:
+                // Will hold things while any animation or transition is happening
+                break;
         }
     }
 
     /// <summary>
-    /// Checks for mode_toggle_aim input and sets the mode accordingly in Player + GlubHook
+    /// Branch for walking and transitioning to aim mode
     /// </summary>
-    private void AimModeCheckAndUpdate()
+    private void HandleWalking(double delta)
     {
-        // Handle aim mode toggling
-        if (Input.IsActionJustPressed("mode_toggle_aim"))
+        // Grab a local handle for velocity tweakery
+        Vector2 velocity = Velocity;
+
+        // Add the gravity
+        if (!IsOnFloor())
         {
-            // Logic branch for toggling
-            if (_inAimMode)
-            {
-                //Toggle off aim mode in both player & glubHook
-                _inAimMode = false;
-                glubHook.ToggleAimVisualizer();
-            }
-            else
-            {
-                // Toggle off aim mode in player & glubhook
-                _inAimMode    = true;
-                this.Position = this.Position.Snapped(_stepSize);    // Need to hide this snap w/ a smooth motion + a little vfx dazzle puff
-                Velocity      = Vector2.Zero;
-                glubHook.ToggleAimVisualizer();
-            }
+            velocity.Y += gravity * (float)delta;
         }
 
-        // Aim mode update in glubhook
-        if (_inAimMode)
+        // Set x velocity, for now just simple binary input
+        if (_inputDirUnitVector != Vector2.Zero)
         {
-            // We're adjusting for the offset between origin (low-left corner) and visual object center
-            glubHook.VisualizeAim(GetLocalMousePosition() - _offsetGrappleVis);
+            velocity.X = _inputDirUnitVector.X * _Speed;
+        }
+        else
+        {
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, _Speed);
         }
 
-        // I think this is useless, but I'm afraid to pull it out b/c the hook system is so funky
+        Velocity = velocity;
         MoveAndSlide();
+
+        // Check for mode swap for next frame
+        if (_inputToggleAim || _inputFire)
+        {
+            ModeTransitionWalkToAim();
+        }
     }
 
     /// <summary>
-    /// Handling for logic branch where you're in "aim/shoot" mode
-    /// delta currently unused, likely will be pulled later
+    /// Branch for aiming + hook firing w/ state transitions to walk + to grapple
     /// </summary>
-    private void HandleAimMode(double delta)
+    private void HandleAiming()
     {
-        // Handling for glub firing call
-        if (Input.IsActionJustPressed("action_fire"))
+        glubHook.VisualizeAim(_inputAimUnitVector);
+
+        if (_inputToggleAim)
         {
-            // Fires hook & uses return to see if we need to update glubs
-            if (glubHook.FireHook(GetLocalMousePosition() - _offsetGrappleVis))
+            ModeTransitionAimToWalk();
+            return;
+        }
+
+        if (_inputFire)
+        {
+            bool successfulGrapple = glubHook.FireHook(_inputAimUnitVector);
+
+            if (successfulGrapple)
             {
-                // Replace this w/ success SFX/VFX caLL
-                GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState",true);
+                ModeTransitionAimToGrapple();
+                // INSERT SFX/VFX call for a successful glub firing
             }
             else
             {
-                // Replace this w/ fail SFX/VFX call
+                // INSERT SFX/VFX call for failed glub firing
             }
+
+            return;
         }
-        else
+    }
+
+    /// <summary>
+    /// Branch for being in a grapple + either warping to the hook point or disengaging
+    /// </summary>
+    private void HandleGrappling()
+    {
+        // Can jump to destination
+        if (_inputFire)
         {
-            // Grapple handling branch
-            if (glubHook.IsInGrapple())
-            {
-                // Hard coded input to allow dpad input to trigger either a grapple cancel or a grapple confirm
-                if (_dPadInput.Y < 0)
-                {
-                    // Replace this w/ a call to an ienumerator that makes a smooth motion as opposed to a hop + add input disabling mid smoothmove
-                    JumpToGrappleDestation();
-                    //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
-                    // Need to add a ground check for autodisengage if you're on the ground, made somewhat stickier by "snapped" grid positioning
-                }
-                else if (_dPadInput.Y > 0)
-                {
-                    glubHook.DisengageHook();
-                    //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
-                }
-            }
+            // Replace this w/ a call to an ienumerator that makes a smooth motion
+            // As opposed to a hop + add input disabling mid smoothmove
+            JumpToGrappleDestination();
+            ModeTransitionGrappleToAim();
+            //GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
+            return;
         }
+
+        // Handle a request to disengage the hook so we can aim again
+        if (_inputToggleAim)
+        {
+            ModeTransitionGrappleToAim();
+            return;
+        }
+    }
+
+    // Transition play mode from walk to aim
+    private void ModeTransitionWalkToAim()
+    {
+        _playerState = States.AIMING;               // Set the state for future frames processing
+        Velocity = Vector2.Zero;                    // Zero out velocity on transition
+        Position = Position.Snapped(_stepSize);     // Lock us to a shooting position
+        glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
+    }
+
+    // Transition play mode from aim to walk
+    private void ModeTransitionAimToWalk()
+    {
+        _playerState = States.WALKING;
+        glubHook.DisableAimVisualizer();            // REPLACES ToggleAimVisualizer disablement
+    }
+
+    // Transition play mode from aim to grappled mode
+    private void ModeTransitionAimToGrapple()
+    {
+        _playerState = States.GRAPPLED;
+        glubHook.DisableAimVisualizer();
+        GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", true);
+    }
+
+    // Transition play mode from grappling to aiming (either after a warp or a disengage)
+    private void ModeTransitionGrappleToAim()
+    {
+        _playerState = States.AIMING;
+        glubHook.DisengageHook();
+        glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
     }
 
     /// <summary>
     /// Warp function to pull glub to destination point based on hook
     /// <para> Need to turn this into a coroutine function for movement as opposed to warp eventually</para>
     /// </summary>
-    private void JumpToGrappleDestation() 
+    private void JumpToGrappleDestination()
     {
         // Local storage to find offset from grapple store position to correct display position
         Vector2 repOffset = Vector2.Zero;
@@ -154,61 +212,41 @@ public partial class Player : CharacterBody2D
 
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         this.Position = glubHook.GetHookPoint() + repOffset;
-        this.Position =    this.Position.Snapped(_stepSize);
-
-        // Finish by disengaging our hook
-        glubHook.DisengageHook();
+        this.Position = this.Position.Snapped(_stepSize);
     }
 
     /// <summary>
-    /// Handling branch for any player movement not under the auspices of aim mode
+    /// Makes a snapping Vector 2 on 45 degree angles 
     /// </summary>
-    private void HandleFreeMode(double delta)
+    private Vector2 GetNearest8Way(Vector2 unitVector)
     {
-        Velocity = SetVelocityRegularly(delta);
-        MoveAndSlide();
+        // Do some quick trig to get us the nearest snappable Vector direction
+        float angle           = Mathf.RadToDeg(unitVector.Angle());
+        float nearestAngle    = Mathf.Round(angle / 45) * 45;
+        float nearestRadAngle = Mathf.DegToRad(nearestAngle);
+
+        return new Vector2(Mathf.Cos(nearestRadAngle), Mathf.Sin(nearestRadAngle));
     }
 
     /// <summary>
-    /// Some fairly basic movement code, to be made nicer later
+    /// More modular input gathering at the start of every physics frame
+    /// <para> I'm not 100% on how the input 'handled' system works, so this is a compromise</para>
     /// </summary>
-    private Vector2 SetVelocityRegularly(double delta)
+    private void GatherInput()
     {
-        // Grab a local handle for velocity tweakery
-        Vector2 velocity = Velocity;
+        _inputDirUnitVector = Input.GetVector("move_left", "move_right", "move_up", "move_down" + "");
 
-        // Add the gravity
-        if (!IsOnFloor())
-            velocity.Y += gravity * (float)delta;
-
-        // Set x velocity, for now just simple binary input
-        if (_dPadInput != Vector2.Zero)
+        if (_mouseMode)
         {
-            velocity.X = _dPadInput.X * _Speed;
+            _inputAimUnitVector = GetNearest8Way((GetLocalMousePosition() - _offsetGrappleVis).Normalized());
         }
         else
         {
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, _Speed);
+            _inputAimUnitVector = _inputDirUnitVector;
         }
 
-        // Not sure why I broke this function out, but here we are!
-        return velocity;
-    }
-
-    /// <summary>
-    /// Currently unused, will be used to handle smooth position changing for a grapple transition
-    /// </summary>
-    private Vector2 SetVelocityGrapple(double delta)
-    {
-        return Vector2.Zero;
-    }
-
-    /// <summary>
-    /// One line function to set _dPadInput - might grow more complex if we start adding movement magnitude, etc
-    /// </summary>
-    private void SnagDPadInput()
-    {
-        _dPadInput = Input.GetVector("move_left", "move_right", "move_up", "move_down" + "");
+        _inputToggleAim = Input.IsActionJustPressed("mode_toggle_aim");
+        _inputFire = Input.IsActionJustPressed("action_fire");
     }
 
     /// <summary>

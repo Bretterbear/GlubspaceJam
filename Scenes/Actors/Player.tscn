@@ -44,19 +44,19 @@ begin_cap_mode = 2
 end_cap_mode = 2
 sharp_limit = 0.0
 
-[node name="Line2D_AimCurr" type="Line2D" parent="GlubHook"]
+[node name="Line2D_AimDextrus" type="Line2D" parent="GlubHook"]
 position = Vector2(32, -31)
 width = 3.0
-default_color = Color(0.579022, 0.389484, 0.788425, 0.811765)
+default_color = Color(0, 0.54902, 0.423529, 0.898039)
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 sharp_limit = 0.0
 
-[node name="Line2D_GhostAim" type="Line2D" parent="GlubHook"]
+[node name="Line2D_AimSinister" type="Line2D" parent="GlubHook"]
 position = Vector2(32, -31)
-width = 4.0
-default_color = Color(0.32549, 0.415686, 0.470588, 0.501961)
+width = 3.0
+default_color = Color(0.862745, 0, 0.305882, 0.898039)
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
