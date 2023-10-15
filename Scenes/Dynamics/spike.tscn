@@ -6,7 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
 
 [node name="Spike" type="Area2D"]
-collision_layer = 256
+rotation = 1.57079
+collision_layer = 384
 script = ExtResource("1_bxjc6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

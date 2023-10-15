@@ -1,19 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnbrqehe00jbu"]
+[gd_scene load_steps=2 format=3 uid="uid://cnbrqehe00jbu"]
 
-[ext_resource type="Script" path="res://Scripts/Spike.cs" id="1_u8lvv"]
-[ext_resource type="Texture2D" uid="uid://nouxjnvr3rvw" path="res://Assets/Art/Placeholder Art/LockOff.png" id="2_mgqx8"]
+[ext_resource type="PackedScene" uid="uid://0brxx057a5ki" path="res://Scenes/Dynamics/spike.tscn" id="2_keajf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
+[node name="Spike" type="Node2D"]
 
-[node name="Spike" type="Area2D"]
-collision_layer = 256
-script = ExtResource("1_u8lvv")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -1.90735e-06)
-rotation = 3.14159
-scale = Vector2(0.208333, 0.208333)
-texture = ExtResource("2_mgqx8")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ebd4a")
+[node name="Spike" parent="." instance=ExtResource("2_keajf")]
+rotation = 4.71238
