@@ -20,8 +20,12 @@ public partial class Player : CharacterBody2D
     private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
     private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
 
-    // ---------- State Variable Declarations  ---------- //
-    private States           _playerState;          // Maintains branch control over what input processing is done
+
+    // ---------- State Variable Declarations  ---------- //    
+    private States _playerState;          // Maintains branch control over what input processing is done
+    private bool _wasFloored = true;      // Used to 
+
+    // ---------- Input Variable Declarations  ---------- //
     private Vector2   _inputDirUnitVector;          // Stores current frame movement directional input 
     private Vector2   _inputAimUnitVector;          // Modal - in WASD  mirrors dir, in mouse local vector
     private bool               _inputFire = false;  // Stores current frame "Just hit fire key" state
@@ -51,6 +55,7 @@ public partial class Player : CharacterBody2D
     {
         // Gather all inputs for frame at once
         GatherInput();
+        CheckAirStatus();
 
         // FSM for differential handling in physics process based on player state
         switch (_playerState)
@@ -252,6 +257,7 @@ public partial class Player : CharacterBody2D
 
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         Position = glubHook.GetHookPoint() + repOffset;
+        MoveAndSlide(); //Quick and dirty needs to be called for "is on floor" to be correct so the fall audio cue is played appropriatey
         Position = Position.Snapped(_stepSize);
     }
 
@@ -288,6 +294,20 @@ public partial class Player : CharacterBody2D
         _inputToggleAim = Input.IsActionJustPressed("mode_toggle_aim");
         _inputFire = Input.IsActionJustPressed("action_fire");
     }
+
+    /// <summary>
+    /// Used to play a sound cue on landing
+    /// </summary>
+    private void CheckAirStatus()
+    {
+        if (!_wasFloored && IsOnFloor())
+        {
+            GD.Print("STICK THE LANDING NOISE HERE - PLAYER.CHECKAIRSTATUS()");
+        }
+
+        _wasFloored = IsOnFloor();
+    }
+
 
     /// <summary>
     /// Experimenting w/ Signals, listens to the child followTimer's timeout, then should reset
