@@ -134,6 +134,10 @@ public partial class Player : CharacterBody2D
                         Position += rumpleOrient * _stepSize;
                     }
                 }
+                else if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.hazard)
+                {
+                    GD.Print("CALL FOR FUNCTIONALITY - Player.CollisionTileHandling() - NEED TO KILL THE PLAYER HERE");
+                }
             }
         }
     }
