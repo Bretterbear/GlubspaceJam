@@ -1,5 +1,7 @@
 using Godot;
 using System.Diagnostics;
+using GlubspaceJam.Scripts
+;
 
 // Movement WASD / Arrows
 // Aim Mode Toggle
@@ -12,10 +14,11 @@ public partial class Player : CharacterBody2D
     
     // ---------- Editor Variable Declarations ---------- //
     [Export] private const float _Speed = 500.0f;               // Will need to fine tune, but controls player horizontal speed
-    [Export] private bool _mouseMode = true;                    // Used to determine input type - move to options menu
+    [Export] private bool    _mouseMode = true;                 // Used to determine input type - move to options menu
 
     // -------- Reference Variable Declarations  -------- //
     private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
+    private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
 
     // ---------- State Variable Declarations  ---------- //
     private States           _playerState;          // Maintains branch control over what input processing is done
@@ -34,9 +37,11 @@ public partial class Player : CharacterBody2D
     /// </summary>
     public override void _Ready()
     {
+        // Set initial player state when game starts
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
-        glubHook   = GetNode<GlubHook>("GlubHook");
+        glubHook     = GetNode<GlubHook>("GlubHook");
+       // _tileMap     = GetNode<TileMap>("../TileMap");
     }
 
     /// <summary>
@@ -47,7 +52,7 @@ public partial class Player : CharacterBody2D
         // Gather all inputs for frame at once
         GatherInput();
 
-        // Make for differential handling in physics process based on player state
+        // FSM for differential handling in physics process based on player state
         switch (_playerState)
         {
             case States.WALKING:
@@ -90,14 +95,49 @@ public partial class Player : CharacterBody2D
         }
 
         Velocity = velocity;
+
         MoveAndSlide();
 
+        //WILL PROBABLY GET RID OF IT
+        CollisionTileHandling();
+
         // Check for mode swap for next frame
+        // Note right now I have both aim toggle & fire being valid transition buttons
         if (_inputToggleAim || _inputFire)
         {
             ModeTransitionWalkToAim();
         }
     }
+
+    /// <summary>
+    /// Used for barrier handling (more complex solutions all sucked)
+    /// </summary>
+    private void CollisionTileHandling()
+    {
+        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        {
+            var collision = GetSlideCollision(i);
+
+            if (collision.GetCollider().GetType() == typeof(TileMap))
+            {
+                TileMap maparoo = (TileMap)collision.GetCollider();
+                Rid colliderRID = collision.GetColliderRid();
+
+                Vector2I tileCoords = maparoo.GetCoordsForBodyRid(colliderRID);
+                TileData rumples = maparoo.GetCellTileData(0, tileCoords);
+
+                if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.barrier)
+                {
+                    Vector2 rumpleOrient = (Vector2) rumples.GetCustomData("TileOrients");
+                    if (collision.GetNormal() == rumpleOrient)
+                    {
+                        Position += -rumpleOrient * _stepSize;
+                    }
+                }
+            }
+        }
+    }
+    
 
     /// <summary>
     /// Branch for aiming + hook firing w/ state transitions to walk + to grapple
@@ -211,8 +251,8 @@ public partial class Player : CharacterBody2D
         }
 
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
-        this.Position = glubHook.GetHookPoint() + repOffset;
-        this.Position = this.Position.Snapped(_stepSize);
+        Position = glubHook.GetHookPoint() + repOffset;
+        Position = Position.Snapped(_stepSize);
     }
 
     /// <summary>

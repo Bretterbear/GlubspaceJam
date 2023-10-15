@@ -1,7 +1,5 @@
 using Godot;
 using Godot.Collections;
-using System;
-using System.Collections;
 using System.Diagnostics;
 
 public partial class GlubHook : Node2D
@@ -25,7 +23,9 @@ public partial class GlubHook : Node2D
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new(32,-31);    // Used for grapple offset position from prefab origin
     private Vector2         _stepSize = new(64, 64);    // Denotes tilemap step-size     
-    private float _coaxialSpread = 16f;
+    private float      _coaxialSpread = 16f;
+    private string     _labelTileType = "TileTypes";    // Label for customdata layer 0 (tiletypes) -- corresponds to TileDataTypes.TileTypes enum
+
 
     /// <summary>
 	/// Links Glubhook to the other nodes it needs to poke
@@ -86,17 +86,17 @@ public partial class GlubHook : Node2D
         int tileDataOrientation = (int)collision["tileorientation"];
 
         // Handle the hook functionality based on terrain types
-        switch ((int)collision["tiletype"])
+        switch ((TileTypes)(int)collision[_labelTileType])
         {
-            case -1:    // Case (-1 kill)     | Kill a Glub on the point (currently fall through to non-stick)
+            case TileTypes.hazard:    // Case (-1 kill)     | Kill a Glub on the point (currently fall through to non-stick)
                 GD.Print("GH Status - Case -1, hit a kill object, no handling yet");
                 return false;
 
-            case 0:    // Case (+0 nonstick) | don't stick at all, but end the push
-                GD.Print("GH Status - Case 0, hit a non-stick block");
+            case TileTypes.nonstick:    // Case (+3 nonstick) | don't stick at all, but end the push
+                GD.Print("GH Status - Case 3, hit a non-stick block");
                 return false;
 
-            case 1:    // Case (+1 fullglub) | std stickiness
+            case TileTypes.fullstick:    // Case (+1 fullglub) | std stickiness
                 GD.Print("GH Status - Case 1, seting hook to full block");
                 SetHook(collisionTileMap, collisionPoint, collisionNormal);
                 return true;
@@ -174,7 +174,7 @@ public partial class GlubHook : Node2D
     /// <summary>
     /// Tests for collidable tiles, finds furthest along one - then returns it in a dict
     /// </summary>
-    private Godot.Collections.Dictionary TileSeeker(Vector2 startPoint, Vector2 targetPoint, Rid prevCollisionRid = new Rid())
+    private Dictionary TileSeeker(Vector2 startPoint, Vector2 targetPoint, Rid prevCollisionRid = new Rid())
     {
         // Make our raycast in space
         var spaceState = GetWorld2D().DirectSpaceState;
@@ -182,7 +182,7 @@ public partial class GlubHook : Node2D
 
         // Add specificity for collision mask & the RID of currentl collider if called recursively for barriers
         query.CollisionMask = 512;
-        query.Exclude = new Godot.Collections.Array<Rid> { prevCollisionRid };
+        query.Exclude = new Array<Rid> { prevCollisionRid };
 
         // Result is a dictionary denoting the qualities of the raycast collision
         var result = spaceState.IntersectRay(query);
