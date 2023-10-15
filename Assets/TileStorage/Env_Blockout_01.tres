@@ -1,6 +1,7 @@
-[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://vtnxvti07gj2"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://vtnxvti07gj2"]
 
 [ext_resource type="Texture2D" uid="uid://c0s0k748ly8fe" path="res://Assets/Art/Env_BlockoutMap_01.png" id="1_rj1ml"]
+[ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="2_14kdx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_02jug"]
 resource_name = "Palette_Standard"
@@ -267,6 +268,10 @@ texture_region_size = Vector2i(64, 64)
 1:8/0/physics_layer_1/angular_velocity = 0.0
 1:8/0/physics_layer_1/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_c6bjt"]
+resource_name = "Lost Glub"
+scenes/2/scene = ExtResource("2_14kdx")
+
 [resource]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 768
@@ -279,3 +284,4 @@ custom_data_layer_1/name = "_keyOrientation"
 custom_data_layer_1/type = 2
 sources/0 = SubResource("TileSetAtlasSource_02jug")
 sources/1 = SubResource("TileSetAtlasSource_4gdri")
+sources/2 = SubResource("TileSetScenesCollectionSource_c6bjt")
