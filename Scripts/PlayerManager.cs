@@ -55,7 +55,7 @@ public partial class PlayerManager : Node2D
 		_gluboidPack.Add(gluboid);
 		Debug.WriteLine(_gluboidPack.Count);
 		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), skin);
-		AddChild(gluboid);
+		CallDeferred("add_child", gluboid);
 		_numberOfGlubs++;
 		
 	}

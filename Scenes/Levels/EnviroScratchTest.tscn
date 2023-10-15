@@ -29,5 +29,3 @@ layer_0/tile_data = PackedInt32Array(655359, 0, 0, 589824, 0, 0, 589825, 0, 0, 5
 visible = false
 
 [node name="GridLineRenderer" parent="." instance=ExtResource("5_2yesj")]
-
-[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
