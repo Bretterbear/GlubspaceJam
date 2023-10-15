@@ -1,5 +1,7 @@
 using Godot;
 using System.Diagnostics;
+using GlubspaceJam.Scripts
+;
 
 // Movement WASD / Arrows
 // Aim Mode Toggle
@@ -124,9 +126,9 @@ public partial class Player : CharacterBody2D
                 Vector2I tileCoords = maparoo.GetCoordsForBodyRid(colliderRID);
                 TileData rumples = maparoo.GetCellTileData(0, tileCoords);
 
-                if ((int) rumples.GetCustomData("_keyType") == 3)
+                if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.barrier)
                 {
-                    Vector2 rumpleOrient = (Vector2) rumples.GetCustomData("_vecOrient");
+                    Vector2 rumpleOrient = (Vector2) rumples.GetCustomData("TileOrients");
                     if (collision.GetNormal() == rumpleOrient)
                     {
                         Position += -rumpleOrient * _stepSize;
