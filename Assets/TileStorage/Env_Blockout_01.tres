@@ -1,6 +1,10 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://vtnxvti07gj2"]
+[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://vtnxvti07gj2"]
 
 [ext_resource type="Texture2D" uid="uid://c0s0k748ly8fe" path="res://Assets/Art/Env_BlockoutMap_01.png" id="1_rj1ml"]
+[ext_resource type="PackedScene" uid="uid://fuo2ct7e5l4j" path="res://Scenes/Dynamics/spikeEast.tscn" id="2_8ukrs"]
+[ext_resource type="PackedScene" uid="uid://b5sxu2n3nv4vi" path="res://Scenes/Dynamics/spikeNorth.tscn" id="3_4vcer"]
+[ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="4_lvhah"]
+[ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="5_md74q"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_0leoi"]
 tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0)
@@ -184,6 +188,13 @@ texture_region_size = Vector2i(64, 64)
 1:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:8/0/physics_layer_0/angular_velocity = 0.0
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_0852r"]
+resource_name = "SPikes"
+scenes/1/scene = ExtResource("2_8ukrs")
+scenes/2/scene = ExtResource("3_4vcer")
+scenes/3/scene = ExtResource("4_lvhah")
+scenes/4/scene = ExtResource("5_md74q")
+
 [resource]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 768
@@ -196,4 +207,5 @@ custom_data_layer_2/name = "_vecOrient"
 custom_data_layer_2/type = 5
 sources/0 = SubResource("TileSetAtlasSource_02jug")
 sources/1 = SubResource("TileSetAtlasSource_4gdri")
+sources/2 = SubResource("TileSetScenesCollectionSource_0852r")
 pattern_0 = SubResource("TileMapPattern_0leoi")

@@ -13,10 +13,17 @@ public partial class Spike : StaticBody2D
 		_offTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/LockOn.png");
 	}
 
-	public void TurnOffSpikes()
+	public void TurnOffSpike()
 	{
 		SetCollisionMaskValue(1,false);
 		SetCollisionLayerValue(9, false);
 		((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
+	}
+
+	public void TurnOnSpike()
+	{
+		SetCollisionMaskValue(1,true);
+		SetCollisionLayerValue(9, true);
+		((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
 	}
 }
