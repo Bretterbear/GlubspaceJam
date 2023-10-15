@@ -6,5 +6,6 @@ public enum GluboidState
     Falling,
     IsPlayer,
     Grouping,
-    Extending
+    Extending,
+    Retracting,
 }
