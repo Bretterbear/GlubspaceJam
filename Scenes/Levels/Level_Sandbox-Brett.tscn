@@ -5,7 +5,7 @@
 [ext_resource type="TileSet" uid="uid://bf8743d3femaq" path="res://Assets/TileStorage/Functional.tres" id="2_lmrv5"]
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="2_xrpua"]
 [ext_resource type="PackedScene" uid="uid://b6fvc4t7hnkkr" path="res://Scenes/Actors/player_manager.tscn" id="4_i2gqd"]
-[ext_resource type="PackedScene" uid="uid://bvjd2gf2aalqv" path="res://Scenes/Actors/gluboid.tscn" id="6_7703a"]
+[ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="7_j1vfp"]
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="7_wulub"]
 
 [node name="LevelTest" type="Node2D" groups=["glubs"]]
@@ -27,10 +27,11 @@ layer_0/tile_data = PackedInt32Array(-458772, 131074, 5, -393236, 131074, 6, -32
 [node name="Player" parent="PlayerManager" instance=ExtResource("2_xrpua")]
 position = Vector2(1024, -576)
 
-[node name="Gluboid" parent="PlayerManager" instance=ExtResource("6_7703a")]
-
 [node name="Level_MenuPause" parent="." instance=ExtResource("7_wulub")]
 offset_left = 1000.0
 offset_top = -776.0
 offset_right = 1000.0
 offset_bottom = -776.0
+
+[node name="LostGlub" parent="." instance=ExtResource("7_j1vfp")]
+position = Vector2(1505, -574)

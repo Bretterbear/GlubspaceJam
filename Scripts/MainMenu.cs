@@ -6,17 +6,17 @@ using Godot;
 /// </summary>
 public partial class MainMenu : Control
 {
-    // -------- Reference Variable Declarations  -------- //
-    private OptionButton sceneSelect;											// Reference to the scene select dropdown
+	// -------- Reference Variable Declarations  -------- //
+	private OptionButton sceneSelect;											// Reference to the scene select dropdown
 
-    // ------------- Constants Declarations ------------- //
-    private string	 pathLevelFolder = "res://Scenes/Levels";					// Path to the folder containing all levels
+	// ------------- Constants Declarations ------------- //
+	private string	 pathLevelFolder = "res://Scenes/Levels";					// Path to the folder containing all levels
 	private string pathOptionsButton = "VBox_Menu/HBox_Start/Button_Options";	// Path to button for level select dropdown
 
-    /// <summary>
+	/// <summary>
 	/// All we're doing here is filling our scenelist for menu options
 	/// </summary>
-    public override void _Ready()
+	public override void _Ready()
 	{
 		// Calls our method to fill out scene paths from the scenes folder
 		PopulateSceneList(pathLevelFolder);
@@ -42,8 +42,8 @@ public partial class MainMenu : Control
 				GD.Print("Error - scene " + selectedScene + " can't be loaded into a packedScene");
 				break;
 			case Error.CantCreate:
-                GD.Print("Error - scene " + selectedScene + " can't be instantiated properly");
-                break;
+				GD.Print("Error - scene " + selectedScene + " can't be instantiated properly");
+				break;
 			default:
 				break;
 		}
@@ -58,24 +58,24 @@ public partial class MainMenu : Control
 		GetTree().Quit();
 	}
 
-    /// <summary>
-    /// Fills the scenelist dropdown with all scenes in the specified folder
-    /// </summary>
-    /// <param name="absFolderPath">needs to be a project path to the levels folder</param>
-    private void PopulateSceneList(string absFolderPath)
+	/// <summary>
+	/// Fills the scenelist dropdown with all scenes in the specified folder
+	/// </summary>
+	/// <param name="absFolderPath">needs to be a project path to the levels folder</param>
+	private void PopulateSceneList(string absFolderPath)
 	{
 		// Try to grab a reference to the scene select dropdown and error check that path
-        sceneSelect = GetNode<OptionButton>(pathOptionsButton);
-        if (sceneSelect == null)
+		sceneSelect = GetNode<OptionButton>(pathOptionsButton);
+		if (sceneSelect == null)
 		{
-            GD.Print("Error(MainMenu) | invalid dropdown menu filepath");
-            return;
+			GD.Print("Error(MainMenu) | invalid dropdown menu filepath");
+			return;
 		}
 
 		sceneSelect.Clear();					// Shouldn't do anything - but can't hurt to check
 
-        // Try to open the folder specified in Ready to make a usable directory ref
-        DirAccess dir = DirAccess.Open(absFolderPath);
+		// Try to open the folder specified in Ready to make a usable directory ref
+		DirAccess dir = DirAccess.Open(absFolderPath);
 
 		// DirAccess defaults to null if the file path fails, so there's our error handling
 		if (dir != null)
@@ -83,20 +83,20 @@ public partial class MainMenu : Control
 			dir.ListDirBegin();					// Start up a stream for the directory folder
 			string fileName = dir.GetNext();	// Initialize filename w/ the first file in the folder
 
-            // Move through the files in the absFolderPath Directory, add as appropriate
-            while (fileName != "")
+			// Move through the files in the absFolderPath Directory, add as appropriate
+			while (fileName != "")
 			{
 				// Only add the file to the dropdown if it's a tscn file
 				if (fileName.GetExtension() == "tscn")
 				{
-                    sceneSelect.AddItem(fileName);
-                }
+					sceneSelect.AddItem(fileName);
+				}
 
 				fileName = dir.GetNext();		// func will iterate & end on empty string
-            }
+			}
 
 			dir.ListDirEnd();					// Might be unnecessary - unknown if DirAccess stream autocloses on end
-        }
+		}
 		else
 		{
 			// Print an error if we can't access the directory at absFolderPath
