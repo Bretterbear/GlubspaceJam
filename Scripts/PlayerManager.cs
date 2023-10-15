@@ -124,8 +124,6 @@ public partial class PlayerManager : Node2D
 		while (n > 1) {  
 			n--;
 			var k = Rand.GetInstance().RandiRange(0,n);
-			Debug.WriteLine(k);
-			Debug.WriteLine(n);
 			(_gluboidPack[k], _gluboidPack[n]) = (_gluboidPack[n], _gluboidPack[k]);
 		}
 

@@ -13,7 +13,7 @@ public partial class Gluboid : CharacterBody2D
 	private float _hopPower;
 	private float _hopHeight = 100f;
 	private float _snapDistance = 2000f;
-	private GluboidState _state;
+	private GluboidState _state = GluboidState.Idle;
 	private float _distanceFromPlayerX;
 	private Vector2 _extendPosition;
 	private float _extendDistance = 64;
@@ -37,7 +37,6 @@ public partial class Gluboid : CharacterBody2D
 	public override void _Ready()
 	{
 		AddToGroup("Gluboids");
-		_state = GluboidState.Idle;
 		_playerManager = GetParent<PlayerManager>();
 	}
 	public override void _PhysicsProcess(double delta)
@@ -50,8 +49,8 @@ public partial class Gluboid : CharacterBody2D
 		//IsPlayer represents that the Gluboid is the current visual representation of the Player.
 		//Grouping is the state before extending.
 		Debug.WriteLine(_state);
-		Debug.WriteLine("Player X:" + _playerPosition.X + " Player Y:" + _playerPosition.Y);
-		Debug.WriteLine("Glub X:" + GlobalPosition.X + " Glub Y:" + GlobalPosition.Y);
+		//Debug.WriteLine("Player X:" + _playerPosition.X + " Player Y:" + _playerPosition.Y);
+		//Debug.WriteLine("Glub X:" + GlobalPosition.X + " Glub Y:" + GlobalPosition.Y);
 		
 		if (_state == GluboidState.IsPlayer)
 		{
@@ -104,7 +103,7 @@ public partial class Gluboid : CharacterBody2D
 		}
 		else if (_state != GluboidState.IsPlayer && _state != GluboidState.Grouping)
 		{
-			Debug.WriteLine(_distanceFromPlayerX);
+			//Debug.WriteLine(_distanceFromPlayerX);
 			
 			if (Math.Abs(_distanceFromPlayerX) > _snapDistance)
 			{
@@ -146,15 +145,15 @@ public partial class Gluboid : CharacterBody2D
 					velocity.X = 0;
 					_state = GluboidState.Idle;
 					Velocity = velocity;
-					Debug.WriteLine("Reset to Idle");
-					Debug.WriteLine(_state);
+					//Debug.WriteLine("Reset to Idle");
+					//Debug.WriteLine(_state);
 				}
 
 				//Checking to see if Gluboid needs to Hop
 				var playerDistance = Math.Abs(_distanceFromPlayerX);
 				if (playerDistance > _maxDistanceFromPlayer && _state != GluboidState.PreHopping)
 				{
-					Debug.WriteLine("Start Hop");
+					//Debug.WriteLine("Start Hop");
 					Hop();
 				}
 			}
@@ -182,7 +181,7 @@ public partial class Gluboid : CharacterBody2D
 	/// <param name="playerPosition"></param>
 	public void SetPlayerPosition(Vector2 playerPosition)
 	{
-		Debug.WriteLine("Distance invoked");
+		//Debug.WriteLine("Distance invoked");
 		_playerPosition = playerPosition;
 		_distanceFromPlayerX = GlobalPosition.X - _playerPosition.X;
 		
@@ -220,6 +219,7 @@ public partial class Gluboid : CharacterBody2D
 		_state = GluboidState.IsPlayer;
 		_isPlayer = true;
 		Debug.WriteLine("Player Called");
+		Debug.WriteLine(_state);
 	}
 
 	public void MakeNotPlayer()

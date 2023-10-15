@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://vv85hw0bhyph"]
+
+[ext_resource type="Script" path="res://Scripts/DynamicsController.cs" id="1_gfubq"]
+
+[node name="DynamicsController" type="Node2D"]
+script = ExtResource("1_gfubq")
