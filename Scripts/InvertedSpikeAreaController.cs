@@ -1,9 +1,7 @@
 using Godot;
 using System;
-using System.Diagnostics;
-using GlubspaceJam.Scripts;
 
-public partial class SpikeAreaController : Area2D, IDynamicReceiver
+public partial class InvertedSpikeAreaController : Area2D
 {
 	private bool _powered;
 	// Called when the node enters the scene tree for the first time.
@@ -12,10 +10,10 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	{
 		ToggleSpikes();
 	}
+
 	public void ProvidePower()
 	{
 		_powered = true;
-		ToggleSpikes();
 	}
 
 	public void StopPower()
@@ -30,14 +28,12 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 
 	private void ToggleSpikes()
 	{
-		Debug.WriteLine("ToggleSpikes");
 		var children = GetOverlappingBodies();
-		Debug.WriteLine(children.Count);
 		foreach (var child in children)
 		{
 			if (child is Spike)
 			{
-				if (_powered)
+				if (!_powered)
 				{
 					((Spike)child).TurnOffSpike();
 				}

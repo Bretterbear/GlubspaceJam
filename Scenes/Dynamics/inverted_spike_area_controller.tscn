@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bt48mfcjj3fes"]
+
+[ext_resource type="Script" path="res://Scripts/InvertedSpikeAreaController.cs" id="1_lbj3t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j68xn"]
+
+[node name="InvertedSpikeAreaController" type="Area2D"]
+script = ExtResource("1_lbj3t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_j68xn")

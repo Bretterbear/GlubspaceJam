@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://fxrneqmnwb37"]
+[gd_scene load_steps=3 format=3 uid="uid://fxrneqmnwb37"]
+
+[ext_resource type="Script" path="res://Scripts/SpikeAreaController.cs" id="1_eupcs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j68xn"]
 
 [node name="SpikeAreaController" type="Area2D"]
+collision_layer = 0
+collision_mask = 256
+script = ExtResource("1_eupcs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_j68xn")
