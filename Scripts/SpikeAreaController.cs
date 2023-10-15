@@ -21,6 +21,7 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	public void StopPower()
 	{
 		_powered = false;
+		ToggleSpikes();
 	}
 
 	public bool IsOn()
@@ -31,7 +32,7 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	private void ToggleSpikes()
 	{
 		Debug.WriteLine("ToggleSpikes");
-		var children = GetOverlappingBodies();
+		var children = GetOverlappingAreas();
 		Debug.WriteLine(children.Count);
 		foreach (var child in children)
 		{
