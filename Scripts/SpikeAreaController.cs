@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using GlubspaceJam.Scripts;
 
 public partial class SpikeAreaController : Area2D, IDynamicReceiver
@@ -14,6 +15,7 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	public void ProvidePower()
 	{
 		_powered = true;
+		ToggleSpikes();
 	}
 
 	public void StopPower()
@@ -28,7 +30,9 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 
 	private void ToggleSpikes()
 	{
+		Debug.WriteLine("ToggleSpikes");
 		var children = GetOverlappingBodies();
+		Debug.WriteLine(children.Count);
 		foreach (var child in children)
 		{
 			if (child is Spike)

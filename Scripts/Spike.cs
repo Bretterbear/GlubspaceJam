@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
-public partial class Spike : StaticBody2D
+public partial class Spike : Area2D
 {
 	private Texture2D _onTexture;
 
@@ -15,6 +16,7 @@ public partial class Spike : StaticBody2D
 
 	public void TurnOffSpike()
 	{
+		Debug.WriteLine("turnSpikesOff");
 		SetCollisionMaskValue(1,false);
 		SetCollisionLayerValue(9, false);
 		((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;

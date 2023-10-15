@@ -48,7 +48,7 @@ public partial class Gluboid : CharacterBody2D
 		//PreHopping accounts for getting the gluboid out into the air to start a Hop
 		//IsPlayer represents that the Gluboid is the current visual representation of the Player.
 		//Grouping is the state before extending.
-		Debug.WriteLine(_state);
+		//Debug.WriteLine(_state);
 		//Debug.WriteLine("Player X:" + _playerPosition.X + " Player Y:" + _playerPosition.Y);
 		//Debug.WriteLine("Glub X:" + GlobalPosition.X + " Glub Y:" + GlobalPosition.Y);
 		
