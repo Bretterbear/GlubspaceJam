@@ -1,6 +1,18 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dpekb7xfoge8c"]
+[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://dpekb7xfoge8c"]
 
 [ext_resource type="Texture2D" uid="uid://d2q1obq5bd4yn" path="res://Assets/Art/Env_Palette_01.png" id="1_jggis"]
+[ext_resource type="PackedScene" uid="uid://fuo2ct7e5l4j" path="res://Scenes/Dynamics/spikeEast.tscn" id="1_ou6v6"]
+[ext_resource type="PackedScene" uid="uid://b5sxu2n3nv4vi" path="res://Scenes/Dynamics/spikeNorth.tscn" id="2_urprd"]
+[ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="3_t3f1g"]
+[ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="4_rtje3"]
+[ext_resource type="PackedScene" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_55kpq"]
+resource_name = "Spikes"
+scenes/1/scene = ExtResource("1_ou6v6")
+scenes/2/scene = ExtResource("2_urprd")
+scenes/3/scene = ExtResource("3_t3f1g")
+scenes/4/scene = ExtResource("4_rtje3")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lsph3"]
 texture = ExtResource("1_jggis")
@@ -113,6 +125,7 @@ texture_region_size = Vector2i(64, 64)
 0:4/3/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:4/3/physics_layer_0/angular_velocity = 0.0
 2:4/0 = 0
+2:4/0/modulate = Color(0.929412, 0, 0.8, 1)
 2:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:4/0/physics_layer_0/angular_velocity = 0.0
 2:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 0, -32, 0)
@@ -125,6 +138,7 @@ texture_region_size = Vector2i(64, 64)
 3:4/0/custom_data_0 = 5
 3:4/0/custom_data_1 = Vector2(0, 1)
 4:4/0 = 0
+4:4/0/modulate = Color(0, 0, 1, 1)
 4:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:4/0/physics_layer_0/angular_velocity = 0.0
 4:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 0, -32, 0)
@@ -138,17 +152,45 @@ texture_region_size = Vector2i(64, 64)
 5:4/0/custom_data_0 = 5
 5:4/0/custom_data_1 = Vector2(0, 1)
 5:4/0/custom_data_2 = true
+0:5/next_alternative_id = 4
 0:5/0 = 0
 0:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:5/0/physics_layer_0/angular_velocity = 0.0
 0:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 0:5/0/custom_data_0 = 6
+0:5/1 = 1
+0:5/1/flip_v = true
+0:5/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:5/1/physics_layer_0/angular_velocity = 0.0
+0:5/2 = 2
+0:5/2/transpose = true
+0:5/2/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:5/2/physics_layer_0/angular_velocity = 0.0
+0:5/3 = 3
+0:5/3/flip_h = true
+0:5/3/transpose = true
+0:5/3/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:5/3/physics_layer_0/angular_velocity = 0.0
+1:5/next_alternative_id = 4
 1:5/0 = 0
 1:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:5/0/physics_layer_0/angular_velocity = 0.0
 1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 1:5/0/custom_data_0 = 6
 1:5/0/custom_data_2 = true
+1:5/1 = 1
+1:5/1/flip_v = true
+1:5/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:5/1/physics_layer_0/angular_velocity = 0.0
+1:5/2 = 2
+1:5/2/transpose = true
+1:5/2/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:5/2/physics_layer_0/angular_velocity = 0.0
+1:5/3 = 3
+1:5/3/flip_h = true
+1:5/3/transpose = true
+1:5/3/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:5/3/physics_layer_0/angular_velocity = 0.0
 2:5/0 = 0
 2:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:5/0/physics_layer_0/angular_velocity = 0.0
@@ -162,6 +204,7 @@ texture_region_size = Vector2i(64, 64)
 3:5/0/custom_data_0 = 5
 3:5/0/custom_data_1 = Vector2(0, 1)
 4:5/0 = 0
+4:5/0/modulate = Color(0, 0, 0, 1)
 4:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:5/0/physics_layer_0/angular_velocity = 0.0
 4:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 0, -32, 0)
@@ -280,6 +323,10 @@ texture_region_size = Vector2i(64, 64)
 1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:4/0/physics_layer_0/angular_velocity = 0.0
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_3m6ii"]
+resource_name = "Lost Glub"
+scenes/1/scene = ExtResource("6_ic7oc")
+
 [resource]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 768
@@ -291,3 +338,5 @@ custom_data_layer_1/type = 5
 custom_data_layer_2/name = "TilePower"
 custom_data_layer_2/type = 1
 sources/1 = SubResource("TileSetAtlasSource_lsph3")
+sources/0 = SubResource("TileSetScenesCollectionSource_55kpq")
+sources/2 = SubResource("TileSetScenesCollectionSource_3m6ii")

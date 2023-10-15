@@ -12,7 +12,7 @@ public class GluboidSkinController
     
     public GluboidSkinController()
     {
-        _skinFilePath = new List<string>(){"res://Assets/Art/Char_GlubPrinceps-01.png"};
+        _skinFilePath = new List<string>(){"res://Assets/Art/Char_GlubPrinceps-01.png","res://Assets/Art/Char_Glub_FuryCat.png"};
 
         _skins = new List<Texture2D>();
         for (int i = 0; i < _skinFilePath.Count; i++)

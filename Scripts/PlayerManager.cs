@@ -55,7 +55,7 @@ public partial class PlayerManager : Node2D
 		_gluboidPack.Add(gluboid);
 		Debug.WriteLine(_gluboidPack.Count);
 		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), skin);
-		AddChild(gluboid);
+		CallDeferred("add_child", gluboid);
 		_numberOfGlubs++;
 		
 	}
@@ -124,8 +124,6 @@ public partial class PlayerManager : Node2D
 		while (n > 1) {  
 			n--;
 			var k = Rand.GetInstance().RandiRange(0,n);
-			Debug.WriteLine(k);
-			Debug.WriteLine(n);
 			(_gluboidPack[k], _gluboidPack[n]) = (_gluboidPack[n], _gluboidPack[k]);
 		}
 

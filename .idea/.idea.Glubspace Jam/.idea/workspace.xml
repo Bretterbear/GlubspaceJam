@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9b62d0a1-a554-43f4-b1fe-a40d35b1446a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Actors/LostGlub.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Actors/LostGlub.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/LostGlub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/LostGlub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/PlayerManager.cs" afterDir="false" />
-    </list>
+    <list default="true" id="9b62d0a1-a554-43f4-b1fe-a40d35b1446a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,6 +76,8 @@
       <workItem from="1697226377691" duration="16070000" />
       <workItem from="1697321491021" duration="5883000" />
       <workItem from="1697327840478" duration="1233000" />
+      <workItem from="1697330543518" duration="4687000" />
+      <workItem from="1697390286187" duration="9922000" />
     </task>
     <servers />
   </component>

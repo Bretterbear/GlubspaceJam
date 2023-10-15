@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5sxu2n3nv4vi"]
+
+[ext_resource type="Script" path="res://Scripts/Spike.cs" id="1_62j62"]
+[ext_resource type="Texture2D" uid="uid://nouxjnvr3rvw" path="res://Assets/Art/Placeholder Art/LockOff.png" id="2_i2qpf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
+
+[node name="Spike" type="Area2D"]
+collision_layer = 256
+script = ExtResource("1_62j62")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1.90735e-06)
+scale = Vector2(0.208333, 0.208333)
+texture = ExtResource("2_i2qpf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ebd4a")

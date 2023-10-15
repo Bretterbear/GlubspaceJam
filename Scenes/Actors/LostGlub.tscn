@@ -11,7 +11,7 @@ script = ExtResource("1_nn8p7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_32qnv")
 
-[node name="GlubSprite" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.191, 0.252)
 
 [connection signal="body_entered" from="." to="." method="CollisionWithPlayer"]
