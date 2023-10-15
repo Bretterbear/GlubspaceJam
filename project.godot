@@ -67,6 +67,11 @@ action_fire={
 2d_physics/layer_9="Environment"
 2d_physics/layer_10="RayCast"
 
+[physics]
+
+common/physics_jitter_fix=100.0
+2d/physics_jitter_fix=100.0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

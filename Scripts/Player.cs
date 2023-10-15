@@ -39,7 +39,7 @@ public partial class Player : CharacterBody2D
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
-        _tileMap     = GetNode<TileMap>("../TileMap");
+       // _tileMap     = GetNode<TileMap>("../TileMap");
     }
 
     /// <summary>
@@ -93,6 +93,7 @@ public partial class Player : CharacterBody2D
         }
 
         Velocity = velocity;
+
         MoveAndSlide();
 
         //WILL PROBABLY GET RID OF IT
@@ -107,12 +108,34 @@ public partial class Player : CharacterBody2D
     }
 
     /// <summary>
-    /// FUCK MEEEEEEE!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /// Used for barrier handling (more complex solutions all sucked)
     /// </summary>
     private void CollisionTileHandling()
     {
+        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        {
+            var collision = GetSlideCollision(i);
 
+            if (collision.GetCollider().GetType() == typeof(TileMap))
+            {
+                TileMap maparoo = (TileMap)collision.GetCollider();
+                Rid colliderRID = collision.GetColliderRid();
+
+                Vector2I tileCoords = maparoo.GetCoordsForBodyRid(colliderRID);
+                TileData rumples = maparoo.GetCellTileData(0, tileCoords);
+
+                if ((int) rumples.GetCustomData("_keyType") == 3)
+                {
+                    Vector2 rumpleOrient = (Vector2) rumples.GetCustomData("_vecOrient");
+                    if (collision.GetNormal() == rumpleOrient)
+                    {
+                        Position += -rumpleOrient * _stepSize;
+                    }
+                }
+            }
+        }
     }
+    
 
     /// <summary>
     /// Branch for aiming + hook firing w/ state transitions to walk + to grapple
