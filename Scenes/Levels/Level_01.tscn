@@ -17,9 +17,11 @@ layer_0/tile_data = PackedInt32Array(589824, 1, 0, 589825, 1, 0, 589826, 1, 0, 5
 [node name="Player" parent="." instance=ExtResource("2_ntwaa")]
 position = Vector2(150, 267)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(575, 319)
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(32, -31)
+zoom = Vector2(0.6, 0.6)
+position_smoothing_enabled = true
 script = ExtResource("4_1xgq4")
 
-[node name="Level_MenuPause" parent="Camera2D" instance=ExtResource("3_cbokt")]
+[node name="Level_MenuPause" parent="Player/Camera2D" instance=ExtResource("3_cbokt")]
 visible = false

@@ -9,7 +9,7 @@ public partial class GameManager : Node2D
     private PauseMenu pauseReference;					// Reference to the pause menu subscene
 
     // ------------- Constants Declarations ------------- //
-    private string pathPauseMenu = "Camera2D/Level_MenuPause";	// Path to the folder containing all levels
+    private string pathPauseMenu = "Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
 
     /// <summary>
 	/// Links manager to the pause menu on scene loading
