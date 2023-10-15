@@ -1,4 +1,7 @@
 
+/// <summary>
+/// Contains "CustomDataLayer - 0" integer codes
+/// </summary>
 public enum TileTypes
 {
     hazard    =-1,
