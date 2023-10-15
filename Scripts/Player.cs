@@ -129,9 +129,9 @@ public partial class Player : CharacterBody2D
                 if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.barrier)
                 {
                     Vector2 rumpleOrient = (Vector2) rumples.GetCustomData("TileOrients");
-                    if (collision.GetNormal() == rumpleOrient)
+                    if (collision.GetNormal() == -rumpleOrient)
                     {
-                        Position += -rumpleOrient * _stepSize;
+                        Position += rumpleOrient * _stepSize;
                     }
                 }
             }

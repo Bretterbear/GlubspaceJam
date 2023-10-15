@@ -24,12 +24,17 @@ public partial class GlubHook : Node2D
     private Vector2 _offsetGrappleVis = new(32,-31);    // Used for grapple offset position from prefab origin
     private Vector2         _stepSize = new(64, 64);    // Denotes tilemap step-size     
     private float      _coaxialSpread = 16f;
-    private string     _labelTileType = "TileTypes";    // Label for customdata layer 0 (tiletypes) -- corresponds to TileDataTypes.TileTypes enum
 
+    // -------------- Label Declarations --------------- //
+    private string     _labelTileType = "TileTypes";    // Label for customdata layer 0 (tiletypes) -- corresponds to TileDataTypes.TileTypes enum
+    private string   _labelTileOrient = "TileOrients";  // Label for costomdata layer 1 (Vector2) -- corresponds to normal vector comparator for orientable tiles
+    private string     _labelTileData = "tileData";     // Label for collision added data for access ease
+    private string    _labelMapCoords = "tileMapCoords";// Label for collision added data for access ease
+    private string     _labelInterior = "tileInterior"; // Label for collision added data for access ease
 
     /// <summary>
-	/// Links Glubhook to the other nodes it needs to poke
-	/// </summary>
+    /// Links Glubhook to the other nodes it needs to poke
+    /// </summary>
     public override void _Ready()
     {
         // Grabbing node references we'll need inside object
@@ -55,7 +60,7 @@ public partial class GlubHook : Node2D
         Vector2 targetPoint = ToGlobal(localFireVector.Normalized() * _hookLength + _offsetGrappleVis);
 
         // Send two raycasts at a slight offset to one another & compare to get good behavior
-        Dictionary dextrusCollision = TileSeeker(startPoint - targetAxialOffset, targetPoint - targetAxialOffset); 
+        Dictionary dextrusCollision  = TileSeeker(startPoint - targetAxialOffset, targetPoint - targetAxialOffset); 
         Dictionary sinisterCollision = TileSeeker(startPoint + targetAxialOffset, targetPoint + targetAxialOffset);
 
         // An if structure for case handling
@@ -79,14 +84,15 @@ public partial class GlubHook : Node2D
 
     private bool EvaluateCollision(Dictionary collision)
     {
-        TileMap collisionTileMap = (TileMap)collision["collider"];
-        Vector2 collisionPoint = (Vector2)collision["position"];
-        Vector2 collisionNormal = (Vector2)collision["normal"];
-        int tileDataTerrain = (int)collision["tiletype"];
-        int tileDataOrientation = (int)collision["tileorientation"];
+        TileMap  collisionTileMap = (TileMap)collision["collider"];
+        Vector2    collisionPoint = (Vector2)collision["position"];
+        Vector2   collisionNormal = (Vector2)collision["normal"];
+
+        TileTypes tileDataTerrain = (TileTypes)(int)collision[_labelTileType];
+        Vector2    tileDataOrient =      (Vector2)collision[_labelTileOrient];
 
         // Handle the hook functionality based on terrain types
-        switch ((TileTypes)(int)collision[_labelTileType])
+        switch (tileDataTerrain)
         {
             case TileTypes.hazard:    // Case (-1 kill)     | Kill a Glub on the point (currently fall through to non-stick)
                 GD.Print("GH Status - Case -1, hit a kill object, no handling yet");
@@ -101,8 +107,8 @@ public partial class GlubHook : Node2D
                 SetHook(collisionTileMap, collisionPoint, collisionNormal);
                 return true;
 
-            case 2:    // Case (+2 halfglub) | orientable stickiness
-                if ((int)collision["tileorientation"] == ((int)TranslateCollisionNormal(collisionNormal)) + 1)
+            case TileTypes.halfstick:    // Case (+2 halfglub) | orientable stickiness
+                if (tileDataOrient == collisionNormal)
                 {
                     //GD.Print("GH Status - Case 2 - Successfully stuck to an orientable halfblock");
                     SetHook(collisionTileMap, collisionPoint, collisionNormal);
@@ -114,12 +120,9 @@ public partial class GlubHook : Node2D
                     return false;
                 }
 
-            case 3:    // Case (+3 barrior) | recursive barrier handling
-                // First get our collision orientation
-                int collisionOrientation = ((int)TranslateCollisionNormal(collisionNormal)) + 1;
-
+            case TileTypes.barrier:    // Case (+3 barrior) | recursive barrier handling
                 // If the collided face is orientated proximally to us, we can hook to it
-                if (tileDataOrientation == collisionOrientation)
+                if (tileDataOrient == collisionNormal)
                 {
                     //GD.Print("Correct orient branch of barrier case");
                     SetHook(collisionTileMap, collisionPoint, collisionNormal);
@@ -143,7 +146,7 @@ public partial class GlubHook : Node2D
             // different normals? diagonal = corner, no match
 
         // branch for the same object
-        if ((Vector2I) collisionOne["tileMapCoords"] == (Vector2I)collisionTwo["tileMapCoords"])
+        if ((Vector2I) collisionOne[_labelMapCoords] == (Vector2I)collisionTwo[_labelMapCoords])
         {
             if ((Vector2)collisionOne["normal"] == (Vector2)collisionTwo["normal"])
             {
@@ -197,9 +200,9 @@ public partial class GlubHook : Node2D
         if (result["collider"].AsGodotObject().GetType() == typeof(TileMap))
         {
             // Grab key info to translate collision dict into tile information
-            Debug.WriteLine("Collision Coordinates: " + ((Vector2)result["position"]).X + " " + ((Vector2)result["position"]).Y);
+            //Debug.WriteLine("Collision Coordinates: " + ((Vector2)result["position"]).X + " " + ((Vector2)result["position"]).Y);
             Vector2 tileInterior = ((Vector2)result["position"]) - ((Vector2)result["normal"]) * 10f;
-            Debug.WriteLine("tileInterior Coordinates: " + tileInterior.X + " " + tileInterior.Y);
+            //Debug.WriteLine("tileInterior Coordinates: " + tileInterior.X + " " + tileInterior.Y);
             Vector2I tileMapCoords = ((TileMap)result["collider"]).LocalToMap(tileInterior);
             TileData tileData = ((TileMap)result["collider"]).GetCellTileData(0, tileMapCoords);
 
@@ -211,21 +214,21 @@ public partial class GlubHook : Node2D
             }
 
             // Grab custom layer data for terrain handling purposes
-            int tileDataTerrain = (int)tileData.GetCustomDataByLayerId(0);
-            int tileDataOrientation = (int)tileData.GetCustomDataByLayerId(1);
+            int tileDataTerrain         =     (int)tileData.GetCustomDataByLayerId(0);
+            Vector2 tileDataOrientation = (Vector2)tileData.GetCustomDataByLayerId(1);
 
             // Grab one last bit of data required for possible recursive passthrough
-            int collisionOrientation = ((int)TranslateCollisionNormal((Vector2)result["normal"])) + 1;
+            //int collisionOrientation = ((int)TranslateCollisionNormal((Vector2)result["normal"])) + 1;
 
             // Adding pertinent data for the passback
-            result.Add("tileInterior", tileInterior);
-            result.Add("tileMapCoords", tileMapCoords);
-            result.Add("tileData", tileData);
-            result.Add("tiletype", tileDataTerrain);
-            result.Add("tileorientation", tileDataOrientation);
+            result.Add(_labelInterior  , tileInterior);
+            result.Add(_labelMapCoords , tileMapCoords);
+            result.Add(_labelTileData  , tileData);
+            result.Add(_labelTileType  , tileDataTerrain);
+            result.Add(_labelTileOrient, tileDataOrientation);
 
             // Special recursive case if we're hitting the back of a barrier
-            if (tileDataTerrain == 3 && tileDataOrientation == (collisionOrientation + 2) % 4)
+            if ((TileTypes)tileDataTerrain == TileTypes.barrier && tileDataOrientation == -(Vector2)(result["normal"]))
             {
                 return TileSeeker(((Vector2)result["position"]), targetPoint, (Rid)result["rid"]);
             }
@@ -287,7 +290,6 @@ public partial class GlubHook : Node2D
         // Set up line points for guides
         for (int i = 0; i < 2; i++)
         {
-            // Note I'm doubling the current aim points because of the visual "cross-bar" effect
             _lineAimDextrus.AddPoint(Vector2.Zero);
             _lineAimSinister.AddPoint(Vector2.Zero);
         }
@@ -305,17 +307,6 @@ public partial class GlubHook : Node2D
     /// </summary>
     public void VisualizeAim(Vector2 targetVector)
     {
-        /*
-        _lineAimDextrus.SetPointPosition(0, Vector2.Zero);
-
-        Vector2 startCenter = GlobalPosition + _offsetGrappleVis;
-        Vector2 endCenter = ToGlobal((targetVector.Normalized() * _hookLength) + _offsetGrappleVis);
-
-        Godot.Collections.Dictionary dextrusCollision = TileSeeker(startCenter, endCenter);
-
-        Vector2 dextrusEnd = (Vector2)dextrusCollision["position"] - _offsetGrappleVis;
-        _lineAimDextrus.SetPointPosition(1, ToLocal(dextrusEnd));
-        */
 
         // Find our coaxial offsets for our dueling rays (important for correct resolution of diagonals)
         Vector2 targetAxialOffset = targetVector.Orthogonal().Normalized() * _coaxialSpread;
@@ -326,17 +317,17 @@ public partial class GlubHook : Node2D
 
         // Do some center setting
         Vector2 startCenter = GlobalPosition + _offsetGrappleVis;
-        Vector2 endCenter = ToGlobal((targetVector.Normalized() * _hookLength) + _offsetGrappleVis);
+        Vector2 endCenter   = ToGlobal((targetVector.Normalized() * _hookLength) + _offsetGrappleVis);
 
         // Call our handy dandy endpoint checker
-        Godot.Collections.Dictionary dextrusCollision = TileSeeker(startCenter - targetAxialOffset, endCenter - targetAxialOffset);
+        Godot.Collections.Dictionary dextrusCollision  = TileSeeker(startCenter - targetAxialOffset, endCenter - targetAxialOffset);
         Godot.Collections.Dictionary sinisterCollision = TileSeeker(startCenter + targetAxialOffset, endCenter + targetAxialOffset);
 
         // Get our end position vectors
-        Vector2 dextrusEnd  = dextrusCollision != null ? (Vector2)dextrusCollision["position"] - _offsetGrappleVis : endCenter - targetAxialOffset - _offsetGrappleVis;
+        Vector2 dextrusEnd  = dextrusCollision  != null ? (Vector2)dextrusCollision["position"] - _offsetGrappleVis : endCenter - targetAxialOffset - _offsetGrappleVis;
         Vector2 sinisterEnd = sinisterCollision != null ? (Vector2)sinisterCollision["position"] - _offsetGrappleVis : endCenter + targetAxialOffset - _offsetGrappleVis;
 
-        _lineAimDextrus.SetPointPosition(1, ToLocal(dextrusEnd));
+        _lineAimDextrus.SetPointPosition( 1, ToLocal(dextrusEnd));
         _lineAimSinister.SetPointPosition(1, ToLocal(sinisterEnd));
     }
 
