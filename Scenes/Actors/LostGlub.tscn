@@ -4,10 +4,14 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_32qnv"]
 
-[node name="LostGlub" type="CharacterBody2D"]
+[node name="LostGlub" type="Area2D"]
+collision_layer = 0
 script = ExtResource("1_nn8p7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_32qnv")
 
 [node name="GlubSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.191, 0.252)
+
+[connection signal="body_entered" from="." to="." method="CollisionWithPlayer"]

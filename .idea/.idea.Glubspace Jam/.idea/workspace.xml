@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b62d0a1-a554-43f4-b1fe-a40d35b1446a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Scripts/GluboidSkin.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scripts/GluboidSkinController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Glubspace Jam.sln.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Glubspace Jam.sln.DotSettings" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Actors/gluboid.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Actors/gluboid.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Actors/LostGlub.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Actors/LostGlub.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_Sandbox-Brett.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Gluboid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Gluboid.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/LostGlub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/LostGlub.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/PlayerManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,6 +81,7 @@
       <workItem from="1697077388149" duration="1024000" />
       <workItem from="1697226377691" duration="16070000" />
       <workItem from="1697321491021" duration="5883000" />
+      <workItem from="1697327840478" duration="1233000" />
     </task>
     <servers />
   </component>

@@ -34,4 +34,4 @@ offset_right = 1000.0
 offset_bottom = -776.0
 
 [node name="LostGlub" parent="." instance=ExtResource("7_j1vfp")]
-position = Vector2(1381, -896)
+position = Vector2(1505, -574)

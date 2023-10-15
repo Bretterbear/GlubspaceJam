@@ -14,8 +14,7 @@ public partial class PlayerManager : Node2D
 	private List<Gluboid> _gluboidPack;
 	private Gluboid _endOfChain;
 	private PlayerState _playerState;
-	private GluboidSkinController _skinController;
-	
+
 
 	///<summary>
 	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
@@ -23,12 +22,11 @@ public partial class PlayerManager : Node2D
 	/// </summary>
 	public override void _Ready()
 	{
-		_skinController = GluboidSkinController.GetInstance();
 		_gluboidScene = (PackedScene)ResourceLoader.Load(_gluboidSceneLocation);
 		_gluboidPack = new List<Gluboid>();
 		_player = GetChild<Player>(0);
-		PickUpGluboid(_player.GlobalPosition, GluboidSkin.Princept); 
-		PickUpGluboid(_player.GlobalPosition, GluboidSkin.Princept);
+		PickUpGluboid(_player.GlobalPosition, GluboidSkinController.GetInstance().GetTexture(0)); 
+		PickUpGluboid(_player.GlobalPosition, GluboidSkinController.GetInstance().GetTexture(0));
 		ShuffleGlubs();
 	}
 
@@ -51,12 +49,12 @@ public partial class PlayerManager : Node2D
 	}
 
 	
-	public void PickUpGluboid(Vector2 position, GluboidSkin skin)
+	public void PickUpGluboid(Vector2 position, Texture2D skin)
 	{
 		Gluboid gluboid = (Gluboid)_gluboidScene.Instantiate();
 		_gluboidPack.Add(gluboid);
 		Debug.WriteLine(_gluboidPack.Count);
-		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), _skinController.GetTexture(skin));
+		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), skin);
 		AddChild(gluboid);
 		_numberOfGlubs++;
 		
