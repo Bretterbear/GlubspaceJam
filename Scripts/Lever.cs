@@ -109,6 +109,37 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 		ResolveLever();
 	}
 
+	public void Synchronize(bool power)
+	{
+		if(power)
+			if (!_inverted)
+			{
+				_isFlipped = true;
+				_isOn = true;
+				((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
+			}
+			else
+			{
+				_isFlipped = false;
+				_isOn = true;
+				((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
+			}
+		else
+		{
+			if (!_inverted)
+			{
+				_isFlipped = false;
+				_isOn = false;
+				((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
+			}
+			else
+			{
+				_isFlipped = true;
+				_isOn = false;
+				((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
+			}
+		}
+	}
 	private void ResolveLever()
 	{
 		if (_isFlipped && !_inverted || !_isFlipped && _inverted)
