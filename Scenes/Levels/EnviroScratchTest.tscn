@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="4_mpota"]
 [ext_resource type="PackedScene" uid="uid://blgiqjifbw0du" path="res://Scenes/Tools/GridLineRenderer.tscn" id="5_2yesj"]
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="7_euwvr"]
-[ext_resource type="PackedScene" uid="uid://g5gbn4anad6h" path="res://Scenes/Dynamics/lever_synchronizer.tscn" id="8_s33f4"]
+[ext_resource type="PackedScene" path="res://Scenes/Dynamics/lever_synchronizer.tscn" id="8_s33f4"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_x1o15"]
-[ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_4ms6l"]
+[ext_resource type="PackedScene" path="res://Scenes/Dynamics/inverter.tscn" id="9_4ms6l"]
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="13_5x08x"]
 [ext_resource type="PackedScene" uid="uid://fxrneqmnwb37" path="res://Scenes/Dynamics/spike_area_controller.tscn" id="13_c5cui"]
 
@@ -40,19 +40,19 @@ scale = Vector2(7.40338, 5.38085)
 [node name="MovingPlatform" parent="DynamicsController" instance=ExtResource("8_x1o15")]
 position = Vector2(-120, 445)
 
+[node name="SpikeAreaController2" parent="DynamicsController" instance=ExtResource("13_c5cui")]
+position = Vector2(255, 448)
+scale = Vector2(3.78117, 4.16357)
+
+[node name="Inverter" parent="DynamicsController/SpikeAreaController2" instance=ExtResource("9_4ms6l")]
+
 [node name="LeverSynchronizer" parent="DynamicsController" instance=ExtResource("8_s33f4")]
 
-[node name="Lever" parent="DynamicsController" instance=ExtResource("13_5x08x")]
-position = Vector2(-144, 543)
+[node name="Lever" parent="DynamicsController/LeverSynchronizer" instance=ExtResource("13_5x08x")]
+position = Vector2(-141, 554)
 
-[node name="Inverter" parent="DynamicsController/Lever" instance=ExtResource("9_4ms6l")]
-position = Vector2(-78.5402, -49.5657)
-scale = Vector2(1, 0.999997)
-
-[node name="Lever2" parent="DynamicsController" instance=ExtResource("13_5x08x")]
-position = Vector2(124, 541)
-
-[node name="Inverter" parent="DynamicsController/Lever2" instance=ExtResource("9_4ms6l")]
+[node name="Lever2" parent="DynamicsController/LeverSynchronizer" instance=ExtResource("13_5x08x")]
+position = Vector2(126, 554)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k5eb1")

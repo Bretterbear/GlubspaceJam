@@ -18,7 +18,7 @@ public partial class Lock : Sprite2D, IDynamicReceiver
 	public override void _Ready()
 	{
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
-		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/LockOn.png");
+		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Dynamics Art/LockOff.png");
 		if(!(GetParent() is IDynamicReceiver))
 		{
 			DynamicsSetup();
