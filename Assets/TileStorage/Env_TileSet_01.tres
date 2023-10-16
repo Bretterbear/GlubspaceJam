@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b5sxu2n3nv4vi" path="res://Scenes/Dynamics/spikeNorth.tscn" id="2_urprd"]
 [ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="3_t3f1g"]
 [ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="4_rtje3"]
-[ext_resource type="PackedScene" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
+[ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_55kpq"]
 resource_name = "Spikes"
@@ -21,19 +21,19 @@ texture_region_size = Vector2i(64, 64)
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(32, 32, -32, 32, -32, 0, 32, 0)
-2:0/0/custom_data_0 = 3
+2:0/0/custom_data_0 = 2
 2:0/0/custom_data_1 = Vector2(0, 1)
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 32, -32, -32, 0, -32, 0, 32)
-3:0/0/custom_data_0 = 3
+3:0/0/custom_data_0 = 2
 3:0/0/custom_data_1 = Vector2(-1, 0)
 4:0/0 = 0
 4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:0/0/physics_layer_0/angular_velocity = 0.0
 4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(32, -32, 32, 32, 0, 32, 0, -32)
-4:0/0/custom_data_0 = 3
+4:0/0/custom_data_0 = 2
 4:0/0/custom_data_1 = Vector2(1, 0)
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -313,11 +313,12 @@ texture_region_size = Vector2i(64, 64)
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+0:0/0/custom_data_0 = 1
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 0, -32, 0)
-1:0/0/custom_data_0 = 3
+1:0/0/custom_data_0 = 2
 1:0/0/custom_data_1 = Vector2(0, -1)
 1:4/0 = 0
 1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
