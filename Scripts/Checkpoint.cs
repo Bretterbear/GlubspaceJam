@@ -12,7 +12,7 @@ public partial class Checkpoint : Area2D
 		var checkpoint = GlobalPosition;
 		if (!_reached)
 		{
-			GameManager.GetManager().SetCheckPoint(checkpoint);
+			GameManager.GetGameManager().SetCheckPoint(checkpoint);
 			Debug.WriteLine("Tada!");
 		}
 

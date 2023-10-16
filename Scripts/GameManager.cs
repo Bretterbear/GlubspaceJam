@@ -8,6 +8,9 @@ public partial class GameManager : Node2D
     // -------- Reference Variable Declarations  -------- //
     private PauseMenu pauseReference;					// Reference to the pause menu subscene
 
+    private static GameManager _gameManager;
+
+    private Vector2 _respawnPoint;
     // ------------- Constants Declarations ------------- //
     private string pathPauseMenu = "Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
 	private MusicDriver _musicDriver;
@@ -32,6 +35,8 @@ public partial class GameManager : Node2D
 		
 		// Make sure our pause menu isn't visible in playspace on scene load
 		pauseReference.Visible = false;
+
+		_gameManager = this;
 	}
 
     /// <summary>
@@ -48,5 +53,20 @@ public partial class GameManager : Node2D
             GetTree().Paused = true;
             pauseReference.ShowMenu();
         }
+    }
+
+    public static GameManager GetGameManager()
+    {
+	    return _gameManager;
+    }
+
+    public void SetCheckPoint(Vector2 checkpoint)
+    {
+	    _respawnPoint = checkpoint;
+    }
+
+    public Vector2 GetResponPoint()
+    {
+	    return _respawnPoint;
     }
 }
