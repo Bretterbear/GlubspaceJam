@@ -1,7 +1,6 @@
 using Godot;
 using System.Diagnostics;
-using GlubspaceJam.Scripts
-;
+using GlubspaceJam.Scripts;
 
 // Movement WASD / Arrows
 // Aim Mode Toggle

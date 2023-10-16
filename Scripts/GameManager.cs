@@ -10,7 +10,8 @@ public partial class GameManager : Node2D
 
     // ------------- Constants Declarations ------------- //
     private string pathPauseMenu = "Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
-
+	private MusicDriver _musicDriver;
+	private string pathmusicDriver = "res://Scripts/MusicDriver.cs";
     /// <summary>
 	/// Links manager to the pause menu on scene loading
 	/// </summary>
@@ -22,7 +23,13 @@ public partial class GameManager : Node2D
 		{
 			GD.Print("Error(GameManager) - can't find pause menu node on path " +  pathPauseMenu);
 		}
-
+		
+		//NEED A REFERENCE PATH TO MUSIC DRIVER SCRIPT HALP
+		//_musicDriver.OnPause();
+		//_musicDriver.OnResume();
+		
+		
+		
 		// Make sure our pause menu isn't visible in playspace on scene load
 		pauseReference.Visible = false;
 	}

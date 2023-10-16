@@ -12,7 +12,9 @@ public partial class Lock : Sprite2D, IDynamicReceiver
 
 	private bool _inverted;
 
-	private IDynamicReceiver _dynamicReceiverImplementation;
+	//private IDynamicReceiver _dynamicReceiverImplementation;
+	
+	private AudioStreamPlayer2D LockSound;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -23,6 +25,7 @@ public partial class Lock : Sprite2D, IDynamicReceiver
 		{
 			DynamicsSetup();
 		}
+		LockSound = GetNode<AudioStreamPlayer2D>("Lock");
 	}
 	
 
@@ -44,6 +47,7 @@ public partial class Lock : Sprite2D, IDynamicReceiver
 		{
 			_powered = true;
 			((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
+			LockSound.Play();
 		}
 		else
 		{

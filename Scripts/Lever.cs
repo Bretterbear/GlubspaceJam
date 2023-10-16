@@ -15,6 +15,7 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 
 	private bool _powered;
 	private bool _isOn;
+	private AudioStreamPlayer2D LeverSound;
 
 	private Texture2D _offTexture;
 
@@ -31,6 +32,7 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 		{
 			DynamicsSetup();
 		}
+		LeverSound = GetNode<AudioStreamPlayer2D>("Lever");
 	}
 
 
@@ -162,10 +164,12 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 			if (_isFlipped)
 			{
 				_isFlipped = false;
+				LeverSound.Play();
 			}
 			else
 			{
 				_isFlipped = true;
+				LeverSound.Play();
 			}
 		}
 		else

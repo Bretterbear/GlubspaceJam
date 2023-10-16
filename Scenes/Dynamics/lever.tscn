@@ -1,10 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpwn2w4ps7scs"]
+[gd_scene load_steps=8 format=3 uid="uid://bpwn2w4ps7scs"]
 
 [ext_resource type="Script" path="res://Scripts/Lever.cs" id="1_4tuqe"]
 [ext_resource type="Texture2D" uid="uid://5put0e5g8p7o" path="res://Assets/Art/Dynamics Art/SwitchOff.png" id="2_10byh"]
+[ext_resource type="AudioStream" uid="uid://sl34asnyl855" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_01.wav" id="3_mdqb3"]
+[ext_resource type="AudioStream" uid="uid://bwqdo07clrc4q" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_02.wav" id="4_pldab"]
+[ext_resource type="AudioStream" uid="uid://ckd6nt8asg37j" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_03.wav" id="5_kkvqe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yu5sm"]
 size = Vector2(64, 64)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2qp1s"]
+streams_count = 3
+stream_0/stream = ExtResource("3_mdqb3")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("4_pldab")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("5_kkvqe")
+stream_2/weight = 1.0
 
 [node name="Lever" type="Area2D"]
 position = Vector2(210, 183)
@@ -19,5 +31,11 @@ shape = SubResource("RectangleShape2D_yu5sm")
 position = Vector2(1.51932, -0.744381)
 scale = Vector2(0.997101, 1.00027)
 texture = ExtResource("2_10byh")
+
+[node name="Lever" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_2qp1s")
+max_distance = 1000.0
+attenuation = 2.14355
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="ToggleLever"]
