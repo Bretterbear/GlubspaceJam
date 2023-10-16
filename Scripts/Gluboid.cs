@@ -162,7 +162,7 @@ public partial class Gluboid : CharacterBody2D
 		}
 		else
 		{
-			if (GlobalPosition != _playerPosition)
+			if (GlobalPosition.DistanceSquaredTo(_playerPosition) > 50f)
 			{
 				var direction = GlobalPosition.DirectionTo(_playerPosition);
 				Velocity = direction * _groupSpeed;
@@ -276,6 +276,13 @@ public partial class Gluboid : CharacterBody2D
 		_state = GluboidState.Extending;
 	}
 
+	/*
+	private void VectorExtend(Vector2 start, Vector2 direction, float scalar, float time)
+	{
+
+	}
+	*/
+
 	public void Retract(float time)
 	{
 		
@@ -303,10 +310,18 @@ public partial class Gluboid : CharacterBody2D
 		}
 	}
 
-	public void GroupToPlayer()
+	public void GroupToPlayer(float timeToComplete)
 	{
-		SetCollisionMaskValue(9,false);
-		if(_state != GluboidState.IsPlayer)
-			_state = GluboidState.Grouping;
+
+        GD.Print("getaroomie" + GetCollisionMaskValue(9));
+        SetCollisionMaskValue(9,false);
+        GD.Print("getaroomienow" + GetCollisionMaskValue(9));
+
+        if (_state != GluboidState.IsPlayer)
+		{
+            _groupSpeed = GlobalPosition.DistanceTo(_playerPosition) / timeToComplete;
+            _state = GluboidState.Grouping;
+        }
+
 	}
 }

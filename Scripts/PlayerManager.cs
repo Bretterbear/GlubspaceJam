@@ -116,6 +116,14 @@ public partial class PlayerManager : Node2D
 
 		_endOfChain = _gluboidPack[blockDistance - 1];
 	}
+
+	/*
+	public void VectorExtendGlubChain(Vector2 aimDirection, Vector2 hookDestination, float timeToComplete)
+	{
+
+	}
+	*/
+
 	private void ShuffleGlubs()
 	{
 		_gluboidPack[0].MakeNotPlayer();
@@ -152,7 +160,7 @@ public partial class PlayerManager : Node2D
 		UpdatePlayerPosition();
 		foreach (Gluboid glub in _gluboidPack)
 		{
-			glub.GroupToPlayer();
+			glub.GroupToPlayer(timeToComplete);
 		}
 	}
 
