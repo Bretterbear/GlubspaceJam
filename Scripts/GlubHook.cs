@@ -84,6 +84,14 @@ public partial class GlubHook : Node2D
 
     private bool EvaluateCollision(Dictionary collision)
     {
+        if (collision["collider"].AsGodotObject().GetType() == typeof(Lever))
+        {
+            Lever leverGrab = (Lever)collision["collider"];
+            leverGrab.ToggleLever();
+            return false;
+        }
+
+
         TileMap  collisionTileMap = (TileMap)collision["collider"];
         Vector2    collisionPoint = (Vector2)collision["position"];
         Vector2   collisionNormal = (Vector2)collision["normal"];
@@ -142,12 +150,21 @@ public partial class GlubHook : Node2D
     private bool DoubleCollisionEvaluation(Dictionary collisionOne, Dictionary collisionTwo)
     {
         // same object?
-            // normals match? Cardinal = success
-            // different normals? diagonal = corner, no match
+        // normals match? Cardinal = success
+        // different normals? diagonal = corner, no match
 
         // branch for the same object
-        if ((Vector2I) collisionOne[_labelMapCoords] == (Vector2I)collisionTwo[_labelMapCoords])
+        if (collisionOne["collider"].AsGodotObject().GetType() == typeof(Lever))
         {
+            return EvaluateCollision(collisionOne);
+        }
+        else if (collisionTwo["collider"].AsGodotObject().GetType() == typeof(Lever))
+        {
+            return EvaluateCollision(collisionTwo);
+        }
+
+        if ((Vector2I) collisionOne[_labelMapCoords] == (Vector2I)collisionTwo[_labelMapCoords])
+            {
             if ((Vector2)collisionOne["normal"] == (Vector2)collisionTwo["normal"])
             {
                 return EvaluateCollision(collisionOne);
@@ -186,6 +203,7 @@ public partial class GlubHook : Node2D
         // Add specificity for collision mask & the RID of currentl collider if called recursively for barriers
         query.CollisionMask = 512;
         query.Exclude = new Array<Rid> { prevCollisionRid };
+        query.CollideWithAreas = true;
 
         // Result is a dictionary denoting the qualities of the raycast collision
         var result = spaceState.IntersectRay(query);
@@ -197,7 +215,11 @@ public partial class GlubHook : Node2D
             return null;
         }
 
-        if (result["collider"].AsGodotObject().GetType() == typeof(TileMap))
+        if (result["collider"].AsGodotObject().GetType() == typeof(Lever))
+        {
+            return result;
+        }
+        else if (result["collider"].AsGodotObject().GetType() == typeof(TileMap))
         {
             // Grab key info to translate collision dict into tile information
             //Debug.WriteLine("Collision Coordinates: " + ((Vector2)result["position"]).X + " " + ((Vector2)result["position"]).Y);
