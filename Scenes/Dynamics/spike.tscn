@@ -4,17 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://cpa3fyi0wct4d" path="res://Assets/Art/Dynamics Art/SpikeOn.png" id="2_yna8d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
+size = Vector2(64, 64)
 
 [node name="Spike" type="Area2D"]
 rotation = 1.57079
-scale = Vector2(3.2, 3.2)
 collision_layer = 384
 script = ExtResource("1_bxjc6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-0.00962444, -0.00884434)
+position = Vector2(-0.0106524, 0.00404785)
 rotation = -1.5708
-scale = Vector2(0.311411, 0.312306)
+scale = Vector2(0.999819, 0.999732)
 texture = ExtResource("2_yna8d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

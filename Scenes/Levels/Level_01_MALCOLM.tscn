@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgk4cn25uvp3m"]
+[gd_scene load_steps=10 format=3 uid="uid://cgk4cn25uvp3m"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_h8r1m"]
 [ext_resource type="TileSet" uid="uid://dpekb7xfoge8c" path="res://Assets/TileStorage/Env_TileSet_01.tres" id="2_smoxm"]
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="3_vdhpp"]
 [ext_resource type="Script" path="res://Scripts/CameraFollowControl.cs" id="4_6b5p6"]
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="5_613x3"]
+[ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="6_acxfh"]
+[ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="7_od6gf"]
+[ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_x31hs"]
+[ext_resource type="PackedScene" path="res://Scenes/Dynamics/inverter.tscn" id="9_mpnjk"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_h8r1m")
@@ -26,3 +30,24 @@ script = ExtResource("4_6b5p6")
 
 [node name="Level_MenuPause" parent="Player/Camera2D" instance=ExtResource("5_613x3")]
 visible = false
+
+[node name="DynamicsController" parent="." instance=ExtResource("6_acxfh")]
+
+[node name="Lever" parent="DynamicsController" instance=ExtResource("7_od6gf")]
+position = Vector2(9183, 163)
+rotation = -1.57079
+scale = Vector2(1.0013, 1.02189)
+
+[node name="MovingPlatform" parent="." instance=ExtResource("8_x31hs")]
+position = Vector2(9248, 288)
+
+[node name="Inverter" parent="MovingPlatform" instance=ExtResource("9_mpnjk")]
+
+[node name="MovingPlatform2" parent="." instance=ExtResource("8_x31hs")]
+position = Vector2(9248, 352)
+
+[node name="Inverter" parent="MovingPlatform2" instance=ExtResource("9_mpnjk")]
+
+[connection signal="body_entered" from="TileMap/@Area2D@101553" to="TileMap/@Area2D@101553" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101554" to="TileMap/@Area2D@101554" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101555" to="TileMap/@Area2D@101555" method="CollisionWithPlayer" flags=18]
