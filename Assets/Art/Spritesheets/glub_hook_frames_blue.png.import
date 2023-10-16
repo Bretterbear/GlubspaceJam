@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw0jacpe0ryhm"
-path="res://.godot/imported/LockOn.png-d7da7dab7d4a78e006e7bf149aff40d2.ctex"
+uid="uid://dp334pdvu1dip"
+path="res://.godot/imported/glub_hook_frames_blue.png-02cfecc20401195a4187c7ce8ad7262d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/LockOn.png"
-dest_files=["res://.godot/imported/LockOn.png-d7da7dab7d4a78e006e7bf149aff40d2.ctex"]
+source_file="res://Assets/Art/Spritesheets/glub_hook_frames_blue.png"
+dest_files=["res://.godot/imported/glub_hook_frames_blue.png-02cfecc20401195a4187c7ce8ad7262d.ctex"]
 
 [params]
 

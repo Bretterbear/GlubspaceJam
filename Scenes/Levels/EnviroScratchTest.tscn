@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://d1bwej8omcf4b"]
+[gd_scene load_steps=12 format=3 uid="uid://d1bwej8omcf4b"]
 
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="1_jf2sw"]
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_t62ef"]
@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="4_mpota"]
 [ext_resource type="PackedScene" uid="uid://blgiqjifbw0du" path="res://Scenes/Tools/GridLineRenderer.tscn" id="5_2yesj"]
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="7_euwvr"]
+
 [ext_resource type="PackedScene" uid="uid://g5gbn4anad6h" path="res://Scenes/Dynamics/lever_synchronizer.tscn" id="8_s33f4"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_x1o15"]
 [ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_4ms6l"]
+
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="13_5x08x"]
 [ext_resource type="PackedScene" uid="uid://fxrneqmnwb37" path="res://Scenes/Dynamics/spike_area_controller.tscn" id="13_c5cui"]
 
@@ -33,9 +35,13 @@ visible = false
 
 [node name="DynamicsController" parent="." instance=ExtResource("7_euwvr")]
 
+[node name="Lever" parent="DynamicsController" instance=ExtResource("13_5x08x")]
+position = Vector2(-144, 543)
+
 [node name="SpikeAreaController" parent="DynamicsController" instance=ExtResource("13_c5cui")]
 position = Vector2(-318, 448)
 scale = Vector2(7.40338, 5.38085)
+
 
 [node name="MovingPlatform" parent="DynamicsController" instance=ExtResource("8_x1o15")]
 position = Vector2(-120, 445)
@@ -53,6 +59,7 @@ scale = Vector2(1, 0.999997)
 position = Vector2(124, 541)
 
 [node name="Inverter" parent="DynamicsController/Lever2" instance=ExtResource("9_4ms6l")]
+
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k5eb1")

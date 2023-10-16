@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5put0e5g8p7o"
-path="res://.godot/imported/SwitchOff.png-a2250ae222f9f495efb3c65c3ebfd3c7.ctex"
+uid="uid://qaecsstcr6g"
+path="res://.godot/imported/glub_idle_frames_blue.png-30b8c305f2d4ba38f5157f3bf951060c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/SwitchOff.png"
-dest_files=["res://.godot/imported/SwitchOff.png-a2250ae222f9f495efb3c65c3ebfd3c7.ctex"]
+source_file="res://Assets/Art/Spritesheets/glub_idle_frames_blue.png"
+dest_files=["res://.godot/imported/glub_idle_frames_blue.png-30b8c305f2d4ba38f5157f3bf951060c.ctex"]
 
 [params]
 

@@ -10,8 +10,10 @@ public partial class GameManager : Node2D
 
     // ------------- Constants Declarations ------------- //
     private string pathPauseMenu = "Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
+
 	private MusicDriver _musicDriver;
 	private string pathmusicDriver = "res://Scripts/MusicDriver.cs";
+
     /// <summary>
 	/// Links manager to the pause menu on scene loading
 	/// </summary>

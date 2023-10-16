@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6fyvrvt1vxkm"]
+[gd_scene load_steps=7 format=3 uid="uid://bn15du5fl3iky"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_6j248"]
 [ext_resource type="TileSet" uid="uid://dpekb7xfoge8c" path="res://Assets/TileStorage/Env_TileSet_01.tres" id="2_k0tnr"]
@@ -31,5 +31,5 @@ script = ExtResource("4_y5oek")
 visible = false
 
 [connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@34048" to="TileMap/@Area2D@34048" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@34049" to="TileMap/@Area2D@34049" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@44250" to="TileMap/@Area2D@44250" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@44251" to="TileMap/@Area2D@44251" method="CollisionWithPlayer" flags=18]

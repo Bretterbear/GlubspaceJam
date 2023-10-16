@@ -2,12 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://nouxjnvr3rvw" path="res://Assets/Art/Placeholder Art/LockOff.png" id="1_cw1wa"]
 [ext_resource type="Script" path="res://Scripts/Lock.cs" id="1_ef3ja"]
+
 [ext_resource type="AudioStream" uid="uid://bv84tfes6sbdq" path="res://Assets/Audio/SOURCE/Object_Lock_Activate.wav" id="3_a6bto"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vxvfx"]
 streams_count = 1
 stream_0/stream = ExtResource("3_a6bto")
 stream_0/weight = 1.0
+
 
 [node name="Lock" type="Sprite2D"]
 position = Vector2(-1, -1)

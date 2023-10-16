@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpa3fyi0wct4d"
-path="res://.godot/imported/SpikeOn.png-0c6f1ad0dbbf9d4d5aea11b4e6e8ffba.ctex"
+uid="uid://bktvgv402terp"
+path="res://.godot/imported/char_princept_sprite.png-51d8b1483b5c8d8d84ddc8bdff2e322e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/SpikeOn.png"
-dest_files=["res://.godot/imported/SpikeOn.png-0c6f1ad0dbbf9d4d5aea11b4e6e8ffba.ctex"]
+source_file="res://Assets/Art/char_princept_sprite.png"
+dest_files=["res://.godot/imported/char_princept_sprite.png-51d8b1483b5c8d8d84ddc8bdff2e322e.ctex"]
 
 [params]
 

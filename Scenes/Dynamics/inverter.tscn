@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://6eatukbjuwce"]
-
-[ext_resource type="Script" path="res://Scripts/Inverter.cs" id="1_7bkq5"]
-
-[node name="Inverter" type="Node2D"]
-position = Vector2(-75.6919, 64.7068)
-scale = Vector2(0.65816, 0.671692)
-script = ExtResource("1_7bkq5")

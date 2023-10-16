@@ -1,10 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://bpwn2w4ps7scs"]
 
 [ext_resource type="Script" path="res://Scripts/Lever.cs" id="1_4tuqe"]
+
 [ext_resource type="Texture2D" uid="uid://5put0e5g8p7o" path="res://Assets/Art/Dynamics Art/SwitchOff.png" id="2_10byh"]
 [ext_resource type="AudioStream" uid="uid://sl34asnyl855" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_01.wav" id="3_mdqb3"]
 [ext_resource type="AudioStream" uid="uid://bwqdo07clrc4q" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_02.wav" id="4_pldab"]
 [ext_resource type="AudioStream" uid="uid://ckd6nt8asg37j" path="res://Assets/Audio/SOURCE/Object_Lever_Activate_03.wav" id="5_kkvqe"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yu5sm"]
 size = Vector2(64, 64)

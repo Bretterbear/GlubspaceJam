@@ -1,5 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://d1pe0g10vuddg"]
 
+
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
@@ -16,6 +17,7 @@
 [ext_resource type="AudioStream" uid="uid://c6gvpjf21euxw" path="res://Assets/Audio/SOURCE/LostGlub_Interact_Grab_01.wav" id="14_daagk"]
 [ext_resource type="AudioStream" uid="uid://bb0aahpcnfi5f" path="res://Assets/Audio/SOURCE/LostGlub_Interact_Grab_02.wav" id="15_ydbgp"]
 [ext_resource type="AudioStream" uid="uid://8v453hvs8hud" path="res://Assets/Audio/SOURCE/LostGlub_Foley_Gather.wav" id="16_umbk0"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
 size = Vector2(62, 62)
@@ -88,6 +90,7 @@ stream_1/weight = 1.0
 streams_count = 1
 stream_0/stream = ExtResource("16_umbk0")
 stream_0/weight = 1.0
+
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 256
@@ -198,6 +201,7 @@ stream = SubResource("AudioStreamRandomizer_o5bkp")
 volume_db = -10.0
 attenuation = 1.86607
 bus = &"SFX"
+
 
 [connection signal="timeout" from="FollowTimer" to="." method="_BoidUpdateReceiver"]
 [connection signal="body_shape_entered" from="Area2D_BarrierDetector" to="Area2D_BarrierDetector" method="OnBodyShapeEntered"]

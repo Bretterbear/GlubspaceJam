@@ -1,11 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://0brxx057a5ki"]
 
 [ext_resource type="Script" path="res://Scripts/Spike.cs" id="1_bxjc6"]
+
 [ext_resource type="Texture2D" uid="uid://cpa3fyi0wct4d" path="res://Assets/Art/Dynamics Art/SpikeOn.png" id="2_yna8d"]
 [ext_resource type="AudioStream" uid="uid://c6d7583y54a6k" path="res://Assets/Audio/SOURCE/Object_Spike_Extend_01.wav" id="3_djbgn"]
 [ext_resource type="AudioStream" uid="uid://cnpj0osykgho4" path="res://Assets/Audio/SOURCE/Object_Spike_Extend_02.wav" id="4_kr0v4"]
 [ext_resource type="AudioStream" uid="uid://c8ahofryfn5h8" path="res://Assets/Audio/SOURCE/Object_Spike_Retract_01.wav" id="5_tp8m4"]
 [ext_resource type="AudioStream" uid="uid://b8vu5ywcuacr2" path="res://Assets/Audio/SOURCE/Object_Spike_Retract_02.wav" id="6_qkvcq"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
 

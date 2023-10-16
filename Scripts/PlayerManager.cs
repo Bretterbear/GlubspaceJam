@@ -155,7 +155,9 @@ public partial class PlayerManager : Node2D
 		foreach (Gluboid glub in _gluboidPack)
 		{
 			glub.GroupToPlayer();
+
 			_player._GatherTheThrong();
+
 		}
 	}
 

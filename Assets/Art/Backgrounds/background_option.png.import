@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cii2tquds03l1"
-path="res://.godot/imported/SwitchOn.png-4e18f66492c59a2e20248e37df7e408e.ctex"
+uid="uid://lmnwm5pqcqx8"
+path="res://.godot/imported/background_option.png-af45d37fc85d1a20987c7612495e0c92.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/SwitchOn.png"
-dest_files=["res://.godot/imported/SwitchOn.png-4e18f66492c59a2e20248e37df7e408e.ctex"]
+source_file="res://Assets/Art/Backgrounds/background_option.png"
+dest_files=["res://.godot/imported/background_option.png-af45d37fc85d1a20987c7612495e0c92.ctex"]
 
 [params]
 

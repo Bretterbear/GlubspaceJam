@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xck8p3m26tsi"
-path="res://.godot/imported/LockOff.png-b68ed9c001f2653f95b784822b6ac063.ctex"
+uid="uid://bllh40hivmtuw"
+path="res://.godot/imported/glub_move_frames_blue.png-8a54be276bda85704a54f798779f95d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/LockOff.png"
-dest_files=["res://.godot/imported/LockOff.png-b68ed9c001f2653f95b784822b6ac063.ctex"]
+source_file="res://Assets/Art/Spritesheets/glub_move_frames_blue.png"
+dest_files=["res://.godot/imported/glub_move_frames_blue.png-8a54be276bda85704a54f798779f95d4.ctex"]
 
 [params]
 

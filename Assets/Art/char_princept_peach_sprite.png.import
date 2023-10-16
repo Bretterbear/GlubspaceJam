@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyda2lce6hno0"
-path="res://.godot/imported/PlatformOn.png-3948a0ce1694b4c03af7b3cf6f992725.ctex"
+uid="uid://0f0gm8w3ioau"
+path="res://.godot/imported/char_princept_peach_sprite.png-95a3224ef87525693ac73e4897d36274.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Dynamics Art/PlatformOn.png"
-dest_files=["res://.godot/imported/PlatformOn.png-3948a0ce1694b4c03af7b3cf6f992725.ctex"]
+source_file="res://Assets/Art/char_princept_peach_sprite.png"
+dest_files=["res://.godot/imported/char_princept_peach_sprite.png-95a3224ef87525693ac73e4897d36274.ctex"]
 
 [params]
 
