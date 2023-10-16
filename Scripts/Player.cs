@@ -17,8 +17,9 @@ public partial class Player : CharacterBody2D
     [Export] private bool    _mouseMode = true;                 // Used to determine input type - move to options menu
 
     // -------- Reference Variable Declarations  -------- //
-    private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
-    private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
+    private GlubHook        glubHook;                           // Reference storage for our glub hook for function calling
+    private TileMap         _tileMap;                           // Reference to our level TileMap, poss unused
+    private PlayerManager _playerMgr;                           // Reference to our PlayerManager for func calls
 
     // ---------- State Variable Declarations  ---------- //
     private States           _playerState;          // Maintains branch control over what input processing is done
@@ -30,6 +31,8 @@ public partial class Player : CharacterBody2D
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
     private Vector2         _stepSize = new Vector2(64, 64);    // Stores our grid step size
+    private float     _mgrTimeGroupUp = 0.3f;                   // How many seconds for the glubs to group up
+
     private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     /// <summary>
@@ -41,7 +44,9 @@ public partial class Player : CharacterBody2D
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
-       // _tileMap     = GetNode<TileMap>("../TileMap");
+        _playerMgr = GetParent<PlayerManager>();
+
+        // _tileMap     = GetNode<TileMap>("../TileMap");
     }
 
     /// <summary>
@@ -148,6 +153,8 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void HandleAiming()
     {
+        UpdateHookGlubCount();
+
         glubHook.VisualizeAim(_inputAimUnitVector);
 
         if (_inputToggleAim)
@@ -205,6 +212,8 @@ public partial class Player : CharacterBody2D
         Velocity = Vector2.Zero;                    // Zero out velocity on transition
         Position = Position.Snapped(_stepSize);     // Lock us to a shooting position
         glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
+
+        _playerMgr.GroupGlubs(_mgrTimeGroupUp);     // Tell the glubbies to group
     }
 
     // Transition play mode from aim to walk
@@ -257,6 +266,14 @@ public partial class Player : CharacterBody2D
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         Position = glubHook.GetHookPoint() + repOffset;
         Position = Position.Snapped(_stepSize);
+    }
+
+    /// <summary>
+    /// quick + dirty function to update glubHook on player manager's glubCount
+    /// </summary>
+    private void UpdateHookGlubCount()
+    {
+        glubHook.SetHookSizing(_playerMgr._numberOfGlubs);
     }
 
     /// <summary>

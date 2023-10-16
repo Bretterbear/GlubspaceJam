@@ -31,5 +31,5 @@ script = ExtResource("4_y5oek")
 visible = false
 
 [connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@23705" to="TileMap/@Area2D@23705" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@23706" to="TileMap/@Area2D@23706" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@34048" to="TileMap/@Area2D@34048" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@34049" to="TileMap/@Area2D@34049" method="CollisionWithPlayer" flags=18]

@@ -152,7 +152,7 @@ public partial class PlayerManager : Node2D
 		UpdatePlayerPosition();
 		foreach (Gluboid glub in _gluboidPack)
 		{
-			glub.GroupToPlayer();
+			glub.GroupToPlayer(timeToComplete);
 		}
 	}
 
