@@ -1,20 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://0brxx057a5ki"]
 
 [ext_resource type="Script" path="res://Scripts/Spike.cs" id="1_bxjc6"]
-[ext_resource type="Texture2D" uid="uid://nouxjnvr3rvw" path="res://Assets/Art/Placeholder Art/LockOff.png" id="2_rtcgg"]
+[ext_resource type="Texture2D" uid="uid://cpa3fyi0wct4d" path="res://Assets/Art/Dynamics Art/SpikeOn.png" id="2_yna8d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebd4a"]
 
 [node name="Spike" type="Area2D"]
 rotation = 1.57079
+scale = Vector2(3.2, 3.2)
 collision_layer = 384
 script = ExtResource("1_bxjc6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -1.90735e-06)
+position = Vector2(-0.00962444, -0.00884434)
 rotation = -1.5708
-scale = Vector2(0.208333, 0.208333)
-texture = ExtResource("2_rtcgg")
+scale = Vector2(0.311411, 0.312306)
+texture = ExtResource("2_yna8d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ebd4a")

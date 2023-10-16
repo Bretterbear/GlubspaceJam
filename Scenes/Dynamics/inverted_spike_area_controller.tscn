@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dniiseycnqm2t"]
+[gd_scene load_steps=3 format=3 uid="uid://dds41nhpv58tq"]
 
 [ext_resource type="Script" path="res://Scripts/InvertedSpikeAreaController.cs" id="1_lbj3t"]
 

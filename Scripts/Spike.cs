@@ -11,7 +11,7 @@ public partial class Spike : Area2D
 	public override void _Ready()
 	{
 		_onTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
-		_offTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/LockOn.png");
+		_offTexture = GD.Load<Texture2D>("res://Assets/Art/Dynamics Art/SpikeOff.png");
 	}
 
 	public void TurnOffSpike()
