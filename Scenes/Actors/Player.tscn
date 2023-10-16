@@ -1,9 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://d1pe0g10vuddg"]
+[gd_scene load_steps=26 format=3 uid="uid://d1pe0g10vuddg"]
 
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
-[ext_resource type="Script" path="res://Scripts/BarrierDetector.cs" id="4_maw1c"]
 [ext_resource type="AudioStream" uid="uid://dlwxhw3i1x1kc" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Land_01.wav" id="5_bbr1o"]
 [ext_resource type="AudioStream" uid="uid://qa54eejsrvyc" path="res://Assets/Audio/SOURCE/HeroGlub_Interact_Grapple.wav" id="5_gvqxq"]
 [ext_resource type="AudioStream" uid="uid://o8uudtiydvvx" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Land_02.wav" id="6_un5ti"]
@@ -24,9 +23,6 @@ size = Vector2(62, 62)
 line_spacing = 0.0
 font_size = 12
 font_color = Color(0.85098, 0.803922, 1, 1)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_w4u1e"]
-size = Vector2(64, 64)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_myb64"]
 streams_count = 2
@@ -94,12 +90,13 @@ collision_mask = 256
 script = ExtResource("1_v77jq")
 
 [node name="Sprite_Character" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(28, -40)
 scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(32, -31)
+position = Vector2(32, -32)
 shape = SubResource("RectangleShape2D_72xbv")
 
 [node name="Label" type="Label" parent="."]
@@ -141,16 +138,6 @@ sharp_limit = 0.0
 
 [node name="FollowTimer" type="Timer" parent="."]
 autostart = true
-
-[node name="Area2D_BarrierDetector" type="Area2D" parent="."]
-position = Vector2(20, -4)
-collision_layer = 0
-collision_mask = 4096
-script = ExtResource("4_maw1c")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_BarrierDetector"]
-position = Vector2(82, -31)
-shape = SubResource("RectangleShape2D_w4u1e")
 
 [node name="LandingPlop" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(33, -33)
@@ -200,5 +187,3 @@ attenuation = 1.86607
 bus = &"SFX"
 
 [connection signal="timeout" from="FollowTimer" to="." method="_BoidUpdateReceiver"]
-[connection signal="body_shape_entered" from="Area2D_BarrierDetector" to="Area2D_BarrierDetector" method="OnBodyShapeEntered"]
-[connection signal="body_shape_exited" from="Area2D_BarrierDetector" to="Area2D_BarrierDetector" method="OnBodyShapeExited"]
