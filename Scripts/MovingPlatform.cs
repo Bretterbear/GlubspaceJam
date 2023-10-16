@@ -40,11 +40,13 @@ public partial class MovingPlatform : StaticBody2D, IDynamicReceiver
 		{
 			SetCollisionLayerValue(9,false);
 			((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
+			((Sprite2D)GetNode("Sprite2D")).Modulate = new Color(0, 0, 0, 1f);
 		}
 		else
 		{
 			SetCollisionLayerValue(9,true);
 			((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
+			((Sprite2D)GetNode("Sprite2D")).Modulate = new Color(0, 0, 0, .5f);
 		}
 	}
 	public bool IsOn()
