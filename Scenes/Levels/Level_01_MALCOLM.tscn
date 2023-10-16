@@ -26,7 +26,3 @@ script = ExtResource("4_6b5p6")
 
 [node name="Level_MenuPause" parent="Player/Camera2D" instance=ExtResource("5_613x3")]
 visible = false
-
-[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@23769" to="TileMap/@Area2D@23769" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@23770" to="TileMap/@Area2D@23770" method="CollisionWithPlayer" flags=18]

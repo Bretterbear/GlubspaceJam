@@ -150,7 +150,7 @@ public partial class PlayerManager : Node2D
 		}
 	}
 
-	public void GroupGlubs(){
+	public void GroupGlubs(float timeToComplete){
 		UpdatePlayerPosition();
 		foreach (Gluboid glub in _gluboidPack)
 		{

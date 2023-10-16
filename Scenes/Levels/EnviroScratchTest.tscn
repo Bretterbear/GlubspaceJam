@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d1bwej8omcf4b"]
+[gd_scene load_steps=14 format=3 uid="uid://d1bwej8omcf4b"]
 
 [ext_resource type="PackedScene" uid="uid://d1pe0g10vuddg" path="res://Scenes/Actors/Player.tscn" id="1_jf2sw"]
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_t62ef"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="4_mpota"]
 [ext_resource type="PackedScene" uid="uid://blgiqjifbw0du" path="res://Scenes/Tools/GridLineRenderer.tscn" id="5_2yesj"]
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="7_euwvr"]
-[ext_resource type="PackedScene" uid="uid://bt48mfcjj3fes" path="res://Scenes/Dynamics/inverted_spike_area_controller.tscn" id="9_iy05n"]
+[ext_resource type="PackedScene" uid="uid://g5gbn4anad6h" path="res://Scenes/Dynamics/lever_synchronizer.tscn" id="8_s33f4"]
+[ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_x1o15"]
+[ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_4ms6l"]
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="13_5x08x"]
 [ext_resource type="PackedScene" uid="uid://fxrneqmnwb37" path="res://Scenes/Dynamics/spike_area_controller.tscn" id="13_c5cui"]
 
@@ -22,7 +24,7 @@ zoom = Vector2(0.5, 0.5)
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("3_e6ofo")
 format = 2
-layer_0/tile_data = PackedInt32Array(589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 0, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 0, 0, 589841, 0, 0, 655353, 0, 0, 655352, 0, 0, 655351, 0, 0, 655350, 0, 0, 655349, 0, 0, 655348, 0, 0, 655346, 0, 0, 655345, 0, 0, 655344, 0, 0, 655343, 0, 0, 655342, 0, 0, 524292, 0, 8, 589817, 0, 8, 393209, 0, 2, 393210, 0, 2, 393211, 0, 2, 393212, 0, 2, 393213, 65536, 7, 393214, 65536, 8, 393215, 0, 1, 327680, 0, 1, 327682, 0, 2, 327683, 0, 2, 327684, 0, 2, 327686, 0, 2, 327687, 0, 2, 327688, 0, 2, 327689, 0, 2, 393208, 0, 2, 393207, 0, 2, 327681, 65536, 7, 262141, 0, 0, 262143, 0, 0, 262142, 0, 0, 458753, 65536, 8, 655354, 0, 0, 655355, 0, 0, 655356, 0, 0, 655357, 0, 0, 655358, 0, 0, 655359, 0, 0, 589824, 0, 0, 655347, 0, 0, 524295, 0, 0, 327685, 0, 2, 458747, 2, 196608, 458746, 2, 196608, 393219, 2, 131072, 393220, 2, 131072)
+layer_0/tile_data = PackedInt32Array(589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 0, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 0, 0, 589841, 0, 0, 655353, 0, 0, 655352, 0, 0, 655351, 0, 0, 655350, 0, 0, 655349, 0, 0, 655348, 0, 0, 655346, 0, 0, 655345, 0, 0, 655344, 0, 0, 655343, 0, 0, 655342, 0, 0, 524292, 0, 8, 589817, 0, 8, 393209, 0, 2, 393210, 0, 2, 393211, 0, 2, 393212, 0, 2, 393213, 65536, 7, 393214, 65536, 8, 393215, 0, 1, 327680, 0, 1, 327682, 0, 2, 327683, 0, 2, 327684, 0, 2, 327686, 0, 2, 327687, 0, 2, 327688, 0, 2, 327689, 0, 2, 393208, 0, 2, 393207, 0, 2, 327681, 65536, 7, 262141, 0, 0, 262143, 0, 0, 262142, 0, 0, 458753, 65536, 8, 655354, 0, 0, 655355, 0, 0, 655356, 0, 0, 655357, 0, 0, 655358, 0, 0, 655359, 0, 0, 589824, 0, 0, 655347, 0, 0, 524295, 0, 0, 327685, 0, 2, 458746, 2, 196608, 524282, 2, 65536, 524283, 2, 131072, 458747, 2, 262144, 393219, 2, 65536, 393220, 2, 131072, 458756, 2, 196608, 458755, 2, 262144)
 
 [node name="Level_MenuPause" parent="." instance=ExtResource("4_mpota")]
 visible = false
@@ -31,16 +33,26 @@ visible = false
 
 [node name="DynamicsController" parent="." instance=ExtResource("7_euwvr")]
 
+[node name="SpikeAreaController" parent="DynamicsController" instance=ExtResource("13_c5cui")]
+position = Vector2(-318, 448)
+scale = Vector2(7.40338, 5.38085)
+
+[node name="MovingPlatform" parent="DynamicsController" instance=ExtResource("8_x1o15")]
+position = Vector2(-120, 445)
+
+[node name="LeverSynchronizer" parent="DynamicsController" instance=ExtResource("8_s33f4")]
+
 [node name="Lever" parent="DynamicsController" instance=ExtResource("13_5x08x")]
 position = Vector2(-144, 543)
 
-[node name="SpikeAreaController" parent="DynamicsController" instance=ExtResource("13_c5cui")]
-position = Vector2(-319, 419)
-scale = Vector2(7.40338, 2.66085)
+[node name="Inverter" parent="DynamicsController/Lever" instance=ExtResource("9_4ms6l")]
+position = Vector2(-78.5402, -49.5657)
+scale = Vector2(1, 0.999997)
 
-[node name="InvertedSpikeAreaController" parent="DynamicsController" instance=ExtResource("9_iy05n")]
-position = Vector2(255, 417)
-scale = Vector2(4.93455, 1.6396)
+[node name="Lever2" parent="DynamicsController" instance=ExtResource("13_5x08x")]
+position = Vector2(124, 541)
+
+[node name="Inverter" parent="DynamicsController/Lever2" instance=ExtResource("9_4ms6l")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k5eb1")
