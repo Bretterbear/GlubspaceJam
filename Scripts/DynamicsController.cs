@@ -11,6 +11,7 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 	private List<IDynamicReceiver> _powerReceivers;
 
 	private IDynamicReceiver _parentDynamic;
+	private bool _inverted;
 
 	private bool _powered;
 	// Called when the node enters the scene tree for the first time.
@@ -47,13 +48,28 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 
 	public void ProvidePower()
 	{
-		_powered = true;
-		foreach (var provider in _powerProviders)
+		if (!_inverted)
 		{
-			if (!provider.IsProvidingPower())
+			_powered = true;
+			foreach (var provider in _powerProviders)
 			{
-				_powered = false;
-				break;
+				if (!provider.IsProvidingPower())
+				{
+					_powered = false;
+					break;
+				}
+			}
+		}
+		else
+		{
+			_powered = true;
+			foreach (var provider in _powerProviders)
+			{
+				if (provider.IsProvidingPower())
+				{
+					_powered = false;
+					break;
+				}
 			}
 		}
 
@@ -88,5 +104,10 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 	public bool IsOn()
 	{
 		return _powered;
+	}
+
+	public void Inverted()
+	{
+		_inverted = true;
 	}
 }

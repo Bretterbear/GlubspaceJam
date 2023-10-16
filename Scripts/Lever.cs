@@ -11,19 +11,23 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 
 	private bool _isBasePower;
 
-	private bool _isOn;
+	private bool _isFlipped;
 
 	private bool _powered;
+	private bool _isOn;
 
 	private Texture2D _offTexture;
 
 	private Texture2D _onTexture;
+
+	private bool _inverted;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		SetupLeverDynamics();
 		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/SwitchOn.png");
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
+		ResolveLever();
 	}
 
 
@@ -77,14 +81,45 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 		return _powered;
 	}
 
-	private void ToggleLever(Node2D body)
+	public void Inverted()
 	{
-		if (_powered && !_isOn)
+		_inverted = true;
+		ResolveLever();
+	}
+
+	private void ResolveLever()
+	{
+		if (_isFlipped && !_inverted || !_isFlipped && _inverted)
 		{
 			_isOn = true;
 			_parentDynamic.ProvidePower();
 			((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
 		}
+		else
+		{
+			_isOn = false;
+			_parentDynamic.StopPower();
+			((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
+		}
+	}
+	private void ToggleLever(Node2D body)
+	{
+		if (_powered)
+		{
+			if (_isFlipped)
+			{
+				_isFlipped = false;
+			}
+			else
+			{
+				_isFlipped = true;
+			}
+		}
+		else
+		{
+			_isFlipped = false;
+		}
+		ResolveLever();
 			
 	}
 }

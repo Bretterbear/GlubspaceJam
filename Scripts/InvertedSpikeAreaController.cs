@@ -15,18 +15,7 @@ public partial class InvertedSpikeAreaController : Area2D, IDynamicReceiver
 		
 	}
 
-	public override void _PhysicsProcess(double delta)
-	{
-		while (!_intialized)
-		{
-			var collisions = GetOverlappingAreas().Count;
-			if (collisions > 0)
-			{
-				_intialized = true;
-				ToggleSpikes();
-			}
-		}
-	}
+	
 	public void ProvidePower()
 	{
 		_powered = true;
@@ -44,24 +33,13 @@ public partial class InvertedSpikeAreaController : Area2D, IDynamicReceiver
 		return _powered;
 	}
 
+	public void Inverted()
+	{
+		throw new NotImplementedException();
+	}
+
 	private void ToggleSpikes()
 	{
-		Debug.WriteLine("ToggleSpikes");
-		var children = GetOverlappingAreas();
-		Debug.WriteLine(children.Count);
-		foreach (var child in children)
-		{
-			if (child is Spike)
-			{
-				if (_powered)
-				{
-					((Spike)child).TurnOnSpike();
-				}
-				else
-				{
-					((Spike)child).TurnOffSpike();
-				}
-			}
-		}
+		
 	}
 }

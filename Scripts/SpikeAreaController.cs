@@ -6,11 +6,22 @@ using GlubspaceJam.Scripts;
 public partial class SpikeAreaController : Area2D, IDynamicReceiver
 {
 	private bool _powered;
+
+	private bool _inverted;
+	private bool _intialized;
 	// Called when the node enters the scene tree for the first time.
 
-	public override void _Ready()
+	public override void _PhysicsProcess(double delta)
 	{
-		ToggleSpikes();
+		while (!_intialized)
+		{
+			var collisions = GetOverlappingAreas().Count;
+			if (collisions > 0)
+			{
+				_intialized = true;
+				ToggleSpikes();
+			}
+		}
 	}
 	public void ProvidePower()
 	{
@@ -29,20 +40,31 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 		return _powered;
 	}
 
+	public void Inverted()
+	{
+		_inverted = true;
+		ToggleSpikes();
+	}
+
 	private void ToggleSpikes()
 	{
-		Debug.WriteLine("ToggleSpikes");
-		var children = GetOverlappingAreas();
-		Debug.WriteLine(children.Count);
-		foreach (var child in children)
+		if (!_inverted && _powered || _inverted && !_powered)
 		{
-			if (child is Spike)
+			var children = GetOverlappingAreas();
+			foreach (var child in children)
 			{
-				if (_powered)
+				if (child is Spike)
 				{
 					((Spike)child).TurnOffSpike();
 				}
-				else
+			}
+		}
+		else
+		{
+			var children = GetOverlappingAreas();
+			foreach (var child in children)
+			{
+				if (child is Spike)
 				{
 					((Spike)child).TurnOnSpike();
 				}

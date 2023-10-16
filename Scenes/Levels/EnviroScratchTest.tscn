@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://k48vocrwx31f" path="res://Scenes/Levels_NonIndexable/Level_Menu-Pause.tscn" id="4_mpota"]
 [ext_resource type="PackedScene" uid="uid://blgiqjifbw0du" path="res://Scenes/Tools/GridLineRenderer.tscn" id="5_2yesj"]
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="7_euwvr"]
-[ext_resource type="PackedScene" uid="uid://dniiseycnqm2t" path="res://Scenes/Dynamics/inverted_spike_area_controller.tscn" id="9_iy05n"]
+[ext_resource type="Script" path="res://Scripts/Inverter.cs" id="7_oqk5b"]
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="13_5x08x"]
 [ext_resource type="PackedScene" uid="uid://fxrneqmnwb37" path="res://Scenes/Dynamics/spike_area_controller.tscn" id="13_c5cui"]
 
@@ -38,9 +38,10 @@ position = Vector2(-144, 543)
 position = Vector2(-318, 448)
 scale = Vector2(7.40338, 5.38085)
 
-[node name="InvertedSpikeAreaController" parent="DynamicsController" instance=ExtResource("9_iy05n")]
-position = Vector2(257, 448)
-scale = Vector2(4.90277, -4.50774)
+[node name="Inverter" type="Node2D" parent="DynamicsController/SpikeAreaController"]
+position = Vector2(23.5028, 17.6552)
+scale = Vector2(0.0888999, 0.12483)
+script = ExtResource("7_oqk5b")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k5eb1")

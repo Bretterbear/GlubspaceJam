@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b5sxu2n3nv4vi" path="res://Scenes/Dynamics/spikeNorth.tscn" id="2_urprd"]
 [ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="3_t3f1g"]
 [ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="4_rtje3"]
-[ext_resource type="PackedScene" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
+[ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_55kpq"]
 resource_name = "Spikes"
