@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://dpekb7xfoge8c"]
+[gd_resource type="TileSet" load_steps=11 format=3 uid="uid://dpekb7xfoge8c"]
 
 [ext_resource type="Texture2D" uid="uid://d2q1obq5bd4yn" path="res://Assets/Art/Env_Palette_01.png" id="1_jggis"]
 [ext_resource type="PackedScene" uid="uid://fuo2ct7e5l4j" path="res://Scenes/Dynamics/spikeEast.tscn" id="1_ou6v6"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="3_t3f1g"]
 [ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="4_rtje3"]
 [ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
+[ext_resource type="PackedScene" uid="uid://qoyx057y1luk" path="res://Scenes/checkpoint.tscn" id="7_frvsp"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_55kpq"]
 resource_name = "Spikes"
@@ -327,6 +328,7 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_3m6ii"]
 resource_name = "Lost Glub"
 scenes/1/scene = ExtResource("6_ic7oc")
+scenes/2/scene = ExtResource("7_frvsp")
 
 [resource]
 tile_size = Vector2i(64, 64)
