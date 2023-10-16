@@ -7,71 +7,52 @@ public partial class MovingPlatform : StaticBody2D, IDynamicReceiver
 	private bool _powered;
 	private Texture2D _offTexture;
 	private Texture2D _onTexture;
-	private bool _inverted;
 
+	private PlatformPoweredPosition _poweredPosition;
+
+	private PlatformUnPoweredPosition _unPoweredPosition;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		PlatformSetup();
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
-		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Dynamics Art/PlatformOn.png");
-		if(!(GetParent() is IDynamicReceiver))
-		{
-			DynamicsSetup();
-		}
+		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Env_Placeholder-LandEnd.png");
 	}
 
-	
+	private void PlatformSetup()
+	{
+		var children = GetChildren();
+		foreach (var child in children)
+		{
+			if (child is PlatformPoweredPosition)
+				_poweredPosition = (PlatformPoweredPosition)child;
+			else if (child is PlatformUnPoweredPosition)
+				_unPoweredPosition = (PlatformUnPoweredPosition)child;
+		}
+
+		if (_poweredPosition == null || _unPoweredPosition == null)
+		{
+			throw new MissingMemberException("Missing either powered or unpowered child scene");
+		}
+
+		GlobalPosition = _unPoweredPosition.GlobalPosition;
+	}
 	public void ProvidePower()
 	{
 		_powered = true;
-		TogglePlatform();
-		
+		GlobalPosition = _poweredPosition.GlobalPosition;
+		((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
 	}
 
 	public void StopPower()
 	{
 		_powered = false;
-		TogglePlatform();
+		GlobalPosition = _unPoweredPosition.GlobalPosition;
+		((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
 	}
 
-	private void TogglePlatform()
-	{
-		if (!_inverted && _powered || _inverted && !_powered)
-		{
-			SetCollisionLayerValue(9,false);
-			((Sprite2D)GetNode("Sprite2D")).Texture = _onTexture;
-		}
-		else
-		{
-			SetCollisionLayerValue(9,true);
-			((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
-		}
-	}
 	public bool IsOn()
 	{
 		return _powered;
-	}
-
-	public void Inverted()
-	{
-		_inverted = true;
-	}
-
-	public void DynamicsSetup()
-	{
-		var children = GetChildren();
-		foreach (var child in children)
-		{
-			if (child is IDynamicReceiver)
-			{
-				((IDynamicReceiver)child).DynamicsSetup();
-			}
-			
-			if (child is Inverter)
-			{
-				_inverted = true;
-			}
-		}
-		TogglePlatform();
 	}
 }
