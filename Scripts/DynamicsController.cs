@@ -11,17 +11,14 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 	private List<IDynamicReceiver> _powerReceivers;
 
 	private IDynamicReceiver _parentDynamic;
-	private bool _inverted;
 
 	private bool _powered;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		SetupCircuit();
-		if(!(GetParent() is IDynamicReceiver))
-		{
-			DynamicsSetup();
-		}
+		Debug.WriteLine(_powered);
+		
 	}
 
 	private void SetupCircuit()
@@ -48,30 +45,15 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 		return _powered;
 	}
 
-	private void ResolvePower()
+	public void ProvidePower()
 	{
-		if (!_inverted)
+		_powered = true;
+		foreach (var provider in _powerProviders)
 		{
-			_powered = true;
-			foreach (var provider in _powerProviders)
+			if (!provider.IsProvidingPower())
 			{
-				if (!provider.IsProvidingPower())
-				{
-					_powered = false;
-					break;
-				}
-			}
-		}
-		else
-		{
-			_powered = true;
-			foreach (var provider in _powerProviders)
-			{
-				if (provider.IsProvidingPower())
-				{
-					_powered = false;
-					break;
-				}
+				_powered = false;
+				break;
 			}
 		}
 
@@ -84,50 +66,27 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 			if(_parentDynamic != null)
 				_parentDynamic.ProvidePower();
 		}
-		else
-		{
-			foreach (var node in _powerReceivers)
-			{
-				node.StopPower();
-			}
-			if(_parentDynamic != null)
-				_parentDynamic.StopPower();
-		}
-	}
-	public void ProvidePower()
-	{
-		ResolvePower();
 	}
 
 	public void StopPower()
 	{
-		ResolvePower();
+		foreach (var provider in _powerProviders)
+		{
+			if (!provider.IsProvidingPower())
+			{
+				_powered = false;
+				foreach (var receiver in _powerReceivers)
+				{
+					receiver.StopPower();
+				}
+
+				break;
+			}
+		}
 	}
 
 	public bool IsOn()
 	{
 		return _powered;
-	}
-
-	public void Inverted()
-	{
-		_inverted = true;
-	}
-
-	public void DynamicsSetup()
-	{
-		var children = GetChildren();
-		foreach (var child in children)
-		{
-			if (child is IDynamicReceiver)
-			{
-				((IDynamicReceiver)child).DynamicsSetup();
-			}
-			if (child is Inverter)
-			{
-				_inverted = true;
-			}
-		}
-		ResolvePower();
 	}
 }

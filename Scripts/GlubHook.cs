@@ -4,6 +4,12 @@ using System.Diagnostics;
 
 public partial class GlubHook : Node2D
 {
+    // ---------- Editor Variable Declarations ---------- //
+    [Export] private float _hookLength = 900f;                  // Controls hook length, this will become a variable of glub count later
+    // The below will be replaced by multiple raycast points. distributed on character
+    // Keeping the below here to remind me of the thought process
+    //[Export] float _senseBulbLength = 10f;	// Gives distance on a short raycast cross to grab UDLR boxed colliders if need be
+
     // -------- Reference Variable Declarations  -------- //
     private Line2D       _grappleLine;          // Reference storage for our line for the glub grappler
     private Line2D    _lineAimDextrus;          // Reference storage for our right side hook range visualizer
@@ -13,14 +19,11 @@ public partial class GlubHook : Node2D
     private Vector2 _grappleHookPoint;          // Stores hook location - set to zero vector unless we're currently grappling
     private Side         _grappleSide;          // Stores hook placement orientation left - top - right - bottom,
     private TileMap          _tileMap;          // Stores a ref to currently active tilemap
-    private float _hookLength = 100f;           // need to make update func
-    private int _glubCount = 0;
 
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new(32,-31);    // Used for grapple offset position from prefab origin
     private Vector2         _stepSize = new(64, 64);    // Denotes tilemap step-size     
     private float      _coaxialSpread = 16f;
-    private float      _hookMultConst = 100f;            // technically is 64* sqrt 2, giving some slosh just in case + a factor of _coaxialSpread
 
     // -------------- Label Declarations --------------- //
     private string     _labelTileType = "TileTypes";    // Label for customdata layer 0 (tiletypes) -- corresponds to TileDataTypes.TileTypes enum
@@ -340,21 +343,6 @@ public partial class GlubHook : Node2D
         // Tell the glubs to go back to non-grapple behavior
         // NOTE - this will likely change w/ Tom's more complex glub handling system
         GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", false);
-    }
-
-    /// <summary>
-    /// sets glub hook sizing inside of aim mode
-    /// </summary>
-    public void SetHookSizing(int glubCount)
-    {
-        if (_glubCount != glubCount)
-        {
-            GD.Print("GlubHook.SetHookSizing(int) - new count " + glubCount);
-            _glubCount = glubCount;
-            _hookLength = _glubCount * _hookMultConst;
-            GD.Print("GlubHook.SetHookSizing(int) - new Length " + _hookLength);
-
-        }
     }
 
     /// <summary>

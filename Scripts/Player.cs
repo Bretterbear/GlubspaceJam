@@ -17,9 +17,8 @@ public partial class Player : CharacterBody2D
     [Export] private bool    _mouseMode = true;                 // Used to determine input type - move to options menu
 
     // -------- Reference Variable Declarations  -------- //
-    private GlubHook        glubHook;                           // Reference storage for our glub hook for function calling
-    private TileMap         _tileMap;                           // Reference to our level TileMap, poss unused
-    private PlayerManager _playerMgr;                           // Reference to our PlayerManager for func calls
+    private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
+    private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
 
     // ---------- State Variable Declarations  ---------- //
     private States           _playerState;          // Maintains branch control over what input processing is done
@@ -31,8 +30,6 @@ public partial class Player : CharacterBody2D
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
     private Vector2         _stepSize = new Vector2(64, 64);    // Stores our grid step size
-    private float     _mgrTimeGroupUp = 0.3f;                   // How many seconds for the glubs to group up
-
     private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     /// <summary>
@@ -44,9 +41,7 @@ public partial class Player : CharacterBody2D
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
-        _playerMgr   = GetParent<PlayerManager>();
-
-        // _tileMap     = GetNode<TileMap>("../TileMap");
+       // _tileMap     = GetNode<TileMap>("../TileMap");
     }
 
     /// <summary>
@@ -139,10 +134,6 @@ public partial class Player : CharacterBody2D
                         Position += rumpleOrient * _stepSize;
                     }
                 }
-                else if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.hazard)
-                {
-                    GD.Print("CALL FOR FUNCTIONALITY - Player.CollisionTileHandling() - NEED TO KILL THE PLAYER HERE");
-                }
             }
         }
     }
@@ -153,8 +144,6 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void HandleAiming()
     {
-        UpdateHookGlubCount();
-
         glubHook.VisualizeAim(_inputAimUnitVector);
 
         if (_inputToggleAim)
@@ -212,8 +201,6 @@ public partial class Player : CharacterBody2D
         Velocity = Vector2.Zero;                    // Zero out velocity on transition
         Position = Position.Snapped(_stepSize);     // Lock us to a shooting position
         glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
-
-        _playerMgr.GroupGlubs(_mgrTimeGroupUp);     // Tell the glubbies to group
     }
 
     // Transition play mode from aim to walk
@@ -221,8 +208,6 @@ public partial class Player : CharacterBody2D
     {
         _playerState = States.WALKING;
         glubHook.DisableAimVisualizer();            // REPLACES ToggleAimVisualizer disablement
-        
-        _playerMgr.ReleaseChain();                  // Tell the glubbies to degroup!
     }
 
     // Transition play mode from aim to grappled mode
@@ -231,9 +216,6 @@ public partial class Player : CharacterBody2D
         _playerState = States.GRAPPLED;
         glubHook.DisableAimVisualizer();
         GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", true);
-
-        _playerMgr.ExtendGlubChain(_playerMgr._numberOfGlubs, AimVectorToDirection(_inputAimUnitVector), _mgrTimeGroupUp);
-
     }
 
     // Transition play mode from grappling to aiming (either after a warp or a disengage)
@@ -271,14 +253,6 @@ public partial class Player : CharacterBody2D
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         Position = glubHook.GetHookPoint() + repOffset;
         Position = Position.Snapped(_stepSize);
-    }
-
-    /// <summary>
-    /// quick + dirty function to update glubHook on player manager's glubCount
-    /// </summary>
-    private void UpdateHookGlubCount()
-    {
-        glubHook.SetHookSizing(_playerMgr._numberOfGlubs);
     }
 
     /// <summary>
@@ -322,58 +296,5 @@ public partial class Player : CharacterBody2D
     {
         //GD.Print("We ball!");
         GetTree().CallGroup("glubs", "_OnUpdateGlubBoidTarget", GlobalPosition);
-    }
-
-    
-    private Direction AimVectorToDirection(Vector2 aimmer)
-    {
-        // Normalize the vector to get a unit vector
-        Vector2 vector = aimmer.Normalized();
-
-        // Calculate the angle in radians
-        float angle = Mathf.Atan2(-vector.Y, vector.X);
-
-        // Convert the angle to degrees
-        float degrees = Mathf.RadToDeg(angle);
-
-        // Adjust the angle to be positive (0 to 360 degrees)
-        if (degrees < 0)
-        {
-            degrees += 360;
-        }
-
-        // Calculate the direction based on the angle
-        if (degrees >= 22.5f && degrees < 67.5f)
-        {
-            return Direction.NorthEast;
-        }
-        else if (degrees >= 67.5f && degrees < 112.5f)
-        {
-            return Direction.North;
-        }
-        else if (degrees >= 112.5f && degrees < 157.5f)
-        {
-            return Direction.NorthWest;
-        }
-        else if (degrees >= 157.5f && degrees < 202.5f)
-        {
-            return Direction.West;
-        }
-        else if (degrees >= 202.5f && degrees < 247.5f)
-        {
-            return Direction.SouthWest;
-        }
-        else if (degrees >= 247.5f && degrees < 292.5f)
-        {
-            return Direction.South;
-        }
-        else if (degrees >= 292.5f && degrees < 337.5f)
-        {
-            return Direction.SouthEast;
-        }
-        else
-        {
-            return Direction.East;
-        }
     }
 }
