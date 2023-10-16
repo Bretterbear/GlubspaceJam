@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm7pxxvxmkv48"]
+
+[ext_resource type="Script" path="res://Scripts/TitlePage.cs" id="1_o4np3"]
+[ext_resource type="Texture2D" uid="uid://lmnwm5pqcqx8" path="res://Assets/Art/Backgrounds/background_option.png" id="2_ujko0"]
+[ext_resource type="Texture2D" uid="uid://goae0mi1jdx" path="res://Assets/Art/glubspace_banner_title_thing.png" id="3_psjot"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xwtrg"]
+font_size = 36
+font_color = Color(0.277344, 0.695313, 0.582031, 1)
+
+[node name="Title Page" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o4np3")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.663785, 0.663785)
+texture = ExtResource("2_ujko0")
+
+[node name="GlubspaceBannerTitleThing" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 79.0
+offset_top = -18.0
+offset_right = 3639.0
+offset_bottom = 1451.0
+scale = Vector2(0.278064, 0.278064)
+texture = ExtResource("3_psjot")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 458.0
+offset_top = 482.0
+offset_right = 695.0
+offset_bottom = 539.0
+
+[node name="TextureRect2" type="TextureRect" parent="Button"]
+layout_mode = 0
+offset_right = 237.0
+offset_bottom = 58.0
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 1.0
+offset_right = 210.0
+offset_bottom = 57.0
+text = "Start"
+label_settings = SubResource("LabelSettings_xwtrg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Button" to="." method="_OnButtonStartPressed"]
