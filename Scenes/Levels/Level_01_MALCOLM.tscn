@@ -51,6 +51,9 @@ position = Vector2(9248, 352)
 
 [node name="End of Level" parent="." instance=ExtResource("10_hi2mh")]
 
+[node name="End of Level2" parent="." instance=ExtResource("10_hi2mh")]
+position = Vector2(366, 256)
+
 [connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
 [connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
 [connection signal="body_entered" from="TileMap/@Area2D@101648" to="TileMap/@Area2D@101648" method="PlayerReached" flags=18]
