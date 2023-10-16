@@ -157,7 +157,7 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 			((Sprite2D)GetNode("Sprite2D")).Texture = _offTexture;
 		}
 	}
-	private void ToggleLever(Node2D body)
+	public void ToggleLever(Node2D body)
 	{
 		if (_powered)
 		{
@@ -179,4 +179,27 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 		ResolveLever();
 			
 	}
+
+    public void ToggleLever()
+    {
+        if (_powered)
+        {
+            if (_isFlipped)
+            {
+                _isFlipped = false;
+                LeverSound.Play();
+            }
+            else
+            {
+                _isFlipped = true;
+                LeverSound.Play();
+            }
+        }
+        else
+        {
+            _isFlipped = false;
+        }
+        ResolveLever();
+
+    }
 }
