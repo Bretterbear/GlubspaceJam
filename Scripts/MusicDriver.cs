@@ -5,7 +5,12 @@ public partial class MusicDriver : Node2D
 {
 	private AudioStreamPlayer Muzak;
 
-	public void OnPause()
+    public override void _Ready()
+    {
+		Muzak = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
+    }
+
+    public void OnPause()
 	{
 		Muzak.Bus = "Pause Music";
 	}

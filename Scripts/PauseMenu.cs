@@ -27,6 +27,8 @@ public partial class PauseMenu : Control
     /// </summary>
     private void _OnButtonResumePressed()
     {
+        GetNode<MusicDriver>("/root/Node2D2/MusicDriver").OnResume(); 
+
         // Hide pause menu & turn off pause
         Visible = false; 
         GetTree().Paused = false;

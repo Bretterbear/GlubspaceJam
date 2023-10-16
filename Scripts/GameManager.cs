@@ -26,6 +26,8 @@ public partial class GameManager : Node2D
 		{
 			GD.Print("Error(GameManager) - can't find pause menu node on path " +  pathPauseMenu);
 		}
+
+        _musicDriver = GetNode<MusicDriver>("MusicDriver");
 		
 		//NEED A REFERENCE PATH TO MUSIC DRIVER SCRIPT HALP
 		//_musicDriver.OnPause();
@@ -48,6 +50,9 @@ public partial class GameManager : Node2D
         {
 			// Used to gobble up the input & avoid double-calling immediately inside the pause menu to disengage
             GetViewport().SetInputAsHandled();
+
+            _musicDriver.OnPause();
+
 
 			// Pause & call up the menu
             GetTree().Paused = true;
