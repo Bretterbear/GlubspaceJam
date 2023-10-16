@@ -35,7 +35,16 @@ public partial class Player : CharacterBody2D
     private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
     private Vector2         _stepSize = new Vector2(64, 64);    // Stores our grid step size
     private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-
+	
+	// ------------- Audio Components ------------- //
+	
+	private AudioStreamPlayer2D LandingPlop;
+	private AudioStreamPlayer2D PeelOff;
+	private AudioStreamPlayer2D FireGrapple;
+	private AudioStreamPlayer2D Crossover;
+	private AudioStreamPlayer2D InteractJoinSound;
+	private AudioStreamPlayer2D GlubGatherSound;
+	
     /// <summary>
     /// Initial plaer setup - sets state + grabs glubHook reference
     /// </summary>
@@ -46,6 +55,14 @@ public partial class Player : CharacterBody2D
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
        // _tileMap     = GetNode<TileMap>("../TileMap");
+	// ------------- Load Audio Components ------------- //
+	
+	LandingPlop = GetNode<AudioStreamPlayer2D>("LandingPlop");
+	PeelOff = GetNode<AudioStreamPlayer2D>("PeelOff");
+	FireGrapple = GetNode<AudioStreamPlayer2D>("FireGrapple");
+	Crossover = GetNode<AudioStreamPlayer2D>("Crossover");
+	InteractJoinSound = GetNode<AudioStreamPlayer2D>("InteractJoin");
+	GlubGatherSound = GetNode<AudioStreamPlayer2D>("GlubGather");
     }
 
     /// <summary>
@@ -119,6 +136,8 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void CollisionTileHandling()
     {
+		//DieWater.Play();
+		//DieSpike.Play();
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
             var collision = GetSlideCollision(i);
@@ -137,6 +156,7 @@ public partial class Player : CharacterBody2D
                     if (collision.GetNormal() == -rumpleOrient)
                     {
                         Position += rumpleOrient * _stepSize;
+						Crossover.Play(); //USED FOR ONE-WAY PASSING BLOCKS
                     }
                 }
             }
@@ -205,14 +225,19 @@ public partial class Player : CharacterBody2D
         _playerState = States.AIMING;               // Set the state for future frames processing
         Velocity = Vector2.Zero;                    // Zero out velocity on transition
         Position = Position.Snapped(_stepSize);     // Lock us to a shooting position
-        glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
+        glubHook.EnableAimVisualizer();
+		FireGrapple.Play();             
     }
 
     // Transition play mode from aim to walk
     private void ModeTransitionAimToWalk()
     {
         _playerState = States.WALKING;
-        glubHook.DisableAimVisualizer();            // REPLACES ToggleAimVisualizer disablement
+        glubHook.DisableAimVisualizer();   
+				if (!IsOnFloor()) /// Player should be falling, not touching the ground. Basically, when it starts falling after letting go or running off an edge.
+		{
+			PeelOff.Play();
+		}         // REPLACES ToggleAimVisualizer disablement
     }
 
     // Transition play mode from aim to grappled mode
@@ -229,6 +254,7 @@ public partial class Player : CharacterBody2D
         _playerState = States.AIMING;
         glubHook.DisengageHook();
         glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
+		
     }
 
     /// <summary>
@@ -259,6 +285,8 @@ public partial class Player : CharacterBody2D
         Position = glubHook.GetHookPoint() + repOffset;
         MoveAndSlide(); //Quick and dirty needs to be called for "is on floor" to be correct so the fall audio cue is played appropriatey
         Position = Position.Snapped(_stepSize);
+		LandingPlop.Play();
+		
     }
 
     /// <summary>
@@ -302,8 +330,10 @@ public partial class Player : CharacterBody2D
     {
         if (!_wasFloored && IsOnFloor())
         {
-            GD.Print("STICK THE LANDING NOISE HERE - PLAYER.CHECKAIRSTATUS()");
+			LandingPlop.Play();
+            //GD.Print("STICK THE LANDING NOISE HERE - PLAYER.CHECKAIRSTATUS()");
         }
+		
 
         _wasFloored = IsOnFloor();
     }
@@ -317,4 +347,14 @@ public partial class Player : CharacterBody2D
         //GD.Print("We ball!");
         GetTree().CallGroup("glubs", "_OnUpdateGlubBoidTarget", GlobalPosition);
     }
+	//To play gather sound once when gathering the glubs
+	public void _GatherTheThrong()
+	{
+		GlubGatherSound.Play();
+	}
+	//to play Pickup Sound once
+	public void _Gotcha()
+	{
+		InteractJoinSound.Play();
+	}
 }

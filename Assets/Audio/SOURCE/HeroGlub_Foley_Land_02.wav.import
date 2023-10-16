@@ -2,7 +2,7 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://eui2uoorsnwj"
+uid="uid://o8uudtiydvvx"
 path="res://.godot/imported/HeroGlub_Foley_Land_02.wav-93c314591dbd4338c6299996e708ceb7.sample"
 
 [deps]
@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/HeroGlub_Foley_Land_02.wav-93c314591dbd4338c6
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false

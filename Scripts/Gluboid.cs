@@ -21,6 +21,14 @@ public partial class Gluboid : CharacterBody2D
 	private int _index;
 	private float _groupSpeed = 50;
 	private const float _hopRatio = 5f / 6f;
+	private bool _wasFloored = true;
+	
+		// ----------- Audio Components -----------//
+	private AudioStreamPlayer2D FoleyLandSound;
+	private AudioStreamPlayer2D NagSound;
+	private AudioStreamPlayer2D GlubHopSound;
+	private AudioStreamPlayer2D InteractJoinSound;
+	private AudioStreamPlayer2D GlubGatherSound;
 
 	public bool _isPlayer = false;
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -32,12 +40,17 @@ public partial class Gluboid : CharacterBody2D
 		_index = index;
 		var sprite = (Sprite2D)GetNode("GlubSprite");
 		sprite.Texture = skin;
+
 	}
 
 	public override void _Ready()
 	{
 		AddToGroup("Gluboids");
 		_playerManager = GetParent<PlayerManager>();
+		
+		FoleyLandSound = GetNode<AudioStreamPlayer2D>("FoleyLand");
+		NagSound = GetNode<AudioStreamPlayer2D>("Nag");
+		GlubHopSound = GetNode<AudioStreamPlayer2D>("GlubHop");
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -123,6 +136,7 @@ public partial class Gluboid : CharacterBody2D
 
 				if (_state == GluboidState.Hopping)
 				{
+					GlubHopSound.Play();
 					velocity.X = _hopPower;
 				}
 				else
@@ -147,6 +161,7 @@ public partial class Gluboid : CharacterBody2D
 					Velocity = velocity;
 					//Debug.WriteLine("Reset to Idle");
 					//Debug.WriteLine(_state);
+					FoleyLandSound.Play();
 				}
 
 				//Checking to see if Gluboid needs to Hop
@@ -156,6 +171,7 @@ public partial class Gluboid : CharacterBody2D
 					//Debug.WriteLine("Start Hop");
 					Hop();
 				}
+				// FoleyLandSound.Play(); PLAYS SOUND WHEN STOPPING FALLING
 			}
 
 			MoveAndSlide();
