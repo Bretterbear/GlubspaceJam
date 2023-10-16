@@ -26,7 +26,7 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 	public override void _Ready()
 	{
 		SetupLeverDynamics();
-		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/SwitchOn.png");
+		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Dynamics Art/SwitchOn.png");
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
 		if(!(GetParent() is IDynamicReceiver))
 		{

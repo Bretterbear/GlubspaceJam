@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bna8cr07em5lg"]
+
+[ext_resource type="Script" path="res://Scripts/water_hazard.cs" id="1_gknl1"]
+[ext_resource type="Texture2D" uid="uid://xq76du77ay7y" path="res://Assets/Art/WaterHazard.png" id="2_pvmmu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5685t"]
+size = Vector2(64, 64)
+
+[node name="WaterHazard" type="Area2D"]
+script = ExtResource("1_gknl1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5685t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pvmmu")
+
+[connection signal="body_entered" from="." to="." method="GlubMelts"]
