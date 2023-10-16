@@ -12,6 +12,8 @@ public partial class GameManager : Node2D
     private string pathPauseMenu = "PlayerManager/Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
     //private string pathPauseMenu = "Player/Camera2D/Level_MenuPause";	// Path to the folder containing all levels
 
+    private static GameManager _gameManager;
+    private Vector2 _checkPoint;
     /// <summary>
 	/// Links manager to the pause menu on scene loading
 	/// </summary>
@@ -26,8 +28,13 @@ public partial class GameManager : Node2D
 
 		// Make sure our pause menu isn't visible in playspace on scene load
 		pauseReference.Visible = false;
+		_gameManager = this;
 	}
 
+    public static GameManager GetManager()
+    {
+	    return _gameManager;
+    }
     /// <summary>
     /// Input handling for pause menu calls
     /// </summary>
@@ -42,5 +49,14 @@ public partial class GameManager : Node2D
             GetTree().Paused = true;
             pauseReference.ShowMenu();
         }
+    }
+
+    public Vector2 GetCheckpoint()
+    {
+	    return _checkPoint;
+    }
+    public void SetCheckPoint(Vector2 point)
+    {
+	    _checkPoint = point;
     }
 }
