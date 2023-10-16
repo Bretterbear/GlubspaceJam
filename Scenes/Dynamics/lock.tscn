@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://pfynjht060sx"]
 
-[ext_resource type="Texture2D" uid="uid://nouxjnvr3rvw" path="res://Assets/Art/Placeholder Art/LockOff.png" id="1_cw1wa"]
 [ext_resource type="Script" path="res://Scripts/Lock.cs" id="1_ef3ja"]
+[ext_resource type="Texture2D" path="res://Assets/Art/Dynamics Art/LockOn.png" id="2_8isj0"]
 
 [node name="Lock" type="Sprite2D"]
 position = Vector2(-1, -1)
 script = ExtResource("1_ef3ja")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_cw1wa")
+texture = ExtResource("2_8isj0")
