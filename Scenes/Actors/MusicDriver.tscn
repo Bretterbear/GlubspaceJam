@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://80u3kvk6texf"]
+
+[ext_resource type="Script" path="res://Scripts/MusicDriver.cs" id="1_svesx"]
+[ext_resource type="AudioStream" uid="uid://dr3pflo2w608s" path="res://Assets/Audio/SOURCE/MX_GlubbingInTheAir2Nite.wav" id="2_7y5nt"]
+
+[node name="MusicDriver" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_svesx")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7y5nt")
+autoplay = true
+bus = &"Music"

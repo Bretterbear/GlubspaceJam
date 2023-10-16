@@ -24,6 +24,7 @@ public partial class BabyGlub : CharacterBody2D
 
 	// ------------- Constants Declarations ------------- //
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	
 
 	/// <summary>
 	/// Baby glub setup
@@ -37,6 +38,8 @@ public partial class BabyGlub : CharacterBody2D
 		_refGlubHopTimer = GetNode<Timer>("Timer_GlubHop");
 		_refGlubHopTimer.Timeout += glubHopReset;
 		_refGlubHopTimer.Start();
+		
+		
 	}
 
 	/// <summary>
@@ -110,7 +113,6 @@ public partial class BabyGlub : CharacterBody2D
 	{
 		// Set the bool to trigger a jump in the next physics frame
 		_needsToJump = true;
-		
 		// Randomize and restart the hop timer
 		_refGlubHopTimer.WaitTime = GD.RandRange(_glubHopTime * (1 - _glubHopVariability), _glubHopTime * (1 + _glubHopVariability));
 		_refGlubHopTimer.Start();
@@ -130,6 +132,7 @@ public partial class BabyGlub : CharacterBody2D
 	private void _OnUpdateGlubGrappleState(bool playerIsGrappling)
 	{
 		_inGrappleMode = playerIsGrappling;
+		
 
 		if (_inGrappleMode)
 		{

@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpjam8vevv1qf"]
+
+[ext_resource type="Script" path="res://Scripts/VicotoryPiont.cs" id="1_3ye2k"]
+[ext_resource type="Shape2D" uid="uid://b6erhyob0ovrf" path="res://Assets/VictoryCollider.tres" id="2_6v3ge"]
+[ext_resource type="AudioStream" uid="uid://botrvg8uifrw3" path="res://Assets/Audio/SOURCE/Object_SuccessBell.wav" id="3_ofjot"]
+
+[node name="VicotoryPiont" type="Area2D"]
+script = ExtResource("1_3ye2k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = ExtResource("2_6v3ge")
+
+[node name="VictoryBell" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(226, -333)
+stream = ExtResource("3_ofjot")
+panning_strength = 0.5
+bus = &"SFX"

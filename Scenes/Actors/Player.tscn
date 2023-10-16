@@ -1,16 +1,93 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1pe0g10vuddg"]
+[gd_scene load_steps=28 format=3 uid="uid://d1pe0g10vuddg"]
 
 [ext_resource type="Texture2D" uid="uid://dhictusngan7n" path="res://Assets/Art/Char_GlubPrinceps-01.png" id="1_74kga"]
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_v77jq"]
 [ext_resource type="Script" path="res://Scripts/GlubHook.cs" id="3_jp5wg"]
+[ext_resource type="Script" path="res://Scripts/BarrierDetector.cs" id="4_maw1c"]
+[ext_resource type="AudioStream" uid="uid://dlwxhw3i1x1kc" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Land_01.wav" id="5_bbr1o"]
+[ext_resource type="AudioStream" uid="uid://qa54eejsrvyc" path="res://Assets/Audio/SOURCE/HeroGlub_Interact_Grapple.wav" id="5_gvqxq"]
+[ext_resource type="AudioStream" uid="uid://o8uudtiydvvx" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Land_02.wav" id="6_un5ti"]
+[ext_resource type="AudioStream" uid="uid://dpvblr018ytnx" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Peel_01.wav" id="7_apmfy"]
+[ext_resource type="AudioStream" uid="uid://b61nxnbjw2o80" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Peel_02.wav" id="8_prcri"]
+[ext_resource type="AudioStream" uid="uid://bgotas6f4e8sy" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Crossover_01.wav" id="10_k03hf"]
+[ext_resource type="AudioStream" uid="uid://bai0srtmfu4qw" path="res://Assets/Audio/SOURCE/HeroGlub_Foley_Crossover_02.wav" id="11_65a13"]
+[ext_resource type="AudioStream" uid="uid://b1h1kvxa8h1dv" path="res://Assets/Audio/SOURCE/HeroGlub_Death_Water.wav" id="12_ss6fs"]
+[ext_resource type="AudioStream" uid="uid://bym2pjo2366t" path="res://Assets/Audio/SOURCE/HeroGlub_Death_Spike.wav" id="13_4k0xm"]
+[ext_resource type="AudioStream" uid="uid://c6gvpjf21euxw" path="res://Assets/Audio/SOURCE/LostGlub_Interact_Grab_01.wav" id="14_daagk"]
+[ext_resource type="AudioStream" uid="uid://bb0aahpcnfi5f" path="res://Assets/Audio/SOURCE/LostGlub_Interact_Grab_02.wav" id="15_ydbgp"]
+[ext_resource type="AudioStream" uid="uid://8v453hvs8hud" path="res://Assets/Audio/SOURCE/LostGlub_Foley_Gather.wav" id="16_umbk0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_72xbv"]
-size = Vector2(63, 61)
+size = Vector2(62, 62)
 
 [sub_resource type="LabelSettings" id="LabelSettings_j3kas"]
 line_spacing = 0.0
 font_size = 12
 font_color = Color(0.85098, 0.803922, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w4u1e"]
+size = Vector2(64, 64)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_myb64"]
+streams_count = 2
+playback_mode = 1
+random_pitch = 1.37
+random_volume_offset_db = 2.0
+stream_0/stream = ExtResource("5_bbr1o")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("6_un5ti")
+stream_1/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_lvsoi"]
+streams_count = 2
+playback_mode = 1
+random_pitch = 1.23
+random_volume_offset_db = 3.6
+stream_0/stream = ExtResource("7_apmfy")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("8_prcri")
+stream_1/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_egshn"]
+streams_count = 1
+random_pitch = 1.2
+random_volume_offset_db = 2.07
+stream_0/stream = ExtResource("5_gvqxq")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_djakp"]
+streams_count = 2
+playback_mode = 1
+random_volume_offset_db = 2.6
+stream_0/stream = ExtResource("10_k03hf")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("11_65a13")
+stream_1/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w3e7n"]
+streams_count = 1
+stream_0/stream = ExtResource("12_ss6fs")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_n3xt2"]
+streams_count = 1
+playback_mode = 1
+stream_0/stream = ExtResource("13_4k0xm")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fdbnx"]
+streams_count = 2
+playback_mode = 1
+random_pitch = 1.01
+stream_0/stream = ExtResource("14_daagk")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("15_ydbgp")
+stream_1/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_o5bkp"]
+streams_count = 1
+stream_0/stream = ExtResource("16_umbk0")
+stream_0/weight = 1.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 256
@@ -22,7 +99,7 @@ scale = Vector2(0.191099, 0.251572)
 texture = ExtResource("1_74kga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(32.5, -31.5)
+position = Vector2(32, -31)
 shape = SubResource("RectangleShape2D_72xbv")
 
 [node name="Label" type="Label" parent="."]
@@ -65,4 +142,63 @@ sharp_limit = 0.0
 [node name="FollowTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="Area2D_BarrierDetector" type="Area2D" parent="."]
+position = Vector2(20, -4)
+collision_layer = 0
+collision_mask = 4096
+script = ExtResource("4_maw1c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_BarrierDetector"]
+position = Vector2(82, -31)
+shape = SubResource("RectangleShape2D_w4u1e")
+
+[node name="LandingPlop" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(33, -33)
+stream = SubResource("AudioStreamRandomizer_myb64")
+volume_db = -10.0
+attenuation = 2.21914
+max_polyphony = 4
+bus = &"SFX"
+
+[node name="PeelOff" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(33, -33)
+stream = SubResource("AudioStreamRandomizer_lvsoi")
+volume_db = -10.0
+attenuation = 2.14355
+bus = &"SFX"
+
+[node name="FireGrapple" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_egshn")
+volume_db = -9.56
+bus = &"SFX"
+
+[node name="Crossover" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_djakp")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="DieWater" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_w3e7n")
+attenuation = 2.21914
+bus = &"SFX"
+
+[node name="DieSpike" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_n3xt2")
+attenuation = 2.07053
+bus = &"SFX"
+
+[node name="InteractJoin" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_fdbnx")
+attenuation = 2.21914
+max_polyphony = 2
+bus = &"SFX"
+
+[node name="GlubGather" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_o5bkp")
+volume_db = -10.0
+attenuation = 1.86607
+bus = &"SFX"
+
 [connection signal="timeout" from="FollowTimer" to="." method="_BoidUpdateReceiver"]
+[connection signal="body_shape_entered" from="Area2D_BarrierDetector" to="Area2D_BarrierDetector" method="OnBodyShapeEntered"]
+[connection signal="body_shape_exited" from="Area2D_BarrierDetector" to="Area2D_BarrierDetector" method="OnBodyShapeExited"]

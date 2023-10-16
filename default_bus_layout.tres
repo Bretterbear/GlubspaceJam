@@ -1,7 +1,12 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://beat3lqb7egkw"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://beat3lqb7egkw"]
 
 [sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_10253"]
 resource_name = "Limiter"
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_ospnj"]
+resource_name = "LowPassFilter"
+cutoff_hz = 500.0
+db = 1
 
 [resource]
 bus/1/name = &"Submaster"
@@ -22,5 +27,13 @@ bus/3/name = &"Music"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
-bus/3/volume_db = 0.0
+bus/3/volume_db = -4.9518
 bus/3/send = &"Submaster"
+bus/4/name = &"Pause Music"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = -4.9518
+bus/4/send = &"Submaster"
+bus/4/effect/0/effect = SubResource("AudioEffectLowPassFilter_ospnj")
+bus/4/effect/0/enabled = true

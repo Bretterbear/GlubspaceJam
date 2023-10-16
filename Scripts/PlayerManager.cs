@@ -15,7 +15,6 @@ public partial class PlayerManager : Node2D
 	private Gluboid _endOfChain;
 	private PlayerState _playerState;
 
-
 	///<summary>
 	///Grabs a reference to the player scene and the Gluboid, will change to list of gluboids.
 	/// Also does first time randomizer setup.
@@ -28,6 +27,7 @@ public partial class PlayerManager : Node2D
 		PickUpGluboid(_player.GlobalPosition, GluboidSkinController.GetInstance().GetTexture(0)); 
 		PickUpGluboid(_player.GlobalPosition, GluboidSkinController.GetInstance().GetTexture(0));
 		ShuffleGlubs();
+		
 	}
 
 	/// <summary>
@@ -57,6 +57,8 @@ public partial class PlayerManager : Node2D
 		gluboid.setup(GetPlayerPosition(), _gluboidPack.IndexOf(gluboid), skin);
 		CallDeferred("add_child", gluboid);
 		_numberOfGlubs++;
+		_player._Gotcha();
+		
 		
 	}
 
@@ -116,14 +118,6 @@ public partial class PlayerManager : Node2D
 
 		_endOfChain = _gluboidPack[blockDistance - 1];
 	}
-
-	/*
-	public void VectorExtendGlubChain(Vector2 aimDirection, Vector2 hookDestination, float timeToComplete)
-	{
-
-	}
-	*/
-
 	private void ShuffleGlubs()
 	{
 		_gluboidPack[0].MakeNotPlayer();
@@ -160,7 +154,8 @@ public partial class PlayerManager : Node2D
 		UpdatePlayerPosition();
 		foreach (Gluboid glub in _gluboidPack)
 		{
-			glub.GroupToPlayer(timeToComplete);
+			glub.GroupToPlayer();
+			_player._GatherTheThrong();
 		}
 	}
 

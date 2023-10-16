@@ -13,7 +13,7 @@ public partial class MovingPlatform : StaticBody2D, IDynamicReceiver
 	public override void _Ready()
 	{
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
-		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Dynamics Art/PlatformOn.png");
+		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Env_Placeholder-LandEnd.png");
 		if(!(GetParent() is IDynamicReceiver))
 		{
 			DynamicsSetup();

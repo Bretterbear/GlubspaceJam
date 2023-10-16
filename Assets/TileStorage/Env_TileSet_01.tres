@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=12 format=3 uid="uid://dpekb7xfoge8c"]
+[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://dpekb7xfoge8c"]
 
 [ext_resource type="Texture2D" uid="uid://d2q1obq5bd4yn" path="res://Assets/Art/Env_Palette_01.png" id="1_jggis"]
 [ext_resource type="PackedScene" uid="uid://fuo2ct7e5l4j" path="res://Scenes/Dynamics/spikeEast.tscn" id="1_ou6v6"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="3_t3f1g"]
 [ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="4_rtje3"]
 [ext_resource type="PackedScene" uid="uid://c3qbmq2yswelg" path="res://Scenes/Actors/LostGlub.tscn" id="6_ic7oc"]
-[ext_resource type="PackedScene" uid="uid://qoyx057y1luk" path="res://Scenes/checkpoint.tscn" id="7_v84ss"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_55kpq"]
 resource_name = "Spikes"
@@ -22,19 +21,19 @@ texture_region_size = Vector2i(64, 64)
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(32, 32, -32, 32, -32, 0, 32, 0)
-2:0/0/custom_data_0 = 2
+2:0/0/custom_data_0 = 3
 2:0/0/custom_data_1 = Vector2(0, 1)
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, 32, -32, -32, 0, -32, 0, 32)
-3:0/0/custom_data_0 = 2
+3:0/0/custom_data_0 = 3
 3:0/0/custom_data_1 = Vector2(-1, 0)
 4:0/0 = 0
 4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:0/0/physics_layer_0/angular_velocity = 0.0
 4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(32, -32, 32, 32, 0, 32, 0, -32)
-4:0/0/custom_data_0 = 2
+4:0/0/custom_data_0 = 3
 4:0/0/custom_data_1 = Vector2(1, 0)
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -319,7 +318,7 @@ texture_region_size = Vector2i(64, 64)
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 0, -32, 0)
-1:0/0/custom_data_0 = 2
+1:0/0/custom_data_0 = 3
 1:0/0/custom_data_1 = Vector2(0, -1)
 1:4/0 = 0
 1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -328,10 +327,6 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_3m6ii"]
 resource_name = "Lost Glub"
 scenes/1/scene = ExtResource("6_ic7oc")
-
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_bqpps"]
-resource_name = "Checkpoint"
-scenes/1/scene = ExtResource("7_v84ss")
 
 [resource]
 tile_size = Vector2i(64, 64)
@@ -346,4 +341,3 @@ custom_data_layer_2/type = 1
 sources/1 = SubResource("TileSetAtlasSource_lsph3")
 sources/0 = SubResource("TileSetScenesCollectionSource_55kpq")
 sources/2 = SubResource("TileSetScenesCollectionSource_3m6ii")
-sources/3 = SubResource("TileSetScenesCollectionSource_bqpps")

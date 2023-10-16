@@ -1,7 +1,6 @@
 using Godot;
 using System.Diagnostics;
-using GlubspaceJam.Scripts
-;
+using GlubspaceJam.Scripts;
 
 // Movement WASD / Arrows
 // Aim Mode Toggle
@@ -17,12 +16,15 @@ public partial class Player : CharacterBody2D
     [Export] private bool    _mouseMode = true;                 // Used to determine input type - move to options menu
 
     // -------- Reference Variable Declarations  -------- //
-    private GlubHook        glubHook;                           // Reference storage for our glub hook for function calling
-    private TileMap         _tileMap;                           // Reference to our level TileMap, poss unused
-    private PlayerManager _playerMgr;                           // Reference to our PlayerManager for func calls
+    private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
+    private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
 
-    // ---------- State Variable Declarations  ---------- //
-    private States           _playerState;          // Maintains branch control over what input processing is done
+
+    // ---------- State Variable Declarations  ---------- //    
+    private States _playerState;          // Maintains branch control over what input processing is done
+    private bool _wasFloored = true;      // Used to 
+
+    // ---------- Input Variable Declarations  ---------- //
     private Vector2   _inputDirUnitVector;          // Stores current frame movement directional input 
     private Vector2   _inputAimUnitVector;          // Modal - in WASD  mirrors dir, in mouse local vector
     private bool               _inputFire = false;  // Stores current frame "Just hit fire key" state
@@ -31,10 +33,17 @@ public partial class Player : CharacterBody2D
     // ------------- Constants Declarations ------------- //
     private Vector2 _offsetGrappleVis = new Vector2(32,-31);    // BAD ENGINEERING - data duplication w/ glubhook's "_offsetGrappleVis"
     private Vector2         _stepSize = new Vector2(64, 64);    // Stores our grid step size
-    private float     _mgrTimeGroupUp = 0.3f;                   // How many seconds for the glubs to group up
-
     private float             gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-
+	
+	// ------------- Audio Components ------------- //
+	
+	private AudioStreamPlayer2D LandingPlop;
+	private AudioStreamPlayer2D PeelOff;
+	private AudioStreamPlayer2D FireGrapple;
+	private AudioStreamPlayer2D Crossover;
+	private AudioStreamPlayer2D InteractJoinSound;
+	private AudioStreamPlayer2D GlubGatherSound;
+	
     /// <summary>
     /// Initial plaer setup - sets state + grabs glubHook reference
     /// </summary>
@@ -44,9 +53,15 @@ public partial class Player : CharacterBody2D
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
-        _playerMgr   = GetParent<PlayerManager>();
-
-        // _tileMap     = GetNode<TileMap>("../TileMap");
+       // _tileMap     = GetNode<TileMap>("../TileMap");
+	// ------------- Load Audio Components ------------- //
+	
+	LandingPlop = GetNode<AudioStreamPlayer2D>("LandingPlop");
+	PeelOff = GetNode<AudioStreamPlayer2D>("PeelOff");
+	FireGrapple = GetNode<AudioStreamPlayer2D>("FireGrapple");
+	Crossover = GetNode<AudioStreamPlayer2D>("Crossover");
+	InteractJoinSound = GetNode<AudioStreamPlayer2D>("InteractJoin");
+	GlubGatherSound = GetNode<AudioStreamPlayer2D>("GlubGather");
     }
 
     /// <summary>
@@ -56,6 +71,7 @@ public partial class Player : CharacterBody2D
     {
         // Gather all inputs for frame at once
         GatherInput();
+        CheckAirStatus();
 
         // FSM for differential handling in physics process based on player state
         switch (_playerState)
@@ -119,6 +135,8 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void CollisionTileHandling()
     {
+		//DieWater.Play();
+		//DieSpike.Play();
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
             var collision = GetSlideCollision(i);
@@ -137,11 +155,8 @@ public partial class Player : CharacterBody2D
                     if (collision.GetNormal() == -rumpleOrient)
                     {
                         Position += rumpleOrient * _stepSize;
+						Crossover.Play(); //USED FOR ONE-WAY PASSING BLOCKS
                     }
-                }
-                else if ((int)rumples.GetCustomData("TileTypes") == (int)TileTypes.hazard)
-                {
-                    GD.Print("CALL FOR FUNCTIONALITY - Player.CollisionTileHandling() - NEED TO KILL THE PLAYER HERE");
                 }
             }
         }
@@ -153,8 +168,6 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void HandleAiming()
     {
-        UpdateHookGlubCount();
-
         glubHook.VisualizeAim(_inputAimUnitVector);
 
         if (_inputToggleAim)
@@ -211,18 +224,19 @@ public partial class Player : CharacterBody2D
         _playerState = States.AIMING;               // Set the state for future frames processing
         Velocity = Vector2.Zero;                    // Zero out velocity on transition
         Position = Position.Snapped(_stepSize);     // Lock us to a shooting position
-        glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
-
-        _playerMgr.GroupGlubs(_mgrTimeGroupUp);     // Tell the glubbies to group
+        glubHook.EnableAimVisualizer();
+		FireGrapple.Play();             
     }
 
     // Transition play mode from aim to walk
     private void ModeTransitionAimToWalk()
     {
         _playerState = States.WALKING;
-        glubHook.DisableAimVisualizer();            // REPLACES ToggleAimVisualizer disablement
-        
-        _playerMgr.ReleaseChain();                  // Tell the glubbies to degroup!
+        glubHook.DisableAimVisualizer();   
+				if (!IsOnFloor()) /// Player should be falling, not touching the ground. Basically, when it starts falling after letting go or running off an edge.
+		{
+			PeelOff.Play();
+		}         // REPLACES ToggleAimVisualizer disablement
     }
 
     // Transition play mode from aim to grappled mode
@@ -231,9 +245,6 @@ public partial class Player : CharacterBody2D
         _playerState = States.GRAPPLED;
         glubHook.DisableAimVisualizer();
         GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", true);
-
-        _playerMgr.ExtendGlubChain(_playerMgr._numberOfGlubs, AimVectorToDirection(_inputAimUnitVector), _mgrTimeGroupUp);
-
     }
 
     // Transition play mode from grappling to aiming (either after a warp or a disengage)
@@ -242,6 +253,7 @@ public partial class Player : CharacterBody2D
         _playerState = States.AIMING;
         glubHook.DisengageHook();
         glubHook.EnableAimVisualizer();             // REPLACES ToggleAimVisualizer
+		
     }
 
     /// <summary>
@@ -270,15 +282,10 @@ public partial class Player : CharacterBody2D
 
         // Set our position & snap in for further shots. Ideally snap should be a 0 distance motion
         Position = glubHook.GetHookPoint() + repOffset;
+        MoveAndSlide(); //Quick and dirty needs to be called for "is on floor" to be correct so the fall audio cue is played appropriatey
         Position = Position.Snapped(_stepSize);
-    }
-
-    /// <summary>
-    /// quick + dirty function to update glubHook on player manager's glubCount
-    /// </summary>
-    private void UpdateHookGlubCount()
-    {
-        glubHook.SetHookSizing(_playerMgr._numberOfGlubs);
+		LandingPlop.Play();
+		
     }
 
     /// <summary>
@@ -316,6 +323,22 @@ public partial class Player : CharacterBody2D
     }
 
     /// <summary>
+    /// Used to play a sound cue on landing
+    /// </summary>
+    private void CheckAirStatus()
+    {
+        if (!_wasFloored && IsOnFloor())
+        {
+			LandingPlop.Play();
+            //GD.Print("STICK THE LANDING NOISE HERE - PLAYER.CHECKAIRSTATUS()");
+        }
+		
+
+        _wasFloored = IsOnFloor();
+    }
+
+
+    /// <summary>
     /// Experimenting w/ Signals, listens to the child followTimer's timeout, then should reset
     /// </summary>
     private void _BoidUpdateReceiver()
@@ -323,57 +346,14 @@ public partial class Player : CharacterBody2D
         //GD.Print("We ball!");
         GetTree().CallGroup("glubs", "_OnUpdateGlubBoidTarget", GlobalPosition);
     }
-
-    
-    private Direction AimVectorToDirection(Vector2 aimmer)
-    {
-        // Normalize the vector to get a unit vector
-        Vector2 vector = aimmer.Normalized();
-
-        // Calculate the angle in radians
-        float angle = Mathf.Atan2(-vector.Y, vector.X);
-
-        // Convert the angle to degrees
-        float degrees = Mathf.RadToDeg(angle);
-
-        // Adjust the angle to be positive (0 to 360 degrees)
-        if (degrees < 0)
-        {
-            degrees += 360;
-        }
-
-        // Calculate the direction based on the angle
-        if (degrees >= 22.5f && degrees < 67.5f)
-        {
-            return Direction.NorthEast;
-        }
-        else if (degrees >= 67.5f && degrees < 112.5f)
-        {
-            return Direction.North;
-        }
-        else if (degrees >= 112.5f && degrees < 157.5f)
-        {
-            return Direction.NorthWest;
-        }
-        else if (degrees >= 157.5f && degrees < 202.5f)
-        {
-            return Direction.West;
-        }
-        else if (degrees >= 202.5f && degrees < 247.5f)
-        {
-            return Direction.SouthWest;
-        }
-        else if (degrees >= 247.5f && degrees < 292.5f)
-        {
-            return Direction.South;
-        }
-        else if (degrees >= 292.5f && degrees < 337.5f)
-        {
-            return Direction.SouthEast;
-        }
-        else
-        {
-            return Direction.East;
-        }
-    }
+	//To play gather sound once when gathering the glubs
+	public void _GatherTheThrong()
+	{
+		GlubGatherSound.Play();
+	}
+	//to play Pickup Sound once
+	public void _Gotcha()
+	{
+		InteractJoinSound.Play();
+	}
 }

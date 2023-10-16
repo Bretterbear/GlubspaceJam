@@ -22,5 +22,6 @@ public partial class LostGlub : Area2D
 		var skin = sprite.Texture;
 		body.GetParent<PlayerManager>().PickUpGluboid(GlobalPosition, skin);
 		QueueFree();
+		
 	}
 }
