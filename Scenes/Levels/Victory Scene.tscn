@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5ae5m5pywkon"]
+[gd_scene load_steps=5 format=3 uid="uid://b5ae5m5pywkon"]
 
 [ext_resource type="Texture2D" uid="uid://lmnwm5pqcqx8" path="res://Assets/Art/Backgrounds/background_option.png" id="1_6q0rc"]
+[ext_resource type="Script" path="res://Scripts/CreditsScroll.cs" id="2_6f2n2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nvr8m"]
+font_size = 60
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hg0fj"]
+font_size = 100
+font_color = Color(0, 0, 0, 1)
 
 [node name="Victory Scene" type="Control"]
 layout_mode = 3
@@ -23,13 +32,44 @@ texture = ExtResource("1_6q0rc")
 
 [node name="Control" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 16.5414
+offset_top = 974.436
+offset_right = 56.5414
+offset_bottom = 1014.44
+script = ExtResource("2_6f2n2")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+[node name="Label" type="Label" parent="Control"]
 layout_mode = 0
-offset_left = 308.271
-offset_top = 200.0
-offset_right = 1254.27
-offset_bottom = 1526.0
-text = "Thank you for playing"
+offset_left = 183.459
+offset_top = 294.737
+offset_right = 1569.46
+offset_bottom = 1842.74
+text = "Produced by: 
+Bob Glahn
+
+Designed by: 
+Malcom McDonough
+
+Art by: 
+Staphanie Hansen
+
+Sound Design by: 
+Will Edmisten
+
+Music by: 
+Bob Glahn
+
+Programming by: 
+Brett Hansen
+ Tom Landry"
+label_settings = SubResource("LabelSettings_nvr8m")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 151.88
+offset_top = 34.5865
+offset_right = 1596.88
+offset_bottom = 174.586
+text = "Thanks for playing Glubspace!"
+label_settings = SubResource("LabelSettings_hg0fj")

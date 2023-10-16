@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b62d0a1-a554-43f4-b1fe-a40d35b1446a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_01_1600_BRETT.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_01_1600_BRETT.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Glubspace Jam/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/Levels/Level_01_MALCOLM.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Level_01_MALCOLM.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scenes/Levels/Victory Scene.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Levels/Victory Scene.tscn" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
