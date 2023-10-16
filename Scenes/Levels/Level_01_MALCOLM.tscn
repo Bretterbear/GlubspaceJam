@@ -54,13 +54,10 @@ position = Vector2(9248, 352)
 
 [node name="End of Level" parent="." instance=ExtResource("10_hi2mh")]
 
-[node name="End of Level2" parent="." instance=ExtResource("10_hi2mh")]
-position = Vector2(366, 256)
-
 [connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
 [connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@28744" to="TileMap/@Area2D@28744" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@28745" to="TileMap/@Area2D@28745" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@28746" to="TileMap/@Area2D@28746" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@28747" to="TileMap/@Area2D@28747" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@28748" to="TileMap/@Area2D@28748" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@31086" to="TileMap/@Area2D@31086" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@31087" to="TileMap/@Area2D@31087" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@31088" to="TileMap/@Area2D@31088" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@31089" to="TileMap/@Area2D@31089" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@31090" to="TileMap/@Area2D@31090" method="CollisionWithPlayer" flags=18]
