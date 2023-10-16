@@ -64,6 +64,10 @@ public partial class Player : CharacterBody2D
 	GlubGatherSound = GetNode<AudioStreamPlayer2D>("GlubGather");
     }
 
+    public void Death()
+    {
+        GlobalPosition = GameManager.GetGameManager().GetResponPoint();
+    }
     /// <summary>
     /// Grabs input + uses player state to carry out behaviors
     /// </summary>

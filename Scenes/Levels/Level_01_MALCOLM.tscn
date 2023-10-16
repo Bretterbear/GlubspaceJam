@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgk4cn25uvp3m"]
+[gd_scene load_steps=11 format=3 uid="uid://cgk4cn25uvp3m"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_h8r1m"]
 [ext_resource type="TileSet" uid="uid://dpekb7xfoge8c" path="res://Assets/TileStorage/Env_TileSet_01.tres" id="2_smoxm"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="6_u6lbc"]
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="7_77h8u"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_lxo6i"]
-[ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_mbqta"]
 [ext_resource type="PackedScene" uid="uid://3lbq380j2aw7" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
 
 [node name="Node2D2" type="Node2D"]
@@ -45,19 +44,15 @@ scale = Vector2(1.07778, 1.09995)
 [node name="MovingPlatform" parent="DynamicsController" instance=ExtResource("8_lxo6i")]
 position = Vector2(9248, 288)
 
-[node name="Inverter" parent="DynamicsController/MovingPlatform" instance=ExtResource("9_mbqta")]
-
 [node name="MovingPlatform2" parent="DynamicsController" instance=ExtResource("8_lxo6i")]
 position = Vector2(9248, 352)
 
-[node name="Inverter" parent="DynamicsController/MovingPlatform2" instance=ExtResource("9_mbqta")]
-
 [node name="End of Level" parent="." instance=ExtResource("10_hi2mh")]
 
-[connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@31086" to="TileMap/@Area2D@31086" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@31087" to="TileMap/@Area2D@31087" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@31088" to="TileMap/@Area2D@31088" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@31089" to="TileMap/@Area2D@31089" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@31090" to="TileMap/@Area2D@31090" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23241" to="TileMap/@Area2D@23241" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23242" to="TileMap/@Area2D@23242" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23243" to="TileMap/@Area2D@23243" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23244" to="TileMap/@Area2D@23244" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23245" to="TileMap/@Area2D@23245" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23246" to="TileMap/@Area2D@23246" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@23247" to="TileMap/@Area2D@23247" method="CollisionWithPlayer" flags=18]
