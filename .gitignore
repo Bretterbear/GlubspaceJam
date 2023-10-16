@@ -57,3 +57,4 @@ Desktop.ini
 # Note that we would want a more nuanced ignore (see above)
 # if we were to have multiple devs using JBR (specifically not ingoring run configs)
 .idea/*
+.idea/.idea.Glubspace Jam/.idea/workspace.xml
