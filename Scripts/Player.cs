@@ -221,6 +221,8 @@ public partial class Player : CharacterBody2D
     {
         _playerState = States.WALKING;
         glubHook.DisableAimVisualizer();            // REPLACES ToggleAimVisualizer disablement
+        
+        _playerMgr.ReleaseChain();                  // Tell the glubbies to degroup!
     }
 
     // Transition play mode from aim to grappled mode
