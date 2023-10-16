@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="7_77h8u"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_lxo6i"]
 [ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_mbqta"]
-[ext_resource type="PackedScene" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
+[ext_resource type="PackedScene" uid="uid://3lbq380j2aw7" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
 
 [node name="Node2D2" type="Node2D"]
 script = ExtResource("1_h8r1m")
@@ -59,8 +59,8 @@ position = Vector2(366, 256)
 
 [connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
 [connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@60308" to="TileMap/@Area2D@60308" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@60309" to="TileMap/@Area2D@60309" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@60310" to="TileMap/@Area2D@60310" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@60311" to="TileMap/@Area2D@60311" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@60312" to="TileMap/@Area2D@60312" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@104386" to="TileMap/@Area2D@104386" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@104387" to="TileMap/@Area2D@104387" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@104388" to="TileMap/@Area2D@104388" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@104389" to="TileMap/@Area2D@104389" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@104390" to="TileMap/@Area2D@104390" method="CollisionWithPlayer" flags=18]
