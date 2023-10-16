@@ -8,6 +8,7 @@ size = Vector2(128, 128)
 
 [node name="End of Level" type="Area2D"]
 position = Vector2(10880, 319)
+collision_layer = 256
 script = ExtResource("1_a87g5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -15,3 +16,5 @@ shape = SubResource("RectangleShape2D_ofw8c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_4lxj2")
+
+[connection signal="body_entered" from="." to="." method="EndOfLevel"]

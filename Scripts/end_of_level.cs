@@ -13,7 +13,7 @@ public partial class end_of_level : Area2D
 	{
 	}
 
-	public void EndOfLevel()
+	public void EndOfLevel(Node2D body)
 	{
 		GetTree().ChangeSceneToFile("res://Scenes/Levels/Victory Scene.tscn");
 	}
