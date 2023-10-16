@@ -21,6 +21,7 @@ stream_2/weight = 1.0
 [node name="Lever" type="Area2D"]
 position = Vector2(210, 183)
 scale = Vector2(0.65816, 0.671694)
+collision_layer = 513
 script = ExtResource("1_4tuqe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
