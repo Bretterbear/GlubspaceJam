@@ -32,18 +32,18 @@ texture = ExtResource("1_6q0rc")
 
 [node name="Control" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 42.1053
+offset_left = 16.5414
 offset_top = 974.436
-offset_right = 82.1053
+offset_right = 56.5414
 offset_bottom = 1014.44
 script = ExtResource("2_6f2n2")
 
 [node name="Label" type="Label" parent="Control"]
 layout_mode = 0
-offset_left = 204.511
+offset_left = 183.459
 offset_top = 294.737
-offset_right = 1590.51
-offset_bottom = 1240.74
+offset_right = 1569.46
+offset_bottom = 1842.74
 text = "Produced by: 
 Bob Glahn
 

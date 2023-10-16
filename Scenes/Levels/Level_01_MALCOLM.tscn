@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cgk4cn25uvp3m"]
+[gd_scene load_steps=11 format=3 uid="uid://cgk4cn25uvp3m"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_h8r1m"]
 [ext_resource type="TileSet" uid="uid://dpekb7xfoge8c" path="res://Assets/TileStorage/Env_TileSet_01.tres" id="2_smoxm"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="7_77h8u"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_lxo6i"]
 [ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_mbqta"]
+[ext_resource type="PackedScene" uid="uid://3lbq380j2aw7" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
 
 [node name="Node2D2" type="Node2D"]
 script = ExtResource("1_h8r1m")
@@ -47,3 +48,13 @@ position = Vector2(9248, 288)
 position = Vector2(9248, 352)
 
 [node name="Inverter" parent="DynamicsController/MovingPlatform2" instance=ExtResource("9_mbqta")]
+
+[node name="End of Level" parent="." instance=ExtResource("10_hi2mh")]
+
+[connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101648" to="TileMap/@Area2D@101648" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101649" to="TileMap/@Area2D@101649" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101650" to="TileMap/@Area2D@101650" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101651" to="TileMap/@Area2D@101651" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@101652" to="TileMap/@Area2D@101652" method="CollisionWithPlayer" flags=18]
