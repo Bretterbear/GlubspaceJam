@@ -44,7 +44,7 @@ public partial class Player : CharacterBody2D
         _playerState = States.WALKING;
         // Set up hook reference & make sure aim state is reset
         glubHook     = GetNode<GlubHook>("GlubHook");
-        _playerMgr = GetParent<PlayerManager>();
+        _playerMgr   = GetParent<PlayerManager>();
 
         // _tileMap     = GetNode<TileMap>("../TileMap");
     }
@@ -231,6 +231,9 @@ public partial class Player : CharacterBody2D
         _playerState = States.GRAPPLED;
         glubHook.DisableAimVisualizer();
         GetTree().CallGroup("glubs", "_OnUpdateGlubGrappleState", true);
+
+        _playerMgr.ExtendGlubChain(_playerMgr._numberOfGlubs, AimVectorToDirection(_inputAimUnitVector), _mgrTimeGroupUp);
+
     }
 
     // Transition play mode from grappling to aiming (either after a warp or a disengage)
@@ -319,5 +322,58 @@ public partial class Player : CharacterBody2D
     {
         //GD.Print("We ball!");
         GetTree().CallGroup("glubs", "_OnUpdateGlubBoidTarget", GlobalPosition);
+    }
+
+    
+    private Direction AimVectorToDirection(Vector2 aimmer)
+    {
+        // Normalize the vector to get a unit vector
+        Vector2 vector = aimmer.Normalized();
+
+        // Calculate the angle in radians
+        float angle = Mathf.Atan2(-vector.Y, vector.X);
+
+        // Convert the angle to degrees
+        float degrees = Mathf.RadToDeg(angle);
+
+        // Adjust the angle to be positive (0 to 360 degrees)
+        if (degrees < 0)
+        {
+            degrees += 360;
+        }
+
+        // Calculate the direction based on the angle
+        if (degrees >= 22.5f && degrees < 67.5f)
+        {
+            return Direction.NorthEast;
+        }
+        else if (degrees >= 67.5f && degrees < 112.5f)
+        {
+            return Direction.North;
+        }
+        else if (degrees >= 112.5f && degrees < 157.5f)
+        {
+            return Direction.NorthWest;
+        }
+        else if (degrees >= 157.5f && degrees < 202.5f)
+        {
+            return Direction.West;
+        }
+        else if (degrees >= 202.5f && degrees < 247.5f)
+        {
+            return Direction.SouthWest;
+        }
+        else if (degrees >= 247.5f && degrees < 292.5f)
+        {
+            return Direction.South;
+        }
+        else if (degrees >= 292.5f && degrees < 337.5f)
+        {
+            return Direction.SouthEast;
+        }
+        else
+        {
+            return Direction.East;
+        }
     }
 }

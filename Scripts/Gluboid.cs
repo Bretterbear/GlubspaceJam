@@ -276,6 +276,13 @@ public partial class Gluboid : CharacterBody2D
 		_state = GluboidState.Extending;
 	}
 
+	/*
+	private void VectorExtend(Vector2 start, Vector2 direction, float scalar, float time)
+	{
+
+	}
+	*/
+
 	public void Retract(float time)
 	{
 		
