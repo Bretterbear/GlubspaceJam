@@ -18,8 +18,10 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 	public override void _Ready()
 	{
 		SetupCircuit();
-		Debug.WriteLine(_powered);
-		
+		if(!(GetParent() is IDynamicReceiver))
+		{
+			DynamicsSetup();
+		}
 	}
 
 	private void SetupCircuit()
@@ -46,7 +48,7 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 		return _powered;
 	}
 
-	public void ProvidePower()
+	private void ResolvePower()
 	{
 		if (!_inverted)
 		{
@@ -82,23 +84,24 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 			if(_parentDynamic != null)
 				_parentDynamic.ProvidePower();
 		}
+		else
+		{
+			foreach (var node in _powerReceivers)
+			{
+				node.StopPower();
+			}
+			if(_parentDynamic != null)
+				_parentDynamic.StopPower();
+		}
+	}
+	public void ProvidePower()
+	{
+		ResolvePower();
 	}
 
 	public void StopPower()
 	{
-		foreach (var provider in _powerProviders)
-		{
-			if (!provider.IsProvidingPower())
-			{
-				_powered = false;
-				foreach (var receiver in _powerReceivers)
-				{
-					receiver.StopPower();
-				}
-
-				break;
-			}
-		}
+		ResolvePower();
 	}
 
 	public bool IsOn()
@@ -109,5 +112,22 @@ public partial class DynamicsController : Node2D, IDynamicProvider, IDynamicRece
 	public void Inverted()
 	{
 		_inverted = true;
+	}
+
+	public void DynamicsSetup()
+	{
+		var children = GetChildren();
+		foreach (var child in children)
+		{
+			if (child is IDynamicReceiver)
+			{
+				((IDynamicReceiver)child).DynamicsSetup();
+			}
+			if (child is Inverter)
+			{
+				_inverted = true;
+			}
+		}
+		ResolvePower();
 	}
 }

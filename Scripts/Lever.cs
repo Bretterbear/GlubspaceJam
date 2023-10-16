@@ -27,7 +27,10 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 		SetupLeverDynamics();
 		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Placeholder Art/SwitchOn.png");
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
-		ResolveLever();
+		if(!(GetParent() is IDynamicReceiver))
+		{
+			DynamicsSetup();
+		}
 	}
 
 
@@ -83,7 +86,26 @@ public partial class Lever : Area2D, IDynamicProvider, IDynamicReceiver
 
 	public void Inverted()
 	{
+		Debug.WriteLine("Inverted");
 		_inverted = true;
+		ResolveLever();
+	}
+
+	public void DynamicsSetup()
+	{
+		var children = GetChildren();
+		foreach (var child in children)
+		{
+			if (child is IDynamicReceiver)
+			{
+				((IDynamicReceiver)child).DynamicsSetup();
+			}
+
+			if (child is Inverter)
+			{
+				_inverted = true;
+			}
+		}
 		ResolveLever();
 	}
 

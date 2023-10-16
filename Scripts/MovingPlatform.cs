@@ -14,6 +14,10 @@ public partial class MovingPlatform : StaticBody2D, IDynamicReceiver
 	{
 		_offTexture = ((Sprite2D)GetNode("Sprite2D")).Texture;
 		_onTexture = GD.Load<Texture2D>("res://Assets/Art/Env_Placeholder-LandEnd.png");
+		if(!(GetParent() is IDynamicReceiver))
+		{
+			DynamicsSetup();
+		}
 	}
 
 	
@@ -51,5 +55,23 @@ public partial class MovingPlatform : StaticBody2D, IDynamicReceiver
 	public void Inverted()
 	{
 		_inverted = true;
+	}
+
+	public void DynamicsSetup()
+	{
+		var children = GetChildren();
+		foreach (var child in children)
+		{
+			if (child is IDynamicReceiver)
+			{
+				((IDynamicReceiver)child).DynamicsSetup();
+			}
+			
+			if (child is Inverter)
+			{
+				_inverted = true;
+			}
+		}
+		TogglePlatform();
 	}
 }

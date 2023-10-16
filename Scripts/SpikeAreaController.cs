@@ -11,6 +11,13 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	private bool _intialized;
 	// Called when the node enters the scene tree for the first time.
 
+	public override void _Ready()
+	{
+		if(!(GetParent() is IDynamicReceiver))
+		{
+			DynamicsSetup();
+		}
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		while (!_intialized)
@@ -43,6 +50,23 @@ public partial class SpikeAreaController : Area2D, IDynamicReceiver
 	public void Inverted()
 	{
 		_inverted = true;
+		ToggleSpikes();
+	}
+
+	public void DynamicsSetup()
+	{
+		var children = GetChildren();
+		foreach (var child in children)
+		{
+			if (child is IDynamicReceiver)
+			{
+				((IDynamicReceiver)child).DynamicsSetup();
+			}
+			if (child is Inverter)
+			{
+				_inverted = true;
+			}
+		}
 		ToggleSpikes();
 	}
 
