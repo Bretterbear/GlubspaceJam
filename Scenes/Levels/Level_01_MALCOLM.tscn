@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cgk4cn25uvp3m"]
+[gd_scene load_steps=13 format=3 uid="uid://cgk4cn25uvp3m"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="1_h8r1m"]
 [ext_resource type="TileSet" uid="uid://dpekb7xfoge8c" path="res://Assets/TileStorage/Env_TileSet_01.tres" id="2_smoxm"]
@@ -9,8 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://vv85hw0bhyph" path="res://Scenes/Dynamics/dynamics_controller.tscn" id="6_u6lbc"]
 [ext_resource type="PackedScene" uid="uid://bpwn2w4ps7scs" path="res://Scenes/Dynamics/lever.tscn" id="7_77h8u"]
 [ext_resource type="PackedScene" uid="uid://de6sncbhkdvcy" path="res://Scenes/Dynamics/moving_platform.tscn" id="8_lxo6i"]
-[ext_resource type="PackedScene" uid="uid://6eatukbjuwce" path="res://Scenes/Dynamics/inverter.tscn" id="9_mbqta"]
-[ext_resource type="PackedScene" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
+[ext_resource type="PackedScene" uid="uid://3lbq380j2aw7" path="res://Scenes/end_of_level.tscn" id="10_hi2mh"]
 [ext_resource type="Script" path="res://Scripts/MusicDriver.cs" id="12_10ieg"]
 [ext_resource type="AudioStream" uid="uid://dr3pflo2w608s" path="res://Assets/Audio/SOURCE/MX_GlubbingInTheAir2Nite.wav" id="13_g3mxt"]
 
@@ -61,11 +60,3 @@ process_mode = 3
 stream = ExtResource("13_g3mxt")
 autoplay = true
 bus = &"Music"
-
-[connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@90475" to="TileMap/@Area2D@90475" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@90476" to="TileMap/@Area2D@90476" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@90477" to="TileMap/@Area2D@90477" method="PlayerReached" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@90478" to="TileMap/@Area2D@90478" method="CollisionWithPlayer" flags=18]
-[connection signal="body_entered" from="TileMap/@Area2D@90479" to="TileMap/@Area2D@90479" method="CollisionWithPlayer" flags=18]
