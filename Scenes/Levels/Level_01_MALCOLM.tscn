@@ -60,3 +60,26 @@ process_mode = 3
 stream = ExtResource("13_g3mxt")
 autoplay = true
 bus = &"Music"
+
+[connection signal="body_entered" from="TileMap/WaterHazard" to="TileMap/WaterHazard" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58234" to="TileMap/@Area2D@58234" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58235" to="TileMap/@Area2D@58235" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/Checkpoint" to="TileMap/Checkpoint" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58236" to="TileMap/@Area2D@58236" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58237" to="TileMap/@Area2D@58237" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58238" to="TileMap/@Area2D@58238" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58239" to="TileMap/@Area2D@58239" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58240" to="TileMap/@Area2D@58240" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58241" to="TileMap/@Area2D@58241" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58242" to="TileMap/@Area2D@58242" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/LostGlub" to="TileMap/LostGlub" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58243" to="TileMap/@Area2D@58243" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58244" to="TileMap/@Area2D@58244" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58245" to="TileMap/@Area2D@58245" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58246" to="TileMap/@Area2D@58246" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58247" to="TileMap/@Area2D@58247" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58248" to="TileMap/@Area2D@58248" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58249" to="TileMap/@Area2D@58249" method="PlayerReached" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58250" to="TileMap/@Area2D@58250" method="GlubMelts" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58251" to="TileMap/@Area2D@58251" method="CollisionWithPlayer" flags=18]
+[connection signal="body_entered" from="TileMap/@Area2D@58252" to="TileMap/@Area2D@58252" method="CollisionWithPlayer" flags=18]

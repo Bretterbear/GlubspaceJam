@@ -22,6 +22,7 @@ public partial class Gluboid : CharacterBody2D
 	private float _groupSpeed = 50;
 	private const float _hopRatio = 5f / 6f;
 	private bool _wasFloored = true;
+	private AnimatedSprite2D _sprite;
 	
 		// ----------- Audio Components -----------//
 	private AudioStreamPlayer2D FoleyLandSound;
@@ -34,13 +35,12 @@ public partial class Gluboid : CharacterBody2D
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-	public void setup(Vector2 position, int index, Texture2D skin)
+	public void setup(Vector2 position, int index, AnimatedSprite2D skin)
 	{
 		GlobalPosition = position;
 		_index = index;
-		var sprite = (Sprite2D)GetNode("GlubSprite");
-		sprite.Texture = skin;
-
+		_sprite = skin;
+		AddChild(skin);
 	}
 
 	public override void _Ready()

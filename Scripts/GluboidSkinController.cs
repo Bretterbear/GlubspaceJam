@@ -8,16 +8,16 @@ public class GluboidSkinController
 {
     private static GluboidSkinController _instance;
     private List<string> _skinFilePath;
-    private List<Texture2D> _skins;
+    private List<PackedScene> _skins;
     
     public GluboidSkinController()
     {
-        _skinFilePath = new List<string>(){"res://Assets/Art/Char_GlubPrinceps-01.png","res://Assets/Art/Char_Glub_FuryCat.png"};
+        _skinFilePath = new List<string>(){"res://Scenes/Actors/Animated Sprites/anime_glub_sprite_blue.tscn"};
 
-        _skins = new List<Texture2D>();
+        _skins = new List<PackedScene>();
         for (int i = 0; i < _skinFilePath.Count; i++)
         {
-            _skins.Add(GD.Load<Texture2D>(_skinFilePath[i]));
+            _skins.Add(GD.Load<PackedScene>(_skinFilePath[i]));
         }
     }
 
@@ -30,10 +30,8 @@ public class GluboidSkinController
 
         return _instance;
     }
-    public Texture2D GetTexture(GluboidSkin skin)
+    public AnimeGlubSprite GetTexture(GluboidSkin skin)
     {
-        Debug.WriteLine(skin);
-        Debug.WriteLine((int)skin);
-        return _skins[(int)skin];
+        return (AnimeGlubSprite)_skins[(int)skin].Instantiate();
     }
 }

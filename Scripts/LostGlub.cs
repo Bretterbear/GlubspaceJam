@@ -5,6 +5,7 @@ using GlubspaceJam.Scripts;
 
 public partial class LostGlub : Area2D
 {
+	private AnimeGlubSprite _sprite;
 	public override void _Ready()
 	{
 		var numberOfSkins = Enum.GetNames(typeof(GluboidSkin)).Length;
@@ -13,14 +14,15 @@ public partial class LostGlub : Area2D
 		var skin = GluboidSkinController.GetInstance()
 			.GetTexture(selection);
 		Debug.WriteLine(skin);
-		((Sprite2D)GetNode("Sprite2D")).Texture = skin;
+		_sprite = skin;
+		AddChild(skin);
+		_sprite.Idle();
 	}
 
 	private void CollisionWithPlayer(Node2D body)
 	{
-		var sprite = (Sprite2D)GetNode("Sprite2D");
-		var skin = sprite.Texture;
-		body.GetParent<PlayerManager>().PickUpGluboid(GlobalPosition, skin);
+		RemoveChild(_sprite);
+		body.GetParent<PlayerManager>().PickUpGluboid(GlobalPosition, _sprite);
 		QueueFree();
 		
 	}

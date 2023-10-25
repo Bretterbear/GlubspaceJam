@@ -49,7 +49,7 @@ public partial class PlayerManager : Node2D
 	}
 
 	
-	public void PickUpGluboid(Vector2 position, Texture2D skin)
+	public void PickUpGluboid(Vector2 position, AnimeGlubSprite skin)
 	{
 		Gluboid gluboid = (Gluboid)_gluboidScene.Instantiate();
 		_gluboidPack.Add(gluboid);
