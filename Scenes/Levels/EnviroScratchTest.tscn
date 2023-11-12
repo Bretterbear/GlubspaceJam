@@ -60,4 +60,6 @@ position = Vector2(-63, 189)
 floor_max_angle = 1.41895
 floor_snap_length = 33.0
 
-[node name="AnimeGlubSprite_Blue" parent="." instance=ExtResource("13_a31mw")]
+[node name="AnimeGlubSprite_Blue" parent="PlayerManager/Player" instance=ExtResource("13_a31mw")]
+position = Vector2(0, 0)
+animation = &"Hook NE_SW"

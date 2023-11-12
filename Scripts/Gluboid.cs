@@ -16,7 +16,7 @@ public partial class Gluboid : CharacterBody2D
 	private GluboidState _state = GluboidState.Idle;
 	private float _distanceFromPlayerX;
 	private Vector2 _extendPosition;
-	private float _extendDistance = 64;
+	private float _extendDistance = 90.509667f;
 	private float _extendSpeed = 50;
 	private int _index;
 	private float _groupSpeed = 50;
