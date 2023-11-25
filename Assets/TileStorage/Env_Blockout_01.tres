@@ -1,10 +1,10 @@
 [gd_resource type="TileSet" load_steps=10 format=3 uid="uid://vtnxvti07gj2"]
 
 [ext_resource type="Texture2D" uid="uid://c0s0k748ly8fe" path="res://Assets/Art/Env_BlockoutMap_01.png" id="1_rj1ml"]
-[ext_resource type="PackedScene" path="res://Scenes/Dynamics/spikeEast.tscn" id="2_8ukrs"]
-[ext_resource type="PackedScene" path="res://Scenes/Dynamics/spikeNorth.tscn" id="3_4vcer"]
-[ext_resource type="PackedScene" path="res://Scenes/Dynamics/spikeSouth.tscn" id="4_lvhah"]
-[ext_resource type="PackedScene" path="res://Scenes/Dynamics/SpikeWest.tscn" id="5_md74q"]
+[ext_resource type="PackedScene" uid="uid://fuo2ct7e5l4j" path="res://Scenes/Dynamics/spikeEast.tscn" id="2_8ukrs"]
+[ext_resource type="PackedScene" uid="uid://b5sxu2n3nv4vi" path="res://Scenes/Dynamics/spikeNorth.tscn" id="3_4vcer"]
+[ext_resource type="PackedScene" uid="uid://cnbrqehe00jbu" path="res://Scenes/Dynamics/spikeSouth.tscn" id="4_lvhah"]
+[ext_resource type="PackedScene" uid="uid://duckroypbr1ex" path="res://Scenes/Dynamics/SpikeWest.tscn" id="5_md74q"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_0leoi"]
 tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0)
