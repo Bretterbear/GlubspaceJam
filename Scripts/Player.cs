@@ -14,7 +14,7 @@ public partial class Player : CharacterBody2D
     // ---------- Editor Variable Declarations ---------- //
     [Export] private const float _Speed = 500.0f;               // Will need to fine tune, but controls player horizontal speed
     [Export] private bool    _mouseMode = true;                 // Used to determine input type - move to options menu
-
+    
     // -------- Reference Variable Declarations  -------- //
     private GlubHook  glubHook;                                 // Reference storage for our glub hook for function calling
     private TileMap   _tileMap;                                 // Reference to our level TileMap, poss unused
